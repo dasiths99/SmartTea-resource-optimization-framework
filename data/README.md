@@ -26,7 +26,7 @@ never edited           (5 estates)            simulated management              
 
 | File | Rows | Use |
 |---|---|---|
-| `yield_model_ready.csv` | 9,053 plucking rounds | Yield surrogate. Target `green_leaf_kg_per_ha_per_day`, 58 numeric features |
+| `yield_model_ready.csv` | 9,053 plucking rounds | Yield surrogate. Target `green_leaf_kg_per_ha_per_day`. **live** set: 57 features known when a round starts; **hindsight** set: 58 incl. the round's actual weather/readings |
 | `runoff_model_ready.csv` | 850 fertilizer applications | Runoff model. Target `runoff_loss_est_pct`, 24 live features |
 | `smarttea_master_block_daily.csv.gz` | 91,300 block-days | **All sources in one table**: sensors, block, weather, forecast, actions, yield. For analysis, new features and the evaluation stage |
 | `feature_spec.json` | — | Targets, feature sets, decision variables, monotone constraints, training ranges (optimizer bounds), splits |
@@ -47,7 +47,18 @@ X, y, meta = load_task("runoff", feature_set="live")     # or load_task("yield")
 train, test = meta.split != "test", meta.split == "test"
 ```
 
-### Baseline check (XGBoost, default settings, 2026-10-08)
+### Realistic results (decision-time features, regularised XGBoost, `python -m src.models.overfit_check`)
+
+Settings chosen on the 2024 validation year only; 2025 scored once. Full table: `artifacts/reports/overfit_check.csv`.
+
+| Task (live features) | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
+|---|---|---|---|---|
+| Yield | 0.963 | 0.813 | **0.903** | **0.777 ± 0.08** |
+| Runoff (forecast rain, monotone) | 0.825 | 0.724 | **0.646** | **0.509 ± 0.18** |
+
+Regularisation cut the runoff train–validation gap from 0.21 to 0.10 (unregularised, no early stopping: train 0.998 vs test 0.59).
+
+### Earlier baseline (hindsight features, default settings, 2026-10-08)
 
 | Task | Test year 2025 | Unseen blocks (cv_fold) | Unseen estate |
 |---|---|---|---|

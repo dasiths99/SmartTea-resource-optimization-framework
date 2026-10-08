@@ -152,7 +152,19 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 - **Requirements:** `requirements.txt` (pypdfium2 is needed only by `build_real`).
 - **Reproducibility (2026-10-08):** the hybrid regeneration reproduces all 10 files exactly. `build_real` reproduces files 00–06. Files 07/08 differ by Forbes & Walker revisions (see `data/interim/real/README.md`).
 
-## 5. Key results so far (data/processed/hybrid/validation_report_2026-10-08.txt)
+## 5. Key results so far
+
+**Headline (realistic): decision-time ("live") features, regularised XGBoost, settings chosen on val 2024 only** (`python -m src.models.overfit_check`, artifacts/reports/overfit_check.csv):
+
+| Task | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
+|---|---|---|---|---|
+| Yield (live) | 0.96 | 0.81 | **0.90** | **0.78 ± 0.08** |
+| Runoff (live, forecast rain, monotone) | 0.83 | 0.72 | **0.65** | **0.51 ± 0.18** |
+
+- Do not tune toward a target accuracy. Choose settings on val only, and score test once.
+- Unregularised runoff overfitted badly: train 0.998 vs test 0.59.
+
+**Earlier baseline (hindsight features, default settings; data/processed/hybrid/validation_report_2026-10-08.txt):**
 | Test | Result |
 |---|---|
 | Yield, XGBoost, test year 2025 | R² 0.94 (RF 0.90, Ridge 0.64) |

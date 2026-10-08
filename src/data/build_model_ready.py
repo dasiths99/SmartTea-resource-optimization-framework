@@ -26,10 +26,15 @@ SPLIT_YEARS = {"train": [2021, 2022, 2023], "val": [2024], "test": [2025]}
 YIELD_CATEGORICAL = ["plucking_standard", "agro_zone", "soil_type", "cultivar"]
 RUNOFF_CATEGORICAL = ["agro_zone", "soil_type", "product_code"]
 # Columns the optimizer can change (decision variables) - the surrogate must respond to these.
-YIELD_DECISIONS = ["n_applied_60d_kg_ha", "n_applied_90d_kg_ha", "n_absorbed_est_90d_kg_ha",
-                   "days_since_last_fertilizer", "irrigation_mm_in_round", "fungicide_sprays_14d",
+YIELD_DECISIONS = ["n_applied_60d_kg_ha", "n_applied_90d_kg_ha", "days_since_last_fertilizer", "irrigation_mm_in_round", "fungicide_sprays_14d",
                    "dolomite_last_365d"]
 RUNOFF_DECISIONS = ["amount_per_ha", "n_kg_per_ha", "hour", "month", "product_code"]
+# Yield features measured DURING the plucking round (after the decision) - unknown when deciding.
+# n_absorbed_est_90d_kg_ha uses the true runoff loss of applications made during the round.
+ROUND_HINDSIGHT = ["soil_moisture_mean", "soil_moisture_min", "soil_ph_mean", "soil_n_ppm_mean", "soil_p_ppm_mean",
+                   "soil_k_ppm_mean", "soil_temp_mean", "light_lux_mean", "sunshine_hours_mean", "rain_sum_mm",
+                   "rain_days", "rain_30d_mm", "temp_mean_c", "temp_max_c", "humidity_mean", "solar_rad_mean",
+                   "et0_sum_mm", "n_absorbed_est_90d_kg_ha"]
 FC_RAIN = ["fc_rain_next_12h_mm", "fc_rain_next_24h_mm", "fc_rain_next_48h_mm", "fc_rain_next_72h_mm"]
 ACT_RAIN = ["rain_next_12h_mm", "rain_next_24h_mm", "rain_next_48h_mm", "rain_next_72h_mm"]
 
@@ -58,6 +63,57 @@ def ranges(df, cols):
     return {c: [float(df[c].min()), float(df[c].max())] for c in cols}
 
 
+def yield_start_features(h, y):
+    """Features known on the morning a plucking round starts (the moment a decision is made).
+
+    start_*  : sensor / weather means over the 7 days before the round (30 days for rain)
+    fc_*     : rain forecast issued that morning for day 0-3
+    clim_*   : normal weather for the estate and month, from TRAIN years (2021-2023) only, scaled to the round length
+    """
+    s = pd.read_csv(f"{h}/03_sensor_readings_daily.csv", parse_dates=["date"])
+    w = pd.read_csv(f"{h}/02_weather_daily.csv", parse_dates=["date"])
+    fc = pd.read_csv(f"{h}/08_daily_forecasts_issued.csv", parse_dates=["issue_date"])
+    start = pd.to_datetime(y.pluck_date) - pd.to_timedelta(y.round_days, unit="D")
+    keys = pd.DataFrame({"block_id": y.block_id, "estate_id": y.estate_id, "date": start})
+
+    sens = ["soil_moisture_pct", "soil_ph", "soil_n_ppm", "soil_p_ppm", "soil_k_ppm", "soil_temp_c", "light_lux", "sunshine_hours"]
+    s = s.sort_values(["block_id", "date"])
+    roll = s.groupby("block_id")[sens].transform(lambda c: c.rolling(7, min_periods=1).mean().shift(1))
+    roll.columns = [f"start_{c}_7d" for c in sens]
+    roll[["block_id", "date"]] = s[["block_id", "date"]]
+    w = w.sort_values(["estate_id", "date"])
+    g = w.groupby("estate_id")
+    wr = pd.DataFrame({"estate_id": w.estate_id, "date": w.date,
+                       "start_rain_7d_mm": g.rainfall_mm.transform(lambda c: c.rolling(7, min_periods=1).sum().shift(1)),
+                       "start_rain_30d_mm": g.rainfall_mm.transform(lambda c: c.rolling(30, min_periods=1).sum().shift(1)),
+                       "start_temp_mean_7d_c": g.temp_mean_c.transform(lambda c: c.rolling(7, min_periods=1).mean().shift(1)),
+                       "start_et0_7d_mm": g.et0_mm.transform(lambda c: c.rolling(7, min_periods=1).sum().shift(1))})
+    f = fc.rename(columns={"issue_date": "date"})
+    f["fc_rain_next4d_mm"] = f[[f"fc_rain_day{k}_mm" for k in range(4)]].sum(axis=1, min_count=1)
+    tr = w[w.date.dt.year.isin(SPLIT_YEARS["train"])].assign(month=lambda d: d.date.dt.month)
+    clim = tr.groupby(["estate_id", "month"]).agg(c_rain=("rainfall_mm", "mean"), c_temp=("temp_mean_c", "mean"),
+                                                  c_rad=("solar_radiation_mj_m2", "mean"), c_et0=("et0_mm", "mean")).reset_index()
+
+    out = keys.merge(roll, on=["block_id", "date"], how="left").merge(wr, on=["estate_id", "date"], how="left")
+    out = out.merge(f[["estate_id", "date", "fc_rain_next4d_mm"]], on=["estate_id", "date"], how="left")
+    out["month"] = out.date.dt.month
+    out = out.merge(clim, on=["estate_id", "month"], how="left")
+    n = y.round_days.to_numpy()
+    out["clim_rain_round_mm"] = out.c_rain * n
+    out["clim_temp_mean_c"] = out.c_temp
+    out["clim_solar_mj_m2_day"] = out.c_rad
+    out["clim_et0_round_mm"] = out.c_et0 * n
+    # a missing forecast (0.1 % of days) falls back to the climate normal for the same 4 days
+    out["fc_rain_next4d_mm"] = out.fc_rain_next4d_mm.fillna(out.c_rain * 4)
+    cols = [c for c in out.columns if c.startswith(("start_", "fc_", "clim_"))]
+    # rounds starting in the first days of 2021 have no previous week: use the estate's train-period median
+    is_train = pd.to_datetime(y.pluck_date).dt.year.isin(SPLIT_YEARS["train"]).to_numpy()
+    for c in cols:
+        med = out[is_train].groupby("estate_id")[c].median()
+        out[c] = out[c].fillna(out.estate_id.map(med))
+    return out[cols].round(3).reset_index(drop=True)
+
+
 def build_yield(h, folds):
     y = pd.read_csv(f"{h}/ml_yield_training.csv")
     meta = pd.DataFrame({
@@ -71,17 +127,24 @@ def build_yield(h, folds):
             "aspect"]  # no effect in the generator; acts as a block identifier
     x = y.drop(columns=drop)
     x["irrigation_available"] = x.irrigation_available.astype(int)
+    x = pd.concat([x, yield_start_features(h, y)], axis=1)
     raw_ranges = ranges(x, [c for c in x.columns if c not in YIELD_CATEGORICAL])
     x = one_hot(x, YIELD_CATEGORICAL)
     df = pd.concat([meta, y[[target]], x], axis=1)
+    live = [c for c in x.columns if c not in ROUND_HINDSIGHT]
     spec = dict(
         target=target, target_unit="kg green leaf / ha / day", grain="one plucking round of one block",
         meta_columns=list(meta.columns), features=list(x.columns),
-        feature_sets={"all": list(x.columns)},
+        feature_sets={
+            "live": live,  # known when the round starts: the deployed system can use these
+            "hindsight": [c for c in x.columns if not c.startswith(("start_", "fc_", "clim_"))],  # round's actual conditions
+        },
+        hindsight_columns=ROUND_HINDSIGHT,
         categorical_one_hot={c: [k for k in x.columns if k.startswith(c + "__")] for c in YIELD_CATEGORICAL},
         decision_variables=YIELD_DECISIONS,
-        live_note="n_absorbed_est_90d_kg_ha is computed from the true (simulated) runoff loss; in the live "
-                  "system compute it from applied N and the runoff model's prediction.",
+        live_note="'live' uses only what is known when a round starts: block, decisions, readings from the 7 days "
+                  "before, the forecast issued that morning and train-year climate normals. 'hindsight' adds the "
+                  "conditions measured during the round (upper bound; not available when deciding).",
         dropped={"green_leaf_kg_per_ha": "leakage (target x round_days)", "aspect": "no causal effect; block identifier",
                  "block_id/estate_id": "identifiers (kept in meta)"},
         monotone_constraints={},
@@ -183,7 +246,7 @@ def main():
         "rules": ["Never use random row splits (leakage between days and rounds of the same block).",
                   "Report the time split (test 2025), the block-grouped CV (unseen blocks) and leave-one-estate-out.",
                   "Use full one-hot encoding (as stored); drop_first encoding lowered unseen-block R2 from ~0.82 to ~0.66.",
-                  "Runoff: train the deployed model on feature_sets.live; use 'hindsight' only as an upper bound.",
+                  "Train deployed models on feature_sets.live (both tasks); use 'hindsight' only as an upper bound.",
                   "Optimizer bounds = intersection of 07_operational_constraints.csv and training_ranges: the historical "
                   "data contains doses up to 420 kg/ha and 12 block-years over the annual N ceiling, which the "
                   "optimizer must not recommend."],

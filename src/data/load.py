@@ -25,9 +25,9 @@ def load_spec(path=MODEL_READY):
 
 
 def load_task(task, feature_set=None, path=MODEL_READY):
-    """task: 'yield' or 'runoff'. feature_set: 'all' (yield), 'live' (runoff default) or 'hindsight' (runoff)."""
+    """task: 'yield' or 'runoff'. feature_set: 'live' (default; known at decision time) or 'hindsight' (upper bound)."""
     spec = load_spec(path)[task]
-    feature_set = feature_set or ("live" if task == "runoff" else "all")
+    feature_set = feature_set or "live"
     if feature_set not in spec["feature_sets"]:
         raise ValueError(f"{task} has feature sets {list(spec['feature_sets'])}, not {feature_set!r}")
     df = pd.read_csv(os.path.join(path, f"{task}_model_ready.csv"))

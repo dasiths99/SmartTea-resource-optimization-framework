@@ -75,7 +75,7 @@
     "Never use random row splits (leakage between days and rounds of the same block).",
     "Report the time split (test 2025), the block-grouped CV (unseen blocks) and leave-one-estate-out.",
     "Use full one-hot encoding (as stored); drop_first encoding lowered unseen-block R2 from ~0.82 to ~0.66.",
-    "Runoff: train the deployed model on feature_sets.live; use 'hindsight' only as an upper bound.",
+    "Train deployed models on feature_sets.live (both tasks); use 'hindsight' only as an upper bound.",
     "Optimizer bounds = intersection of 07_operational_constraints.csv and training_ranges: the historical data contains doses up to 420 kg/ha and 12 block-years over the annual N ceiling, which the optimizer must not recommend."
   ],
   "yield": {
@@ -138,6 +138,23 @@
       "sg_cec_cmol_kg",
       "weather_grid_elevation_m",
       "temp_offset_c",
+      "start_soil_moisture_pct_7d",
+      "start_soil_ph_7d",
+      "start_soil_n_ppm_7d",
+      "start_soil_p_ppm_7d",
+      "start_soil_k_ppm_7d",
+      "start_soil_temp_c_7d",
+      "start_light_lux_7d",
+      "start_sunshine_hours_7d",
+      "start_rain_7d_mm",
+      "start_rain_30d_mm",
+      "start_temp_mean_7d_c",
+      "start_et0_7d_mm",
+      "fc_rain_next4d_mm",
+      "clim_rain_round_mm",
+      "clim_temp_mean_c",
+      "clim_solar_mj_m2_day",
+      "clim_et0_round_mm",
       "plucking_standard__coarse",
       "plucking_standard__fine",
       "plucking_standard__medium",
@@ -152,7 +169,66 @@
       "cultivar__VP_clone_C"
     ],
     "feature_sets": {
-      "all": [
+      "live": [
+        "round_days",
+        "month",
+        "days_since_pruning",
+        "n_applied_60d_kg_ha",
+        "n_applied_90d_kg_ha",
+        "days_since_last_fertilizer",
+        "irrigation_mm_in_round",
+        "fungicide_sprays_14d",
+        "dolomite_last_365d",
+        "area_ha",
+        "elevation_m",
+        "slope_pct",
+        "field_capacity_pct",
+        "wilting_point_pct",
+        "bush_age_yrs",
+        "shade_tree_cover_pct",
+        "pruning_cycle_yrs",
+        "irrigation_available",
+        "sg_ph_h2o",
+        "sg_total_n_g_kg",
+        "sg_soc_g_kg",
+        "sg_clay_pct",
+        "sg_sand_pct",
+        "sg_silt_pct",
+        "sg_bulk_density_kg_dm3",
+        "sg_cec_cmol_kg",
+        "weather_grid_elevation_m",
+        "temp_offset_c",
+        "start_soil_moisture_pct_7d",
+        "start_soil_ph_7d",
+        "start_soil_n_ppm_7d",
+        "start_soil_p_ppm_7d",
+        "start_soil_k_ppm_7d",
+        "start_soil_temp_c_7d",
+        "start_light_lux_7d",
+        "start_sunshine_hours_7d",
+        "start_rain_7d_mm",
+        "start_rain_30d_mm",
+        "start_temp_mean_7d_c",
+        "start_et0_7d_mm",
+        "fc_rain_next4d_mm",
+        "clim_rain_round_mm",
+        "clim_temp_mean_c",
+        "clim_solar_mj_m2_day",
+        "clim_et0_round_mm",
+        "plucking_standard__coarse",
+        "plucking_standard__fine",
+        "plucking_standard__medium",
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up",
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)",
+        "cultivar__Seedling",
+        "cultivar__VP_clone_A",
+        "cultivar__VP_clone_B",
+        "cultivar__VP_clone_C"
+      ],
+      "hindsight": [
         "round_days",
         "month",
         "days_since_pruning",
@@ -213,6 +289,26 @@
         "cultivar__VP_clone_C"
       ]
     },
+    "hindsight_columns": [
+      "soil_moisture_mean",
+      "soil_moisture_min",
+      "soil_ph_mean",
+      "soil_n_ppm_mean",
+      "soil_p_ppm_mean",
+      "soil_k_ppm_mean",
+      "soil_temp_mean",
+      "light_lux_mean",
+      "sunshine_hours_mean",
+      "rain_sum_mm",
+      "rain_days",
+      "rain_30d_mm",
+      "temp_mean_c",
+      "temp_max_c",
+      "humidity_mean",
+      "solar_rad_mean",
+      "et0_sum_mm",
+      "n_absorbed_est_90d_kg_ha"
+    ],
     "categorical_one_hot": {
       "plucking_standard": [
         "plucking_standard__coarse",
@@ -238,13 +334,12 @@
     "decision_variables": [
       "n_applied_60d_kg_ha",
       "n_applied_90d_kg_ha",
-      "n_absorbed_est_90d_kg_ha",
       "days_since_last_fertilizer",
       "irrigation_mm_in_round",
       "fungicide_sprays_14d",
       "dolomite_last_365d"
     ],
-    "live_note": "n_absorbed_est_90d_kg_ha is computed from the true (simulated) runoff loss; in the live system compute it from applied N and the runoff model's prediction.",
+    "live_note": "'live' uses only what is known when a round starts: block, decisions, readings from the 7 days before, the forecast issued that morning and train-year climate normals. 'hindsight' adds the conditions measured during the round (upper bound; not available when deciding).",
     "dropped": {
       "green_leaf_kg_per_ha": "leakage (target x round_days)",
       "aspect": "no causal effect; block identifier",
@@ -435,6 +530,74 @@
       "temp_offset_c": [
         -3.35,
         1.53
+      ],
+      "start_soil_moisture_pct_7d": [
+        22.871,
+        45.957
+      ],
+      "start_soil_ph_7d": [
+        4.444,
+        5.54
+      ],
+      "start_soil_n_ppm_7d": [
+        2.786,
+        87.243
+      ],
+      "start_soil_p_ppm_7d": [
+        7.7,
+        35.957
+      ],
+      "start_soil_k_ppm_7d": [
+        19.6,
+        186.214
+      ],
+      "start_soil_temp_c_7d": [
+        10.771,
+        26.7
+      ],
+      "start_light_lux_7d": [
+        14016.143,
+        75942.714
+      ],
+      "start_sunshine_hours_7d": [
+        0.343,
+        11.586
+      ],
+      "start_rain_7d_mm": [
+        0.0,
+        664.9
+      ],
+      "start_rain_30d_mm": [
+        1.7,
+        1032.3
+      ],
+      "start_temp_mean_7d_c": [
+        13.271,
+        28.486
+      ],
+      "start_et0_7d_mm": [
+        2.45,
+        43.86
+      ],
+      "fc_rain_next4d_mm": [
+        0.0,
+        421.7
+      ],
+      "clim_rain_round_mm": [
+        11.257,
+        257.242
+      ],
+      "clim_temp_mean_c": [
+        14.781,
+        26.51
+      ],
+      "clim_solar_mj_m2_day": [
+        14.106,
+        21.652
+      ],
+      "clim_et0_round_mm": [
+        17.38,
+        54.55
       ]
     }
   },

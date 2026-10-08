@@ -557,7 +557,7 @@ ALL sources joined: sensors + block + weather + forecast + actions + yield. Grai
 
 ## `data/model_ready/yield_model_ready.csv`
 
-Feed-ready yield table: meta + target + numeric features. Grain: one row per **block × plucking round**. Rows: **9,053**, columns: 66. Default origin: **derived**.
+Feed-ready yield table: meta + target + numeric features. Grain: one row per **block × plucking round**. Rows: **9,053**, columns: 83. Default origin: **derived**.
 
 | Column | Type | Unit | Origin | Description | Missing % | Range / levels |
 |---|---|---|---|---|---|---|
@@ -615,6 +615,23 @@ Feed-ready yield table: meta + target + numeric features. Grain: one row per **b
 | `sg_cec_cmol_kg` | float | cmol(c)/kg | real | SoilGrids cation exchange capacity, 0-15 cm | 0.0 | 16.1 – 28.7 |
 | `weather_grid_elevation_m` | int | m | real | Elevation of the estate's weather grid cell | 0.0 | 27 – 1868 |
 | `temp_offset_c` | float | °C | derived | Block temperature correction for elevation vs weather grid (−0.65 °C per 100 m) | 0.0 | -3.35 – 1.53 |
+| `start_soil_moisture_pct_7d` | float | % vol | simulated | Mean soil moisture over the 7 days before the round starts (live) | 0.0 | 22.871 – 45.957 |
+| `start_soil_ph_7d` | float | pH | simulated | Mean soil pH over the 7 days before the round starts (live) | 0.0 | 4.444 – 5.54 |
+| `start_soil_n_ppm_7d` | float | ppm | simulated | Mean available N over the 7 days before the round starts (live) | 0.0 | 2.786 – 87.243 |
+| `start_soil_p_ppm_7d` | float | ppm | simulated | Mean available P over the 7 days before the round starts (live) | 0.0 | 7.7 – 35.957 |
+| `start_soil_k_ppm_7d` | float | ppm | simulated | Mean K over the 7 days before the round starts (live) | 0.0 | 19.6 – 186.214 |
+| `start_soil_temp_c_7d` | float | °C | simulated | Mean soil temperature over the 7 days before the round starts (live) | 0.0 | 10.771 – 26.7 |
+| `start_light_lux_7d` | float | lux | simulated | Mean light level over the 7 days before the round starts (live) | 0.0 | 14016.1 – 75942.7 |
+| `start_sunshine_hours_7d` | float | h/day | simulated | Mean sunshine over the 7 days before the round starts (live) | 0.0 | 0.343 – 11.586 |
+| `start_rain_7d_mm` | float | mm | derived | Rain in the 7 days before the round starts (live) | 0.0 | 0 – 664.9 |
+| `start_rain_30d_mm` | float | mm | derived | Rain in the 30 days before the round starts (live) | 0.0 | 1.7 – 1032.3 |
+| `start_temp_mean_7d_c` | float | °C | derived | Mean air temperature over the 7 days before the round (live) | 0.0 | 13.271 – 28.486 |
+| `start_et0_7d_mm` | float | mm | derived | Reference ET over the 7 days before the round (live) | 0.0 | 2.45 – 43.86 |
+| `fc_rain_next4d_mm` | float | mm | real | Rain forecast for day 0-3 issued the morning the round starts (live) | 0.0 | 0 – 421.7 |
+| `clim_rain_round_mm` | float | mm | derived | Normal rain for the estate and month × round length (train years 2021-2023 only) | 0.0 | 11.257 – 257.242 |
+| `clim_temp_mean_c` | float | °C | derived | Normal mean temperature for the estate and month (train years only) | 0.0 | 14.781 – 26.51 |
+| `clim_solar_mj_m2_day` | float | MJ/m²/day | derived | Normal daily radiation for the estate and month (train years only) | 0.0 | 14.106 – 21.652 |
+| `clim_et0_round_mm` | float | mm | derived | Normal reference ET × round length (train years only) | 0.0 | 17.38 – 54.55 |
 | `plucking_standard__*` (3) | 0/1 |  | simulated | One-hot of plucking_standard: coarse, fine, medium | 0.0 | |
 | `agro_zone__*` (3) | 0/1 |  | simulated | One-hot of agro_zone: low, mid, up | 0.0 | |
 | `soil_type__*` (2) | 0/1 |  | derived | One-hot of soil_type: Clay (SoilGrids), Clay loam (SoilGrids) | 0.0 | |

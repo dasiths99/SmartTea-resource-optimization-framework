@@ -178,6 +178,21 @@ DESC = {
     "fert_runoff_loss_est_pct": ("%", "Runoff loss of that day's fertilizer application"),
     "fungicide_ml_per_ha": ("ml/ha", "Fungicide sprayed that day (0 if none)"),
     "dolomite_kg_per_ha": ("kg/ha", "Dolomite applied that day (0 if none)"),
+    # yield live features (known when the plucking round starts)
+    **{f"start_{c}_7d": (u, f"Mean {lbl} over the 7 days before the round starts (live)")
+       for c, u, lbl in [("soil_moisture_pct", "% vol", "soil moisture"), ("soil_ph", "pH", "soil pH"),
+                         ("soil_n_ppm", "ppm", "available N"), ("soil_p_ppm", "ppm", "available P"),
+                         ("soil_k_ppm", "ppm", "K"), ("soil_temp_c", "°C", "soil temperature"),
+                         ("light_lux", "lux", "light level"), ("sunshine_hours", "h/day", "sunshine")]},
+    "start_rain_7d_mm": ("mm", "Rain in the 7 days before the round starts (live)"),
+    "start_rain_30d_mm": ("mm", "Rain in the 30 days before the round starts (live)"),
+    "start_temp_mean_7d_c": ("°C", "Mean air temperature over the 7 days before the round (live)"),
+    "start_et0_7d_mm": ("mm", "Reference ET over the 7 days before the round (live)"),
+    "fc_rain_next4d_mm": ("mm", "Rain forecast for day 0-3 issued the morning the round starts (live)"),
+    "clim_rain_round_mm": ("mm", "Normal rain for the estate and month × round length (train years 2021-2023 only)"),
+    "clim_temp_mean_c": ("°C", "Normal mean temperature for the estate and month (train years only)"),
+    "clim_solar_mj_m2_day": ("MJ/m²/day", "Normal daily radiation for the estate and month (train years only)"),
+    "clim_et0_round_mm": ("mm", "Normal reference ET × round length (train years only)"),
     # model-ready meta
     "split": ("", "Fixed time split: train 2021-2023, val 2024, test 2025"),
     "cv_fold": ("0-4", "Block-grouped CV fold (unseen blocks); 2 blocks per estate per fold"),
@@ -220,6 +235,8 @@ ORIGIN = {  # per-column origin overrides inside simulated tables
     **{c: REAL for c in ["latitude", "longitude", "region", "weather_grid_elevation_m"] + [c for c in DESC if c.startswith("sg_")]},
     **{c: DER for c in ["field_capacity_pct", "wilting_point_pct", "soil_type", "temp_offset_c"]},
     **{c: REAL for c in DESC if c.startswith(("rain_next_", "fc_rain_", "wx_"))},
+    **{c: DER for c in DESC if c.startswith(("start_rain", "start_temp", "start_et0", "clim_"))},  # from real ERA5
+    "fc_rain_next4d_mm": REAL,
     **{c: DER for c in ["rain_sum_mm", "rain_days", "rain_30d_mm", "temp_mean_c", "temp_max_c", "humidity_mean",
                          "solar_rad_mean", "et0_sum_mm", "rain_prev_3d_mm", "temp_at_exec_c", "humidity_at_exec_pct",
                          "wind_at_exec_ms"]},  # weather features computed from real ERA5

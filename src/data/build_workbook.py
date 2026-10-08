@@ -41,7 +41,12 @@ NOT_INCLUDED = [
     ("raw/ (51 files)", "original downloads and PDFs; see data/raw/MANIFEST.csv"),
     ("archive/synthetic_v1/", "old fully synthetic version, comparison only"),
 ]
-VALIDATION = [  # data/processed/hybrid/validation_report_2026-10-08.txt + leave-one-estate-out check (2026-10-08)
+VALIDATION = [  # artifacts/reports/overfit_check.csv (python -m src.models.overfit_check), chosen by val R2 only
+    ("Yield", "LIVE features, regularised XGBoost: test year 2025", "XGBoost (C strong)", 0.903, 1.72),
+    ("Yield", "LIVE features: unseen blocks AND future year", "XGBoost (C strong)", 0.777, None),
+    ("Runoff", "LIVE (forecast rain), regularised + monotone: test 2025", "XGBoost (C strong)", 0.646, 8.77),
+    ("Runoff", "LIVE: unseen blocks AND future year", "XGBoost (C strong)", 0.509, None),
+    # data/processed/hybrid/validation_report_2026-10-08.txt (hindsight features, default settings) + leave-one-estate-out
     ("Yield", "Time split (test year 2025)", "Ridge", 0.644, 3.29),
     ("Yield", "Time split (test year 2025)", "Random Forest", 0.897, 1.76),
     ("Yield", "Time split (test year 2025)", "XGBoost", 0.944, 1.31),
@@ -163,7 +168,8 @@ def main():
                     vs.write(i, j, v, cell)
         n = 3 + len(VALIDATION)
         for k, line in enumerate([
-            "MAE units: yield kg/ha/day; runoff percentage points.",
+            "MAE units: yield kg/ha/day; runoff percentage points. First 4 rows = realistic headline results (decision-time "
+            "features, regularised, settings chosen on 2024 only). Remaining rows = earlier baseline with hindsight features.",
             "Source: data/processed/hybrid/validation_report_2026-10-08.txt; leave-one-estate-out from the model-ready check on 2026-10-08.",
             "Unseen-block yield R² was first reported as 0.66; that run used drop-first one-hot encoding, which cost ~0.15 R².",
             "Key finding: with forecast rain instead of actual rain, runoff R² falls from 0.94 to 0.63. Forecast error limits the Action-Window scheduler.",
