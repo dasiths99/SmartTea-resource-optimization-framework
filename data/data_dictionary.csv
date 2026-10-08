@@ -1,0 +1,581 @@
+table,column,type,unit,origin,description,missing_pct,range_or_levels
+data/interim/real/00_estate_locations.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/00_estate_locations.csv,region,text,,real,Real tea-growing region of the estate,0.0,"Deniyaya / Matara, Hatton / Dimbula, Kandy, Nuwara Eliya, Ratnapura"
+data/interim/real/00_estate_locations.csv,agro_zone,text,,real,"Elevation zone: up (high grown), mid (medium grown), low (low grown)",0.0,"low, mid, up"
+data/interim/real/00_estate_locations.csv,query_lat,float,deg,real,Latitude requested from the weather API,0.0,6.34 – 7.25
+data/interim/real/00_estate_locations.csv,query_lon,float,deg,real,Longitude requested from the weather API,0.0,80.4 – 80.78
+data/interim/real/00_estate_locations.csv,grid_lat,float,deg,real,Latitude of the weather grid cell actually used,0.0,6.29174 – 7.20562
+data/interim/real/00_estate_locations.csv,grid_lon,float,deg,real,Longitude of the weather grid cell actually used,0.0,80.395 – 80.742
+data/interim/real/00_estate_locations.csv,grid_elevation_m,int,m,real,Elevation of the weather grid cell,0.0,27 – 1868
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,datetime_local,text,YYYY-MM-DD HH:MM,real,"Hour, local time (Asia/Colombo)",0.0,"2021-01-01 00:00:00, 2021-01-01 01:00:00, 2021-01-01 02:00:00, 2021-01-01 03:00:00, 2021-01-01 04:00:00, 2021-01-01 05:00:00 … (43824 values)"
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,temp_c,float,°C,real,Air temperature at 2 m,0.0,6 – 35.5
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,humidity_pct,int,%,real,Relative humidity at 2 m,0.0,16 – 100
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,dew_point_c,float,°C,real,Dew point at 2 m,0.0,-10.8 – 27.3
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,precip_mm,float,mm,real,Total precipitation in the hour,0.0,0 – 34.9
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,rain_mm,float,mm,real,Rain amount (hourly table: liquid rain in the hour; daily/monthly tables: total precipitation),0.0,0 – 34.9
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,cloud_cover_pct,int,%,real,Total cloud cover,0.0,0 – 100
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,wind_speed_10m_ms,float,m/s,real,Wind speed at 10 m,0.0,0 – 12.16
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,wind_gust_10m_ms,float,m/s,real,Wind gust at 10 m,0.0,0.3 – 27.3
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,solar_radiation_wm2,int,W/m²,real,Shortwave radiation (hour mean),0.0,0 – 1121
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,sunshine_s,float,s,real,Sunshine duration in the hour,0.0,0 – 3600
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,et0_mm,float,mm,real,FAO-56 reference evapotranspiration,0.0,0 – 0.91
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,vpd_kpa,float,kPa,real,Vapour pressure deficit,0.0,0 – 4.23
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,soil_temp_0_7cm_c,float,°C,real,ERA5-Land soil temperature 0-7 cm,0.0,7.1 – 37.5
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,soil_moisture_0_7cm_pct,float,% vol,real,ERA5-Land soil moisture 0-7 cm,0.0,13.6 – 52.4
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,soil_moisture_7_28cm_pct,float,% vol,real,ERA5-Land soil moisture 7-28 cm,0.0,14.8 – 52.7
+data/interim/real/01_weather_hourly_era5_2021_2025.csv,soil_moisture_28_100cm_pct,float,% vol,real,ERA5-Land soil moisture 28-100 cm,0.0,19.6 – 52
+data/interim/real/02_weather_daily_era5_2021_2025.csv,estate_id,text,,derived,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/02_weather_daily_era5_2021_2025.csv,date,text,YYYY-MM-DD,derived,"Calendar day (local time, Asia/Colombo)",0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/interim/real/02_weather_daily_era5_2021_2025.csv,rain_mm,float,mm,derived,Rain amount (hourly table: liquid rain in the hour; daily/monthly tables: total precipitation),0.0,0 – 256
+data/interim/real/02_weather_daily_era5_2021_2025.csv,rain_hours,int,h,derived,Hours in the day with ≥ 0.1 mm precipitation,0.0,0 – 24
+data/interim/real/02_weather_daily_era5_2021_2025.csv,temp_min_c,float,°C,derived,Daily minimum air temperature,0.0,6 – 26.3
+data/interim/real/02_weather_daily_era5_2021_2025.csv,temp_mean_c,float,°C,derived,Mean air temperature,0.0,11.9 – 29.4
+data/interim/real/02_weather_daily_era5_2021_2025.csv,temp_max_c,float,°C,derived,Daily maximum air temperature (monthly table: mean of daily maxima),0.0,13.9 – 35.5
+data/interim/real/02_weather_daily_era5_2021_2025.csv,humidity_mean_pct,float,%,derived,Daily mean relative humidity,0.0,39 – 100
+data/interim/real/02_weather_daily_era5_2021_2025.csv,humidity_min_pct,int,%,derived,Daily minimum relative humidity,0.0,16 – 99
+data/interim/real/02_weather_daily_era5_2021_2025.csv,cloud_cover_mean_pct,float,%,derived,Daily mean cloud cover,0.0,0.3 – 100
+data/interim/real/02_weather_daily_era5_2021_2025.csv,wind_mean_ms,float,m/s,derived,Daily mean wind speed at 10 m,0.0,0.44 – 10.38
+data/interim/real/02_weather_daily_era5_2021_2025.csv,wind_max_ms,float,m/s,derived,Daily maximum hourly wind speed at 10 m,0.0,0.92 – 12.16
+data/interim/real/02_weather_daily_era5_2021_2025.csv,gust_max_ms,float,m/s,derived,Daily maximum gust,0.0,3.3 – 27.3
+data/interim/real/02_weather_daily_era5_2021_2025.csv,solar_radiation_mj_m2,float,MJ/m²/day,derived,Daily shortwave radiation,0.0,2.16 – 29.28
+data/interim/real/02_weather_daily_era5_2021_2025.csv,sunshine_hours,float,h,derived,Sunshine hours (real tables: from radiation via Angstrom; sensor table: simulated reading),0.0,0 – 12.19
+data/interim/real/02_weather_daily_era5_2021_2025.csv,et0_mm,float,mm,derived,FAO-56 reference evapotranspiration,0.0,0.46 – 6.86
+data/interim/real/02_weather_daily_era5_2021_2025.csv,vpd_mean_kpa,float,kPa,derived,Daily mean vapour pressure deficit,0.0,0.004 – 1.866
+data/interim/real/02_weather_daily_era5_2021_2025.csv,soil_temp_0_7cm_c,float,°C,derived,ERA5-Land soil temperature 0-7 cm,0.0,12.2 – 31.3
+data/interim/real/02_weather_daily_era5_2021_2025.csv,soil_moisture_0_7cm_pct,float,% vol,derived,ERA5-Land soil moisture 0-7 cm,0.0,14 – 51.7
+data/interim/real/02_weather_daily_era5_2021_2025.csv,soil_moisture_7_28cm_pct,float,% vol,derived,ERA5-Land soil moisture 7-28 cm,0.0,15.1 – 51.8
+data/interim/real/02_weather_daily_era5_2021_2025.csv,soil_moisture_28_100cm_pct,float,% vol,derived,ERA5-Land soil moisture 28-100 cm,0.0,19.7 – 51.9
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,datetime_local,text,YYYY-MM-DD HH:MM,real,"Hour, local time (Asia/Colombo)",0.0,"2024-01-19 17:00:00, 2024-01-19 18:00:00, 2024-01-19 19:00:00, 2024-01-19 20:00:00, 2024-01-19 21:00:00, 2024-01-19 22:00:00 … (17095 values)"
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,precip_actual_mm,float,mm,real,Precipitation that fell in the hour (Open-Meteo best-match analysis),0.0,0 – 27.8
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,precip_forecast_1day_ahead_mm,float,mm,real,Hourly precipitation forecast issued 1 day(s) earlier,0.0,0 – 28.7
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,precip_forecast_2day_ahead_mm,float,mm,real,Hourly precipitation forecast issued 2 day(s) earlier,0.1,0 – 28.1
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,precip_forecast_3day_ahead_mm,float,mm,real,Hourly precipitation forecast issued 3 day(s) earlier,0.3,0 – 30.5
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,precip_forecast_4day_ahead_mm,float,mm,real,Hourly precipitation forecast issued 4 day(s) earlier,0.4,0 – 32.9
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,temp_actual_c,float,°C,real,Actual air temperature in the hour,0.0,6.2 – 35.5
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,temp_forecast_1day_ahead_c,float,°C,real,Temperature forecast issued 1 day earlier,0.0,8.5 – 37.2
+data/interim/real/03_forecast_vs_actual_hourly_2024_2025.csv,wind_forecast_1day_ahead_ms,float,m/s,real,Wind forecast issued 1 day earlier,0.0,0 – 10.54
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,estate_id,text,,derived,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,date,text,YYYY-MM-DD,derived,"Calendar day (local time, Asia/Colombo)",0.0,"2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25 … (712 values)"
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,rain_actual_mm,float,mm,derived,Daily precipitation that fell,0.0,0 – 256
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,rain_fc_1day_ahead_mm,float,mm,derived,Daily precipitation forecast issued 1 day(s) earlier,0.0,0 – 322.9
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,rain_fc_2day_ahead_mm,float,mm,derived,Daily precipitation forecast issued 2 day(s) earlier,0.0,0 – 302.9
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,rain_fc_3day_ahead_mm,float,mm,derived,Daily precipitation forecast issued 3 day(s) earlier,0.0,0 – 179.7
+data/interim/real/04_forecast_vs_actual_daily_2024_2025.csv,rain_fc_4day_ahead_mm,float,mm,derived,Daily precipitation forecast issued 4 day(s) earlier,0.0,0 – 146.2
+data/interim/real/05_nasa_power_daily_2021_2025.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/05_nasa_power_daily_2021_2025.csv,date,text,YYYY-MM-DD,real,"Calendar day (local time, Asia/Colombo)",0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/interim/real/05_nasa_power_daily_2021_2025.csv,prectotcorr,float,mm/day,real,NASA POWER bias-corrected precipitation,0.0,0 – 195.81
+data/interim/real/05_nasa_power_daily_2021_2025.csv,t2m,float,°C,real,NASA POWER mean temperature at 2 m,0.0,18.46 – 30.45
+data/interim/real/05_nasa_power_daily_2021_2025.csv,t2m_max,float,°C,real,NASA POWER maximum temperature,0.0,21.27 – 37.3
+data/interim/real/05_nasa_power_daily_2021_2025.csv,t2m_min,float,°C,real,NASA POWER minimum temperature,0.0,13.39 – 25.89
+data/interim/real/05_nasa_power_daily_2021_2025.csv,rh2m,float,%,real,NASA POWER relative humidity at 2 m,0.0,63.91 – 97.17
+data/interim/real/05_nasa_power_daily_2021_2025.csv,ws2m,float,m/s,real,NASA POWER wind speed at 2 m,0.0,0.25 – 7.72
+data/interim/real/05_nasa_power_daily_2021_2025.csv,allsky_sfc_sw_dwn,float,MJ/m²/day,real,NASA POWER all-sky surface shortwave radiation,0.0,1.55 – 27.31
+data/interim/real/05_nasa_power_daily_2021_2025.csv,allsky_sfc_par_tot,float,MJ/m²/day,real,NASA POWER all-sky photosynthetically active radiation,0.0,0.86 – 12.41
+data/interim/real/05_nasa_power_daily_2021_2025.csv,clrsky_sfc_sw_dwn,float,MJ/m²/day,real,NASA POWER clear-sky surface shortwave radiation,0.0,18.15 – 27.72
+data/interim/real/05_nasa_power_daily_2021_2025.csv,gwettop,float,0-1,real,NASA POWER surface soil wetness,0.0,0.46 – 1
+data/interim/real/05_nasa_power_daily_2021_2025.csv,gwetroot,float,0-1,real,NASA POWER root-zone soil wetness,0.0,0.5 – 1
+data/interim/real/05_nasa_power_daily_2021_2025.csv,gwetprof,float,0-1,real,NASA POWER profile soil wetness,0.0,0.5 – 1
+data/interim/real/05_nasa_power_daily_2021_2025.csv,evptrns,float,see POWER docs,real,NASA POWER parameter EVPTRNS (evapotranspiration),0.0,0.11 – 11.12
+data/interim/real/05_nasa_power_daily_2021_2025.csv,ps,float,kPa,real,NASA POWER surface pressure,0.0,93 – 98.2
+data/interim/real/06_soilgrids_block_soil_properties.csv,block_id,text,,real,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/interim/real/06_soilgrids_block_soil_properties.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/interim/real/06_soilgrids_block_soil_properties.csv,latitude,float,deg,real,Block latitude,0.0,6.331 – 7.262
+data/interim/real/06_soilgrids_block_soil_properties.csv,longitude,float,deg,real,Block longitude,0.0,80.388 – 80.797
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_0_5cm,float,pH,real,"SoilGrids pH in water, 0-5 cm (mean)",0.0,4.9 – 5.5
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_15_30cm,float,pH,real,"SoilGrids pH in water, 15-30 cm (mean)",0.0,5 – 5.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_5_15cm,float,pH,real,"SoilGrids pH in water, 5-15 cm (mean)",0.0,4.9 – 5.5
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_0_5cm_q05,float,pH,real,"SoilGrids pH in water, 0-5 cm (5 % quantile)",0.0,3.7 – 4.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_15_30cm_q05,float,pH,real,"SoilGrids pH in water, 15-30 cm (5 % quantile)",0.0,3.7 – 4.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_5_15cm_q05,float,pH,real,"SoilGrids pH in water, 5-15 cm (5 % quantile)",0.0,3.7 – 4.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_0_5cm_q95,float,pH,real,"SoilGrids pH in water, 0-5 cm (95 % quantile)",0.0,6.3 – 7.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_15_30cm_q95,float,pH,real,"SoilGrids pH in water, 15-30 cm (95 % quantile)",0.0,6.3 – 7.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,phh2o_5_15cm_q95,float,pH,real,"SoilGrids pH in water, 5-15 cm (95 % quantile)",0.0,6.3 – 7.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_0_5cm,float,g/kg,real,"SoilGrids total nitrogen, 0-5 cm (mean)",0.0,3.98 – 6.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_15_30cm,float,g/kg,real,"SoilGrids total nitrogen, 15-30 cm (mean)",0.0,1.67 – 5.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_5_15cm,float,g/kg,real,"SoilGrids total nitrogen, 5-15 cm (mean)",0.0,2.8 – 5.73
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_0_5cm_q05,float,g/kg,real,"SoilGrids total nitrogen, 0-5 cm (5 % quantile)",0.0,0.7 – 1.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_15_30cm_q05,float,g/kg,real,"SoilGrids total nitrogen, 15-30 cm (5 % quantile)",0.0,0.25 – 0.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_5_15cm_q05,float,g/kg,real,"SoilGrids total nitrogen, 5-15 cm (5 % quantile)",0.0,0.5 – 1
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_0_5cm_q95,float,g/kg,real,"SoilGrids total nitrogen, 0-5 cm (95 % quantile)",0.0,8.9 – 18.71
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_15_30cm_q95,float,g/kg,real,"SoilGrids total nitrogen, 15-30 cm (95 % quantile)",0.0,4.31 – 27.7
+data/interim/real/06_soilgrids_block_soil_properties.csv,nitrogen_5_15cm_q95,float,g/kg,real,"SoilGrids total nitrogen, 5-15 cm (95 % quantile)",0.0,6.9 – 27.79
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_0_5cm,float,g/kg,real,"SoilGrids soil organic carbon, 0-5 cm (mean)",0.0,46.3 – 119.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_15_30cm,float,g/kg,real,"SoilGrids soil organic carbon, 15-30 cm (mean)",0.0,21.2 – 73.8
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_5_15cm,float,g/kg,real,"SoilGrids soil organic carbon, 5-15 cm (mean)",0.0,32.1 – 86.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_0_5cm_q05,float,g/kg,real,"SoilGrids soil organic carbon, 0-5 cm (5 % quantile)",0.0,6.8 – 17.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_15_30cm_q05,float,g/kg,real,"SoilGrids soil organic carbon, 15-30 cm (5 % quantile)",0.0,2.6 – 5.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_5_15cm_q05,float,g/kg,real,"SoilGrids soil organic carbon, 5-15 cm (5 % quantile)",0.0,5 – 12.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_0_5cm_q95,float,g/kg,real,"SoilGrids soil organic carbon, 0-5 cm (95 % quantile)",0.0,113 – 364.7
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_15_30cm_q95,float,g/kg,real,"SoilGrids soil organic carbon, 15-30 cm (95 % quantile)",0.0,62.7 – 514
+data/interim/real/06_soilgrids_block_soil_properties.csv,soc_5_15cm_q95,float,g/kg,real,"SoilGrids soil organic carbon, 5-15 cm (95 % quantile)",0.0,79.5 – 486.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_0_5cm,float,%,real,"SoilGrids clay, 0-5 cm (mean)",0.0,30.5 – 42.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_15_30cm,float,%,real,"SoilGrids clay, 15-30 cm (mean)",0.0,36.1 – 43.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_5_15cm,float,%,real,"SoilGrids clay, 5-15 cm (mean)",0.0,32.2 – 44
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_0_5cm_q05,float,%,real,"SoilGrids clay, 0-5 cm (5 % quantile)",0.0,1.8 – 10.5
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_15_30cm_q05,float,%,real,"SoilGrids clay, 15-30 cm (5 % quantile)",0.0,1.4 – 6.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_5_15cm_q05,float,%,real,"SoilGrids clay, 5-15 cm (5 % quantile)",0.0,2 – 9.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_0_5cm_q95,float,%,real,"SoilGrids clay, 0-5 cm (95 % quantile)",0.0,82.8 – 91.8
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_15_30cm_q95,float,%,real,"SoilGrids clay, 15-30 cm (95 % quantile)",0.0,83.2 – 92.7
+data/interim/real/06_soilgrids_block_soil_properties.csv,clay_5_15cm_q95,float,%,real,"SoilGrids clay, 5-15 cm (95 % quantile)",0.0,83.1 – 91.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_0_5cm,float,%,real,"SoilGrids sand, 0-5 cm (mean)",0.0,29.8 – 37.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_15_30cm,float,%,real,"SoilGrids sand, 15-30 cm (mean)",0.0,27.4 – 36.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_5_15cm,float,%,real,"SoilGrids sand, 5-15 cm (mean)",0.0,28.2 – 37.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_0_5cm_q05,float,%,real,"SoilGrids sand, 0-5 cm (5 % quantile)",0.0,4.1 – 8.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_15_30cm_q05,float,%,real,"SoilGrids sand, 15-30 cm (5 % quantile)",0.0,3.9 – 7.5
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_5_15cm_q05,float,%,real,"SoilGrids sand, 5-15 cm (5 % quantile)",0.0,4.1 – 8.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_0_5cm_q95,float,%,real,"SoilGrids sand, 0-5 cm (95 % quantile)",0.0,60.9 – 80.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_15_30cm_q95,float,%,real,"SoilGrids sand, 15-30 cm (95 % quantile)",0.0,56.4 – 79.2
+data/interim/real/06_soilgrids_block_soil_properties.csv,sand_5_15cm_q95,float,%,real,"SoilGrids sand, 5-15 cm (95 % quantile)",0.0,58.5 – 80.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_0_5cm,float,%,real,"SoilGrids silt, 0-5 cm (mean)",0.0,23.1 – 37.2
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_15_30cm,float,%,real,"SoilGrids silt, 15-30 cm (mean)",0.0,21.1 – 35
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_5_15cm,float,%,real,"SoilGrids silt, 5-15 cm (mean)",0.0,21.9 – 36.3
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_0_5cm_q05,float,%,real,"SoilGrids silt, 0-5 cm (5 % quantile)",0.0,0.8 – 3.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_15_30cm_q05,float,%,real,"SoilGrids silt, 15-30 cm (5 % quantile)",0.0,0.8 – 3.2
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_5_15cm_q05,float,%,real,"SoilGrids silt, 5-15 cm (5 % quantile)",0.0,0.9 – 3.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_0_5cm_q95,float,%,real,"SoilGrids silt, 0-5 cm (95 % quantile)",0.0,67.9 – 83.7
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_15_30cm_q95,float,%,real,"SoilGrids silt, 15-30 cm (95 % quantile)",0.0,62.4 – 83.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,silt_5_15cm_q95,float,%,real,"SoilGrids silt, 5-15 cm (95 % quantile)",0.0,62.6 – 84
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_0_5cm,float,kg/dm³,real,"SoilGrids bulk density, 0-5 cm (mean)",0.0,0.81 – 1.09
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_15_30cm,float,kg/dm³,real,"SoilGrids bulk density, 15-30 cm (mean)",0.0,0.88 – 1.15
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_5_15cm,float,kg/dm³,real,"SoilGrids bulk density, 5-15 cm (mean)",0.0,0.83 – 1.09
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_0_5cm_q05,float,kg/dm³,real,"SoilGrids bulk density, 0-5 cm (5 % quantile)",0.0,0.27 – 0.52
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_15_30cm_q05,float,kg/dm³,real,"SoilGrids bulk density, 15-30 cm (5 % quantile)",0.0,0.28 – 0.66
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_5_15cm_q05,float,kg/dm³,real,"SoilGrids bulk density, 5-15 cm (5 % quantile)",0.0,0.28 – 0.57
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_0_5cm_q95,float,kg/dm³,real,"SoilGrids bulk density, 0-5 cm (95 % quantile)",0.0,1.34 – 1.69
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_15_30cm_q95,float,kg/dm³,real,"SoilGrids bulk density, 15-30 cm (95 % quantile)",0.0,1.4 – 1.69
+data/interim/real/06_soilgrids_block_soil_properties.csv,bdod_5_15cm_q95,float,kg/dm³,real,"SoilGrids bulk density, 5-15 cm (95 % quantile)",0.0,1.4 – 1.71
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_0_5cm,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-5 cm (mean)",0.0,18.5 – 30.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_15_30cm,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 15-30 cm (mean)",0.0,13.4 – 26.7
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_5_15cm,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 5-15 cm (mean)",0.0,14.8 – 27.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_0_5cm_q05,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-5 cm (5 % quantile)",0.0,2.5 – 5.1
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_15_30cm_q05,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 15-30 cm (5 % quantile)",0.0,1.9 – 3.8
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_5_15cm_q05,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 5-15 cm (5 % quantile)",0.0,2.1 – 4.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_0_5cm_q95,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-5 cm (95 % quantile)",0.0,42.1 – 83.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_15_30cm_q95,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 15-30 cm (95 % quantile)",0.0,29.7 – 86
+data/interim/real/06_soilgrids_block_soil_properties.csv,cec_5_15cm_q95,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 5-15 cm (95 % quantile)",0.0,33.4 – 86
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_0_5cm,float,cm³/100cm³,real,"SoilGrids coarse fragments, 0-5 cm (mean)",0.0,4.3 – 13.5
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_15_30cm,float,cm³/100cm³,real,"SoilGrids coarse fragments, 15-30 cm (mean)",0.0,5.2 – 15.4
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_5_15cm,float,cm³/100cm³,real,"SoilGrids coarse fragments, 5-15 cm (mean)",0.0,5 – 14.6
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_0_5cm_q05,float,cm³/100cm³,real,"SoilGrids coarse fragments, 0-5 cm (5 % quantile)",0.0,0 – 0
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_15_30cm_q05,float,cm³/100cm³,real,"SoilGrids coarse fragments, 15-30 cm (5 % quantile)",0.0,0 – 0
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_5_15cm_q05,float,cm³/100cm³,real,"SoilGrids coarse fragments, 5-15 cm (5 % quantile)",0.0,0 – 0
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_0_5cm_q95,float,cm³/100cm³,real,"SoilGrids coarse fragments, 0-5 cm (95 % quantile)",0.0,25 – 70
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_15_30cm_q95,float,cm³/100cm³,real,"SoilGrids coarse fragments, 15-30 cm (95 % quantile)",0.0,25.1 – 71.9
+data/interim/real/06_soilgrids_block_soil_properties.csv,cfvo_5_15cm_q95,float,cm³/100cm³,real,"SoilGrids coarse fragments, 5-15 cm (95 % quantile)",0.0,27.5 – 71
+data/interim/real/06_soilgrids_block_soil_properties.csv,values_filled_from_estate_mean,bool,bool,real,True when the block fell on a masked SoilGrids pixel and got the estate mean,0.0,"False, True"
+data/interim/real/06b_soilgrids_block_soil_long.csv,block_id,text,,real,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/interim/real/06b_soilgrids_block_soil_long.csv,latitude,float,deg,real,Block latitude,0.0,6.3314 – 7.2618
+data/interim/real/06b_soilgrids_block_soil_long.csv,longitude,float,deg,real,Block longitude,0.0,80.3879 – 80.7973
+data/interim/real/06b_soilgrids_block_soil_long.csv,property,text,,real,"SoilGrids property code: bdod, cec, cfvo, clay, nitrogen, phh2o, sand, silt, soc",0.0,"bdod, cec, cfvo, clay, nitrogen, phh2o … (9 values)"
+data/interim/real/06b_soilgrids_block_soil_long.csv,depth,text,,real,SoilGrids depth interval,0.0,"0-5cm, 15-30cm, 5-15cm"
+data/interim/real/06b_soilgrids_block_soil_long.csv,mean,float,see unit,real,SoilGrids predicted mean,20.0,0.81 – 119.1
+data/interim/real/06b_soilgrids_block_soil_long.csv,q05,float,see unit,real,SoilGrids 5 % quantile,20.0,0 – 17.9
+data/interim/real/06b_soilgrids_block_soil_long.csv,q95,float,see unit,real,SoilGrids 95 % quantile,20.0,1.34 – 514
+data/interim/real/06b_soilgrids_block_soil_long.csv,unit,text,,real,Unit of the value / amount in this row,0.0,"%, cm3/100cm3, cmol(c)/kg, g/kg, g/kg (total N), kg/dm3 … (7 values)"
+data/interim/real/07_sl_tea_production_monthly_by_elevation_2021_2025.csv,year,int,,real,Calendar year,0.0,2021 – 2025
+data/interim/real/07_sl_tea_production_monthly_by_elevation_2021_2025.csv,month,int,1-12,real,Calendar month,0.0,1 – 12
+data/interim/real/07_sl_tea_production_monthly_by_elevation_2021_2025.csv,elevation,text,,real,"Forbes & Walker elevation class: high, medium, low, green_tea, total",0.0,"green_tea, high, low, medium, total"
+data/interim/real/07_sl_tea_production_monthly_by_elevation_2021_2025.csv,production_kg,int,kg,real,National tea production in the month (Forbes & Walker),0.0,96548 – 3.11005e+07
+data/interim/real/07_sl_tea_production_monthly_by_elevation_2021_2025.csv,source_report,text,,real,Forbes & Walker monthly report the figure was taken from,0.0,"April 2022, April 2023, April 2025, August 2023, August 2024, August 2025 … (41 values)"
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,elevation,text,,derived,"Forbes & Walker elevation class: high, medium, low, green_tea, total",0.0,"high, low, medium"
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,year,int,,derived,Calendar year,0.0,2021 – 2025
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,month,int,1-12,derived,Calendar month,0.0,1 – 12
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,rain_mm,float,mm,derived,Rain amount (hourly table: liquid rain in the hour; daily/monthly tables: total precipitation),0.0,8.9 – 806.1
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,rain_days,float,days,derived,Days with ≥ 1 mm rain (mean over the zone's estates),0.0,3 – 31
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,temp_mean_c,float,°C,derived,Mean air temperature,0.0,15.78 – 26.8
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,temp_max_c,float,°C,derived,Daily maximum air temperature (monthly table: mean of daily maxima),0.0,19.12 – 32.8
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,humidity_pct,float,%,derived,Relative humidity at 2 m,0.0,65.43 – 94.87
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,solar_mj_m2_day,float,MJ/m²/day,derived,Mean daily radiation,0.0,12.68 – 24.68
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,sunshine_h_day,float,h/day,derived,Mean daily sunshine,0.0,5.14 – 11.56
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,et0_mm,float,mm,derived,FAO-56 reference evapotranspiration,0.0,64.02 – 172.26
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,soil_moisture_7_28cm_pct,float,% vol,derived,ERA5-Land soil moisture 7-28 cm,0.0,23.93 – 50.23
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,vpd_kpa,float,kPa,derived,Vapour pressure deficit,0.0,0.11 – 1.29
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,rain_prev_month_mm,float,mm,derived,Zone rainfall in the previous month,1.7,8.9 – 806.1
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,rain_prev_3m_mm,float,mm,derived,Zone rainfall in the previous 3 months,5.0,123.8 – 1799
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,production_kg,int,kg,derived,National tea production in the month (Forbes & Walker),0.0,2.38743e+06 – 1.74772e+07
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,days_in_month,int,days,derived,Days in the month,0.0,28 – 31
+data/interim/real/08_monthly_weather_vs_production_by_elevation.csv,production_kg_per_day,float,kg/day,derived,production_kg / days_in_month,0.0,77014 – 582573
+data/processed/hybrid/01_block_master.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/01_block_master.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/01_block_master.csv,estate_name,text,,meta,Fictional estate name (the location is real),0.0,"Estate A (Up-country), Estate B (Up-country), Estate C (Mid-country), Estate D (Low-country), Estate E (Low-country)"
+data/processed/hybrid/01_block_master.csv,agro_zone,text,,simulated,"Elevation zone: up (high grown), mid (medium grown), low (low grown)",0.0,"low, mid, up"
+data/processed/hybrid/01_block_master.csv,region,text,,real,Real tea-growing region of the estate,0.0,"Deniyaya / Matara, Hatton / Dimbula, Kandy, Nuwara Eliya, Ratnapura"
+data/processed/hybrid/01_block_master.csv,area_ha,float,ha,simulated,Block area,0.0,3.3 – 24.7
+data/processed/hybrid/01_block_master.csv,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/processed/hybrid/01_block_master.csv,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/processed/hybrid/01_block_master.csv,aspect,text,,simulated,Slope aspect (no effect in the generator; dropped from models),0.0,"E, N, NE, NW, S, SE … (8 values)"
+data/processed/hybrid/01_block_master.csv,soil_type,text,,derived,Soil texture class derived from SoilGrids,0.0,"Clay (SoilGrids), Clay loam (SoilGrids)"
+data/processed/hybrid/01_block_master.csv,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/processed/hybrid/01_block_master.csv,wilting_point_pct,float,% vol,derived,Permanent wilting point (Saxton & Rawls 2006),0.0,22.2 – 27.6
+data/processed/hybrid/01_block_master.csv,cultivar,text,,simulated,Planting material: VP clone A/B/C or seedling tea,0.0,"Seedling, VP_clone_A, VP_clone_B, VP_clone_C"
+data/processed/hybrid/01_block_master.csv,bush_age_yrs,int,years,simulated,Age of the tea bushes,0.0,2 – 61
+data/processed/hybrid/01_block_master.csv,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/processed/hybrid/01_block_master.csv,pruning_cycle_yrs,int,years,simulated,Years between prunings,0.0,2 – 5
+data/processed/hybrid/01_block_master.csv,last_pruning_date_before_2021,text,YYYY-MM-DD,simulated,Last pruning before the simulation start,0.0,"2016-10-31, 2017-03-02, 2017-03-16, 2017-05-31, 2017-06-06, 2017-06-18 … (50 values)"
+data/processed/hybrid/01_block_master.csv,irrigation_available,bool,0/1,simulated,Block has irrigation infrastructure,0.0,"False, True"
+data/processed/hybrid/01_block_master.csv,latitude,float,deg,real,Block latitude,0.0,6.331 – 7.262
+data/processed/hybrid/01_block_master.csv,longitude,float,deg,real,Block longitude,0.0,80.388 – 80.797
+data/processed/hybrid/01_block_master.csv,sg_ph_h2o,float,pH,real,"SoilGrids pH in water, 0-15 cm depth-weighted",0.0,4.9 – 5.5
+data/processed/hybrid/01_block_master.csv,sg_total_n_g_kg,float,g/kg,real,"SoilGrids total nitrogen, 0-15 cm (not plant-available N)",0.0,3.22 – 5.61
+data/processed/hybrid/01_block_master.csv,sg_soc_g_kg,float,g/kg,real,"SoilGrids soil organic carbon, 0-15 cm",0.0,41.2 – 97.1
+data/processed/hybrid/01_block_master.csv,sg_clay_pct,float,%,real,"SoilGrids clay, 0-15 cm",0.0,31.6 – 43.5
+data/processed/hybrid/01_block_master.csv,sg_sand_pct,float,%,real,"SoilGrids sand, 0-15 cm",0.0,28.7 – 37.6
+data/processed/hybrid/01_block_master.csv,sg_silt_pct,float,%,real,"SoilGrids silt, 0-15 cm",0.0,22.3 – 36.6
+data/processed/hybrid/01_block_master.csv,sg_bulk_density_kg_dm3,float,kg/dm³,real,"SoilGrids bulk density, 0-15 cm",0.0,0.82 – 1.09
+data/processed/hybrid/01_block_master.csv,sg_cec_cmol_kg,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-15 cm",0.0,16.1 – 28.7
+data/processed/hybrid/01_block_master.csv,sg_filled_from_estate_mean,bool,bool,real,"Same flag, carried into the block master",0.0,"False, True"
+data/processed/hybrid/01_block_master.csv,weather_grid_elevation_m,int,m,real,Elevation of the estate's weather grid cell,0.0,27 – 1868
+data/processed/hybrid/01_block_master.csv,temp_offset_c,float,°C,derived,Block temperature correction for elevation vs weather grid (−0.65 °C per 100 m),0.0,-3.35 – 1.53
+data/processed/hybrid/02_weather_daily.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/02_weather_daily.csv,date,text,YYYY-MM-DD,real,"Calendar day (local time, Asia/Colombo)",0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/processed/hybrid/02_weather_daily.csv,rainfall_mm,float,mm,real,Daily precipitation (ERA5),0.0,0 – 256
+data/processed/hybrid/02_weather_daily.csv,temp_min_c,float,°C,real,Daily minimum air temperature,0.0,6 – 26.3
+data/processed/hybrid/02_weather_daily.csv,temp_mean_c,float,°C,real,Mean air temperature,0.0,11.9 – 29.4
+data/processed/hybrid/02_weather_daily.csv,temp_max_c,float,°C,real,Daily maximum air temperature (monthly table: mean of daily maxima),0.0,13.9 – 35.5
+data/processed/hybrid/02_weather_daily.csv,humidity_pct,float,%,real,Relative humidity at 2 m,0.0,39 – 100
+data/processed/hybrid/02_weather_daily.csv,wind_speed_ms,float,m/s,real,Daily mean wind speed,0.0,0.44 – 10.38
+data/processed/hybrid/02_weather_daily.csv,solar_radiation_mj_m2,float,MJ/m²/day,real,Daily shortwave radiation,0.0,2.16 – 29.28
+data/processed/hybrid/02_weather_daily.csv,sunshine_hours,float,h,real,Sunshine hours (real tables: from radiation via Angstrom; sensor table: simulated reading),0.0,0 – 11.5
+data/processed/hybrid/02_weather_daily.csv,era5_sunshine_hours_raw,float,h,real,Raw ERA5 sunshine duration (overstates bright sunshine in the hills; not used),0.0,0 – 12.19
+data/processed/hybrid/02_weather_daily.csv,et0_mm,float,mm,real,FAO-56 reference evapotranspiration,0.0,0.46 – 6.86
+data/processed/hybrid/02_weather_daily.csv,era5_soil_moisture_7_28cm_pct,float,% vol,real,ERA5-Land soil moisture 7-28 cm (realism reference),0.0,15.1 – 51.8
+data/processed/hybrid/02_weather_daily.csv,source,text,,real,Data source label,0.0,ERA5 via Open-Meteo (real)
+data/processed/hybrid/03_sensor_readings_daily.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/03_sensor_readings_daily.csv,date,text,YYYY-MM-DD,meta,"Calendar day (local time, Asia/Colombo)",0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_moisture_pct,float,% vol,simulated,Soil moisture reading (manual / IoT form field),1.5,21.5 – 49.8
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_ph,float,pH,simulated,Soil pH reading,1.5,4.27 – 5.67
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_n_ppm,float,ppm,simulated,Plant-available soil nitrogen reading,1.5,2.1 – 104.3
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_p_ppm,float,ppm,simulated,Available phosphorus reading,1.5,6.4 – 41.3
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_k_ppm,float,ppm,simulated,Exchangeable potassium reading,1.5,17.1 – 217.4
+data/processed/hybrid/03_sensor_readings_daily.csv,soil_temp_c,float,°C,simulated,Soil temperature reading,1.5,10 – 27.4
+data/processed/hybrid/03_sensor_readings_daily.csv,light_lux,float,lux,simulated,Daytime mean light level under shade,1.5,3968 – 89183
+data/processed/hybrid/03_sensor_readings_daily.csv,sunshine_hours,float,h,simulated,Sunshine hours (real tables: from radiation via Angstrom; sensor table: simulated reading),0.0,0 – 12
+data/processed/hybrid/04_yield_plucking_records.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/04_yield_plucking_records.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/04_yield_plucking_records.csv,pluck_date,text,YYYY-MM-DD,meta,Date the plucking round ended (leaf harvested),0.0,"2021-01-08, 2021-01-09, 2021-01-10, 2021-01-11, 2021-01-12, 2021-01-13 … (1811 values)"
+data/processed/hybrid/04_yield_plucking_records.csv,round_days,int,days,simulated,Length of the plucking round (days since previous pluck),0.0,6 – 14
+data/processed/hybrid/04_yield_plucking_records.csv,plucking_standard,text,,simulated,"Plucking standard: fine, medium or coarse",0.0,"coarse, fine, medium"
+data/processed/hybrid/04_yield_plucking_records.csv,green_leaf_kg_per_ha,float,kg/ha,simulated,Green leaf harvested in the round (leakage for the per-day target; never a feature),0.0,15.7 – 544.6
+data/processed/hybrid/04_yield_plucking_records.csv,green_leaf_kg,float,kg,simulated,Green leaf harvested from the whole block,0.0,95 – 11175.9
+data/processed/hybrid/04_yield_plucking_records.csv,days_since_pruning,int,days,simulated,Days since the block was last pruned,0.0,71 – 1854
+data/processed/hybrid/04_yield_plucking_records.csv,green_leaf_kg_per_ha_per_day,float,kg/ha/day,simulated,Yield rate = green_leaf_kg_per_ha / round_days (yield model TARGET),0.0,1.43 – 54.01
+data/processed/hybrid/05_intervention_records.csv,intervention_id,text,,meta,Unique field-action key,0.0,"INT000001, INT000002, INT000003, INT000004, INT000005, INT000006 … (3233 values)"
+data/processed/hybrid/05_intervention_records.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/05_intervention_records.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/05_intervention_records.csv,intervention_type,text,,simulated,"fertilizer, irrigation, fungicide or dolomite",0.0,"dolomite, fertilizer, fungicide, irrigation"
+data/processed/hybrid/05_intervention_records.csv,product_code,text,,simulated,"Product: NPK_BAL, NPK_HN, UREA, FUNG_CU, WATER, DOLOMITE",0.0,"DOLOMITE, FUNG_CU, NPK_BAL, NPK_HN, UREA, WATER"
+data/processed/hybrid/05_intervention_records.csv,product_desc,text,,simulated,Product description,0.0,"Balanced NPK tea mixture, Copper-based fungicide (blister blight), Dolomite (pH correction), High-N tea mixture, Sprinkler irrigation, Urea (straight N)"
+data/processed/hybrid/05_intervention_records.csv,execution_datetime,text,YYYY-MM-DD HH:MM,meta,Start time of the field action,0.0,"2021-01-09 08:00:00, 2021-01-09 09:00:00, 2021-01-09 10:00:00, 2021-01-09 11:00:00, 2021-01-10 07:00:00, 2021-01-10 08:00:00 … (2377 values)"
+data/processed/hybrid/05_intervention_records.csv,amount_per_ha,float,see unit,simulated,Amount applied per hectare,0.0,82.8 – 250000
+data/processed/hybrid/05_intervention_records.csv,unit,text,,simulated,Unit of the value / amount in this row,0.0,"L/ha, kg/ha, ml/ha"
+data/processed/hybrid/05_intervention_records.csv,total_amount,float,see unit × ha,simulated,Amount applied to the whole block,0.0,330.7 – 5.4e+06
+data/processed/hybrid/05_intervention_records.csv,n_kg_per_ha,float,kg N/ha,simulated,Nitrogen content of the application,73.7,28.4 – 113.4
+data/processed/hybrid/05_intervention_records.csv,p_kg_per_ha,float,kg P/ha,simulated,Phosphorus content,73.7,0 – 32.6
+data/processed/hybrid/05_intervention_records.csv,k_kg_per_ha,float,kg K/ha,simulated,Potassium content,73.7,0 – 73.3
+data/processed/hybrid/05_intervention_records.csv,irrigation_mm,float,mm,simulated,Irrigation depth applied,81.1,6 – 25
+data/processed/hybrid/05_intervention_records.csv,application_method,text,,simulated,"broadcast, sprinkler or knapsack spray",0.0,"broadcast, knapsack spray, sprinkler"
+data/processed/hybrid/05_intervention_records.csv,soil_moisture_at_exec,float,% vol,simulated,Soil moisture reading when the action started,0.0,23.1 – 48.2
+data/processed/hybrid/05_intervention_records.csv,soil_ph_at_exec,float,pH,simulated,Soil pH reading when the action started,0.0,4.35 – 5.61
+data/processed/hybrid/05_intervention_records.csv,temp_at_exec_c,float,°C,derived,Air temperature at execution,0.0,12 – 28
+data/processed/hybrid/05_intervention_records.csv,humidity_at_exec_pct,float,%,derived,Humidity at execution,0.0,39 – 100
+data/processed/hybrid/05_intervention_records.csv,wind_at_exec_ms,float,m/s,derived,Wind at execution (sprays only),45.2,0.2 – 11.1
+data/processed/hybrid/05_intervention_records.csv,rain_prev_3d_mm,float,mm,derived,Rain in the 3 days before the action,0.0,0 – 538.2
+data/processed/hybrid/05_intervention_records.csv,rain_next_4h_mm,float,mm,real,Rain that actually fell in the 4 h after the action (hindsight),45.2,0 – 46.2
+data/processed/hybrid/05_intervention_records.csv,rain_next_12h_mm,float,mm,real,Rain that actually fell in the 12 h after the action (hindsight),0.0,0 – 161.9
+data/processed/hybrid/05_intervention_records.csv,rain_next_24h_mm,float,mm,real,Rain that actually fell in the 24 h after the action (hindsight),0.0,0 – 337.9
+data/processed/hybrid/05_intervention_records.csv,rain_next_48h_mm,float,mm,real,Rain that actually fell in the 48 h after the action (hindsight),0.0,0 – 457.5
+data/processed/hybrid/05_intervention_records.csv,rain_next_72h_mm,float,mm,real,Rain that actually fell in the 72 h after the action (hindsight),0.0,0 – 555.9
+data/processed/hybrid/05_intervention_records.csv,runoff_loss_est_pct,float,%,simulated,Share of applied fertilizer lost to runoff/volatilisation (runoff model TARGET),73.7,0 – 92.3
+data/processed/hybrid/05_intervention_records.csv,absorption_efficiency_pct,float,%,simulated,100 − runoff_loss_est_pct (alternative target; identical information),73.7,7.7 – 100
+data/processed/hybrid/05_intervention_records.csv,fc_rain_next_12h_mm,float,mm,real,"Rain forecast for the 12 h after the action, as known when it started (live-realistic)",0.0,0 – 161.4
+data/processed/hybrid/05_intervention_records.csv,fc_rain_next_24h_mm,float,mm,real,"Rain forecast for the 24 h after the action, as known when it started (live-realistic)",0.0,0 – 254.9
+data/processed/hybrid/05_intervention_records.csv,fc_rain_next_48h_mm,float,mm,real,"Rain forecast for the 48 h after the action, as known when it started (live-realistic)",0.0,0 – 421.1
+data/processed/hybrid/05_intervention_records.csv,fc_rain_next_72h_mm,float,mm,real,"Rain forecast for the 72 h after the action, as known when it started (live-realistic)",0.0,0 – 425.5
+data/processed/hybrid/05_intervention_records.csv,forecast_source,text,,meta,"real (Open-Meteo previous runs, from 2024-01-20) or simulated from the real error distribution",0.0,"real (Open-Meteo previous runs), simulated from real error distribution"
+data/processed/hybrid/05_intervention_records.csv,yield_before_kg_ha_day,float,kg/ha/day,simulated,Yield rate in the rounds before the action,4.6,2.58 – 47.6
+data/processed/hybrid/05_intervention_records.csv,yield_after_kg_ha_day,float,kg/ha/day,simulated,Yield rate in the rounds after the action,2.5,5.2 – 44.81
+data/processed/hybrid/05_intervention_records.csv,yield_delta_pct,float,%,simulated,Yield change after the action,5.9,-68 – 634.5
+data/processed/hybrid/05_intervention_records.csv,status,text,,simulated,Execution status (all 'executed'),0.0,executed
+data/processed/hybrid/06_resource_usage_monthly.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/06_resource_usage_monthly.csv,month,text,1-12,meta,Calendar month,0.0,"2021-01, 2021-02, 2021-03, 2021-04, 2021-05, 2021-06 … (60 values)"
+data/processed/hybrid/06_resource_usage_monthly.csv,resource_type,text,,simulated,"Resource tracked: fertilizer, fungicide, irrigation water, dolomite",0.0,"dolomite, fertilizer, fungicide, water"
+data/processed/hybrid/06_resource_usage_monthly.csv,unit,text,,simulated,Unit of the value / amount in this row,0.0,"L, kg, ml"
+data/processed/hybrid/06_resource_usage_monthly.csv,stock_start,float,see unit,simulated,Estate stock at the start of the month,0.0,1000 – 3.50355e+06
+data/processed/hybrid/06_resource_usage_monthly.csv,allocated,float,see unit,simulated,Amount allocated in the month,0.0,0 – 7.39004e+07
+data/processed/hybrid/06_resource_usage_monthly.csv,used,float,see unit,simulated,Amount actually used in the month,0.0,0 – 6.70623e+07
+data/processed/hybrid/06_resource_usage_monthly.csv,wastage_pct,float,%,simulated,(allocated − used) / allocated,0.0,0 – 13
+data/processed/hybrid/07_operational_constraints.csv,constraint_name,text,,meta,Rule name,0.0,"action_window_forecast_horizon_hrs, available_water_capacity_l_per_month, dolomite_trigger_ph, irrigation_trigger_soil_moisture, max_annual_n_kg_per_ha, max_fertilizer_kg_per_ha_per_app … (23 values)"
+data/processed/hybrid/07_operational_constraints.csv,applies_to,text,,meta,"Action, zone or component the rule applies to",0.0,"all, dolomite, estate, fertilizer, fungicide, irrigation … (10 values)"
+data/processed/hybrid/07_operational_constraints.csv,value,float,see unit,meta,Rule value,0.0,0.25 – 3e+06
+data/processed/hybrid/07_operational_constraints.csv,unit,text,,meta,Unit of the value / amount in this row,0.0,"L, days, fraction, fraction of available water, hour, hours … (11 values)"
+data/processed/hybrid/07_operational_constraints.csv,description,text,,meta,What the rule means,0.0,"Annual N ceiling, Apply dolomite below this 30-day mean pH, Below this an application is not worth a field visit, Default reservoir capacity per estate, Do not apply if more forecast in next 12 h, Earliest field work hour … (23 values)"
+data/processed/hybrid/08_daily_forecasts_issued.csv,estate_id,text,,real,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/08_daily_forecasts_issued.csv,issue_date,text,YYYY-MM-DD,real,Morning on which the forecast was issued,0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/processed/hybrid/08_daily_forecasts_issued.csv,fc_rain_day0_mm,float,mm,real,Rain forecast for day +0 as issued that morning,0.0,0 – 322.9
+data/processed/hybrid/08_daily_forecasts_issued.csv,fc_rain_day1_mm,float,mm,real,Rain forecast for day +1 as issued that morning,0.1,0 – 302.9
+data/processed/hybrid/08_daily_forecasts_issued.csv,fc_rain_day2_mm,float,mm,real,Rain forecast for day +2 as issued that morning,0.1,0 – 179.7
+data/processed/hybrid/08_daily_forecasts_issued.csv,fc_rain_day3_mm,float,mm,real,Rain forecast for day +3 as issued that morning,0.2,0 – 146.2
+data/processed/hybrid/08_daily_forecasts_issued.csv,forecast_source,text,,real,"real (Open-Meteo previous runs, from 2024-01-20) or simulated from the real error distribution",0.0,"real (Open-Meteo previous runs), simulated from real error distribution"
+data/processed/hybrid/ml_yield_training.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/ml_yield_training.csv,pluck_date,text,YYYY-MM-DD,meta,Date the plucking round ended (leaf harvested),0.0,"2021-01-08, 2021-01-09, 2021-01-10, 2021-01-11, 2021-01-12, 2021-01-13 … (1811 values)"
+data/processed/hybrid/ml_yield_training.csv,round_days,int,days,simulated,Length of the plucking round (days since previous pluck),0.0,6 – 14
+data/processed/hybrid/ml_yield_training.csv,month,int,1-12,meta,Calendar month,0.0,1 – 12
+data/processed/hybrid/ml_yield_training.csv,plucking_standard,text,,simulated,"Plucking standard: fine, medium or coarse",0.0,"coarse, fine, medium"
+data/processed/hybrid/ml_yield_training.csv,days_since_pruning,int,days,simulated,Days since the block was last pruned,0.0,71 – 1854
+data/processed/hybrid/ml_yield_training.csv,soil_moisture_mean,float,% vol,simulated,Mean soil moisture over the round,0.0,23.275 – 45.488
+data/processed/hybrid/ml_yield_training.csv,soil_moisture_min,float,% vol,simulated,Minimum soil moisture over the round,0.0,21.5 – 44
+data/processed/hybrid/ml_yield_training.csv,soil_ph_mean,float,pH,simulated,Mean soil pH over the round,0.0,4.419 – 5.554
+data/processed/hybrid/ml_yield_training.csv,soil_n_ppm_mean,float,ppm,simulated,Mean available N over the round,0.0,2.783 – 86.436
+data/processed/hybrid/ml_yield_training.csv,soil_p_ppm_mean,float,ppm,simulated,Mean available P over the round,0.0,7.66 – 35.957
+data/processed/hybrid/ml_yield_training.csv,soil_k_ppm_mean,float,ppm,simulated,Mean K over the round,0.0,19.6 – 184.627
+data/processed/hybrid/ml_yield_training.csv,soil_temp_mean,float,°C,simulated,Mean soil temperature over the round,0.0,10.75 – 26.725
+data/processed/hybrid/ml_yield_training.csv,light_lux_mean,float,lux,simulated,Mean light over the round,0.0,15645.5 – 74144.2
+data/processed/hybrid/ml_yield_training.csv,sunshine_hours_mean,float,h/day,simulated,Mean sunshine over the round,0.0,0.564 – 11.6
+data/processed/hybrid/ml_yield_training.csv,rain_sum_mm,float,mm,derived,Rain over the round,0.0,0 – 774.3
+data/processed/hybrid/ml_yield_training.csv,rain_days,int,days,derived,Days with ≥ 1 mm rain (mean over the zone's estates),0.0,0 – 14
+data/processed/hybrid/ml_yield_training.csv,rain_30d_mm,float,mm,derived,Rain in the 30 days before the pluck,0.0,2.8 – 1032.3
+data/processed/hybrid/ml_yield_training.csv,temp_mean_c,float,°C,derived,Mean air temperature,0.0,13.61 – 28.533
+data/processed/hybrid/ml_yield_training.csv,temp_max_c,float,°C,derived,Daily maximum air temperature (monthly table: mean of daily maxima),0.0,17.9 – 35.5
+data/processed/hybrid/ml_yield_training.csv,humidity_mean,float,%,derived,Mean humidity over the round,0.0,58.222 – 98.4
+data/processed/hybrid/ml_yield_training.csv,solar_rad_mean,float,MJ/m²/day,derived,Mean radiation over the round,0.0,6.992 – 27.217
+data/processed/hybrid/ml_yield_training.csv,et0_sum_mm,float,mm,derived,Reference ET over the round,0.0,8.58 – 71.28
+data/processed/hybrid/ml_yield_training.csv,n_applied_60d_kg_ha,float,kg N/ha,simulated,Fertilizer N applied in the 60 days before the pluck (decision),0.0,0 – 156.9
+data/processed/hybrid/ml_yield_training.csv,n_applied_90d_kg_ha,float,kg N/ha,simulated,Fertilizer N applied in the 90 days before the pluck (decision),0.0,0 – 200
+data/processed/hybrid/ml_yield_training.csv,n_absorbed_est_90d_kg_ha,float,kg N/ha,simulated,N applied in 90 days × (1 − runoff loss); live: use the runoff model's prediction,0.0,0 – 152.072
+data/processed/hybrid/ml_yield_training.csv,days_since_last_fertilizer,int,days,simulated,Days since the last fertilizer application (365 if none),0.0,1 – 365
+data/processed/hybrid/ml_yield_training.csv,irrigation_mm_in_round,float,mm,simulated,Irrigation applied during the round (decision),0.0,0 – 61.9
+data/processed/hybrid/ml_yield_training.csv,fungicide_sprays_14d,int,count,simulated,Fungicide sprays in the 14 days before the pluck (decision),0.0,0 – 2
+data/processed/hybrid/ml_yield_training.csv,dolomite_last_365d,int,0/1,simulated,Dolomite applied in the previous 365 days (decision),0.0,0 – 1
+data/processed/hybrid/ml_yield_training.csv,green_leaf_kg_per_ha,float,kg/ha,simulated,Green leaf harvested in the round (leakage for the per-day target; never a feature),0.0,15.7 – 544.6
+data/processed/hybrid/ml_yield_training.csv,green_leaf_kg_per_ha_per_day,float,kg/ha/day,simulated,Yield rate = green_leaf_kg_per_ha / round_days (yield model TARGET),0.0,1.43 – 54.01
+data/processed/hybrid/ml_yield_training.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/processed/hybrid/ml_yield_training.csv,agro_zone,text,,simulated,"Elevation zone: up (high grown), mid (medium grown), low (low grown)",0.0,"low, mid, up"
+data/processed/hybrid/ml_yield_training.csv,area_ha,float,ha,simulated,Block area,0.0,3.3 – 24.7
+data/processed/hybrid/ml_yield_training.csv,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/processed/hybrid/ml_yield_training.csv,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/processed/hybrid/ml_yield_training.csv,aspect,text,,simulated,Slope aspect (no effect in the generator; dropped from models),0.0,"E, N, NE, NW, S, SE … (8 values)"
+data/processed/hybrid/ml_yield_training.csv,soil_type,text,,derived,Soil texture class derived from SoilGrids,0.0,"Clay (SoilGrids), Clay loam (SoilGrids)"
+data/processed/hybrid/ml_yield_training.csv,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/processed/hybrid/ml_yield_training.csv,wilting_point_pct,float,% vol,derived,Permanent wilting point (Saxton & Rawls 2006),0.0,22.2 – 27.6
+data/processed/hybrid/ml_yield_training.csv,cultivar,text,,simulated,Planting material: VP clone A/B/C or seedling tea,0.0,"Seedling, VP_clone_A, VP_clone_B, VP_clone_C"
+data/processed/hybrid/ml_yield_training.csv,bush_age_yrs,int,years,simulated,Age of the tea bushes,0.0,2 – 61
+data/processed/hybrid/ml_yield_training.csv,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/processed/hybrid/ml_yield_training.csv,pruning_cycle_yrs,int,years,simulated,Years between prunings,0.0,2 – 5
+data/processed/hybrid/ml_yield_training.csv,irrigation_available,bool,0/1,simulated,Block has irrigation infrastructure,0.0,"False, True"
+data/processed/hybrid/ml_yield_training.csv,sg_ph_h2o,float,pH,real,"SoilGrids pH in water, 0-15 cm depth-weighted",0.0,4.9 – 5.5
+data/processed/hybrid/ml_yield_training.csv,sg_total_n_g_kg,float,g/kg,real,"SoilGrids total nitrogen, 0-15 cm (not plant-available N)",0.0,3.22 – 5.61
+data/processed/hybrid/ml_yield_training.csv,sg_soc_g_kg,float,g/kg,real,"SoilGrids soil organic carbon, 0-15 cm",0.0,41.2 – 97.1
+data/processed/hybrid/ml_yield_training.csv,sg_clay_pct,float,%,real,"SoilGrids clay, 0-15 cm",0.0,31.6 – 43.5
+data/processed/hybrid/ml_yield_training.csv,sg_sand_pct,float,%,real,"SoilGrids sand, 0-15 cm",0.0,28.7 – 37.6
+data/processed/hybrid/ml_yield_training.csv,sg_silt_pct,float,%,real,"SoilGrids silt, 0-15 cm",0.0,22.3 – 36.6
+data/processed/hybrid/ml_yield_training.csv,sg_bulk_density_kg_dm3,float,kg/dm³,real,"SoilGrids bulk density, 0-15 cm",0.0,0.82 – 1.09
+data/processed/hybrid/ml_yield_training.csv,sg_cec_cmol_kg,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-15 cm",0.0,16.1 – 28.7
+data/processed/hybrid/ml_yield_training.csv,weather_grid_elevation_m,int,m,real,Elevation of the estate's weather grid cell,0.0,27 – 1868
+data/processed/hybrid/ml_yield_training.csv,temp_offset_c,float,°C,derived,Block temperature correction for elevation vs weather grid (−0.65 °C per 100 m),0.0,-3.35 – 1.53
+data/processed/hybrid/ml_runoff_training.csv,intervention_id,text,,meta,Unique field-action key,0.0,"INT000006, INT000011, INT000015, INT000028, INT000035, INT000040 … (850 values)"
+data/processed/hybrid/ml_runoff_training.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/processed/hybrid/ml_runoff_training.csv,execution_datetime,text,YYYY-MM-DD HH:MM,meta,Start time of the field action,0.0,"2021-02-01 11:00:00, 2021-02-01 15:00:00, 2021-02-02 15:00:00, 2021-02-03 08:00:00, 2021-02-03 14:00:00, 2021-02-04 13:00:00 … (811 values)"
+data/processed/hybrid/ml_runoff_training.csv,month,int,1-12,meta,Calendar month,0.0,2 – 12
+data/processed/hybrid/ml_runoff_training.csv,hour,int,0-23,simulated,Hour of day the field action started,0.0,6 – 15
+data/processed/hybrid/ml_runoff_training.csv,agro_zone,text,,simulated,"Elevation zone: up (high grown), mid (medium grown), low (low grown)",0.0,"low, mid, up"
+data/processed/hybrid/ml_runoff_training.csv,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/processed/hybrid/ml_runoff_training.csv,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/processed/hybrid/ml_runoff_training.csv,soil_type,text,,derived,Soil texture class derived from SoilGrids,0.0,"Clay (SoilGrids), Clay loam (SoilGrids)"
+data/processed/hybrid/ml_runoff_training.csv,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/processed/hybrid/ml_runoff_training.csv,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/processed/hybrid/ml_runoff_training.csv,product_code,text,,simulated,"Product: NPK_BAL, NPK_HN, UREA, FUNG_CU, WATER, DOLOMITE",0.0,"NPK_BAL, NPK_HN, UREA"
+data/processed/hybrid/ml_runoff_training.csv,amount_per_ha,float,see unit,simulated,Amount applied per hectare,0.0,82.8 – 420
+data/processed/hybrid/ml_runoff_training.csv,n_kg_per_ha,float,kg N/ha,simulated,Nitrogen content of the application,0.0,28.4 – 113.4
+data/processed/hybrid/ml_runoff_training.csv,soil_moisture_at_exec,float,% vol,simulated,Soil moisture reading when the action started,0.0,23.1 – 47.8
+data/processed/hybrid/ml_runoff_training.csv,temp_at_exec_c,float,°C,derived,Air temperature at execution,0.0,12.3 – 27.8
+data/processed/hybrid/ml_runoff_training.csv,humidity_at_exec_pct,float,%,derived,Humidity at execution,0.0,51.5 – 99.3
+data/processed/hybrid/ml_runoff_training.csv,rain_prev_3d_mm,float,mm,derived,Rain in the 3 days before the action,0.0,0 – 295.2
+data/processed/hybrid/ml_runoff_training.csv,rain_next_12h_mm,float,mm,real,Rain that actually fell in the 12 h after the action (hindsight),0.0,0 – 75.4
+data/processed/hybrid/ml_runoff_training.csv,rain_next_24h_mm,float,mm,real,Rain that actually fell in the 24 h after the action (hindsight),0.0,0 – 177.3
+data/processed/hybrid/ml_runoff_training.csv,rain_next_48h_mm,float,mm,real,Rain that actually fell in the 48 h after the action (hindsight),0.0,0 – 283.5
+data/processed/hybrid/ml_runoff_training.csv,rain_next_72h_mm,float,mm,real,Rain that actually fell in the 72 h after the action (hindsight),0.0,0 – 295.2
+data/processed/hybrid/ml_runoff_training.csv,fc_rain_next_12h_mm,float,mm,real,"Rain forecast for the 12 h after the action, as known when it started (live-realistic)",0.0,0 – 82.4
+data/processed/hybrid/ml_runoff_training.csv,fc_rain_next_24h_mm,float,mm,real,"Rain forecast for the 24 h after the action, as known when it started (live-realistic)",0.0,0 – 136.5
+data/processed/hybrid/ml_runoff_training.csv,fc_rain_next_48h_mm,float,mm,real,"Rain forecast for the 48 h after the action, as known when it started (live-realistic)",0.0,0 – 178.1
+data/processed/hybrid/ml_runoff_training.csv,fc_rain_next_72h_mm,float,mm,real,"Rain forecast for the 72 h after the action, as known when it started (live-realistic)",0.0,0 – 180.4
+data/processed/hybrid/ml_runoff_training.csv,forecast_source,text,,meta,"real (Open-Meteo previous runs, from 2024-01-20) or simulated from the real error distribution",0.0,"real (Open-Meteo previous runs), simulated from real error distribution"
+data/processed/hybrid/ml_runoff_training.csv,runoff_loss_est_pct,float,%,simulated,Share of applied fertilizer lost to runoff/volatilisation (runoff model TARGET),0.0,0 – 92.3
+data/processed/hybrid/ml_runoff_training.csv,absorption_efficiency_pct,float,%,simulated,100 − runoff_loss_est_pct (alternative target; identical information),0.0,7.7 – 100
+data/model_ready/smarttea_master_block_daily.csv.gz,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/model_ready/smarttea_master_block_daily.csv.gz,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/model_ready/smarttea_master_block_daily.csv.gz,date,text,YYYY-MM-DD,meta,"Calendar day (local time, Asia/Colombo)",0.0,"2021-01-01, 2021-01-02, 2021-01-03, 2021-01-04, 2021-01-05, 2021-01-06 … (1826 values)"
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_moisture_pct,float,% vol,simulated,Soil moisture reading (manual / IoT form field),1.5,21.5 – 49.8
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_ph,float,pH,simulated,Soil pH reading,1.5,4.27 – 5.67
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_n_ppm,float,ppm,simulated,Plant-available soil nitrogen reading,1.5,2.1 – 104.3
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_p_ppm,float,ppm,simulated,Available phosphorus reading,1.5,6.4 – 41.3
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_k_ppm,float,ppm,simulated,Exchangeable potassium reading,1.5,17.1 – 217.4
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_temp_c,float,°C,simulated,Soil temperature reading,1.5,10 – 27.4
+data/model_ready/smarttea_master_block_daily.csv.gz,light_lux,float,lux,simulated,Daytime mean light level under shade,1.5,3968 – 89183
+data/model_ready/smarttea_master_block_daily.csv.gz,sunshine_hours,float,h,simulated,Sunshine hours (real tables: from radiation via Angstrom; sensor table: simulated reading),0.0,0 – 12
+data/model_ready/smarttea_master_block_daily.csv.gz,estate_name,text,,meta,Fictional estate name (the location is real),0.0,"Estate A (Up-country), Estate B (Up-country), Estate C (Mid-country), Estate D (Low-country), Estate E (Low-country)"
+data/model_ready/smarttea_master_block_daily.csv.gz,agro_zone,text,,simulated,"Elevation zone: up (high grown), mid (medium grown), low (low grown)",0.0,"low, mid, up"
+data/model_ready/smarttea_master_block_daily.csv.gz,region,text,,real,Real tea-growing region of the estate,0.0,"Deniyaya / Matara, Hatton / Dimbula, Kandy, Nuwara Eliya, Ratnapura"
+data/model_ready/smarttea_master_block_daily.csv.gz,area_ha,float,ha,simulated,Block area,0.0,3.3 – 24.7
+data/model_ready/smarttea_master_block_daily.csv.gz,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/model_ready/smarttea_master_block_daily.csv.gz,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/model_ready/smarttea_master_block_daily.csv.gz,aspect,text,,simulated,Slope aspect (no effect in the generator; dropped from models),0.0,"E, N, NE, NW, S, SE … (8 values)"
+data/model_ready/smarttea_master_block_daily.csv.gz,soil_type,text,,derived,Soil texture class derived from SoilGrids,0.0,"Clay (SoilGrids), Clay loam (SoilGrids)"
+data/model_ready/smarttea_master_block_daily.csv.gz,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/model_ready/smarttea_master_block_daily.csv.gz,wilting_point_pct,float,% vol,derived,Permanent wilting point (Saxton & Rawls 2006),0.0,22.2 – 27.6
+data/model_ready/smarttea_master_block_daily.csv.gz,cultivar,text,,simulated,Planting material: VP clone A/B/C or seedling tea,0.0,"Seedling, VP_clone_A, VP_clone_B, VP_clone_C"
+data/model_ready/smarttea_master_block_daily.csv.gz,bush_age_yrs,int,years,simulated,Age of the tea bushes,0.0,2 – 61
+data/model_ready/smarttea_master_block_daily.csv.gz,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/model_ready/smarttea_master_block_daily.csv.gz,pruning_cycle_yrs,int,years,simulated,Years between prunings,0.0,2 – 5
+data/model_ready/smarttea_master_block_daily.csv.gz,last_pruning_date_before_2021,text,YYYY-MM-DD,simulated,Last pruning before the simulation start,0.0,"2016-10-31, 2017-03-02, 2017-03-16, 2017-05-31, 2017-06-06, 2017-06-18 … (50 values)"
+data/model_ready/smarttea_master_block_daily.csv.gz,irrigation_available,bool,0/1,simulated,Block has irrigation infrastructure,0.0,"False, True"
+data/model_ready/smarttea_master_block_daily.csv.gz,latitude,float,deg,real,Block latitude,0.0,6.331 – 7.262
+data/model_ready/smarttea_master_block_daily.csv.gz,longitude,float,deg,real,Block longitude,0.0,80.388 – 80.797
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_ph_h2o,float,pH,real,"SoilGrids pH in water, 0-15 cm depth-weighted",0.0,4.9 – 5.5
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_total_n_g_kg,float,g/kg,real,"SoilGrids total nitrogen, 0-15 cm (not plant-available N)",0.0,3.22 – 5.61
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_soc_g_kg,float,g/kg,real,"SoilGrids soil organic carbon, 0-15 cm",0.0,41.2 – 97.1
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_clay_pct,float,%,real,"SoilGrids clay, 0-15 cm",0.0,31.6 – 43.5
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_sand_pct,float,%,real,"SoilGrids sand, 0-15 cm",0.0,28.7 – 37.6
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_silt_pct,float,%,real,"SoilGrids silt, 0-15 cm",0.0,22.3 – 36.6
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_bulk_density_kg_dm3,float,kg/dm³,real,"SoilGrids bulk density, 0-15 cm",0.0,0.82 – 1.09
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_cec_cmol_kg,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-15 cm",0.0,16.1 – 28.7
+data/model_ready/smarttea_master_block_daily.csv.gz,sg_filled_from_estate_mean,bool,bool,real,"Same flag, carried into the block master",0.0,"False, True"
+data/model_ready/smarttea_master_block_daily.csv.gz,weather_grid_elevation_m,int,m,real,Elevation of the estate's weather grid cell,0.0,27 – 1868
+data/model_ready/smarttea_master_block_daily.csv.gz,temp_offset_c,float,°C,derived,Block temperature correction for elevation vs weather grid (−0.65 °C per 100 m),0.0,-3.35 – 1.53
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_rainfall_mm,float,mm,real,Estate weather that day (ERA5): daily precipitation (ERA5),0.0,0 – 256
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_temp_min_c,float,°C,real,Estate weather that day (ERA5): daily minimum air temperature,0.0,6 – 26.3
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_temp_mean_c,float,°C,real,Estate weather that day (ERA5): mean air temperature,0.0,11.9 – 29.4
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_temp_max_c,float,°C,real,Estate weather that day (ERA5): daily maximum air temperature (monthly table: mean of daily maxima),0.0,13.9 – 35.5
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_humidity_pct,float,%,real,Estate weather that day (ERA5): relative humidity at 2 m,0.0,39 – 100
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_wind_speed_ms,float,m/s,real,Estate weather that day (ERA5): daily mean wind speed,0.0,0.44 – 10.38
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_solar_radiation_mj_m2,float,MJ/m²/day,real,Estate weather that day (ERA5): daily shortwave radiation,0.0,2.16 – 29.28
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_sunshine_hours,float,h,real,Estate weather that day (ERA5): sunshine hours (real tables: from radiation via Angstrom; sensor table: simulated reading),0.0,0 – 11.5
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_era5_sunshine_hours_raw,float,h,real,Estate weather that day (ERA5): raw ERA5 sunshine duration (overstates bright sunshine in the hills; not used),0.0,0 – 12.19
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_et0_mm,float,mm,real,Estate weather that day (ERA5): fAO-56 reference evapotranspiration,0.0,0.46 – 6.86
+data/model_ready/smarttea_master_block_daily.csv.gz,wx_era5_soil_moisture_7_28cm_pct,float,% vol,real,Estate weather that day (ERA5): eRA5-Land soil moisture 7-28 cm (realism reference),0.0,15.1 – 51.8
+data/model_ready/smarttea_master_block_daily.csv.gz,fc_rain_day0_mm,float,mm,real,Rain forecast for day +0 as issued that morning,0.0,0 – 322.9
+data/model_ready/smarttea_master_block_daily.csv.gz,fc_rain_day1_mm,float,mm,real,Rain forecast for day +1 as issued that morning,0.1,0 – 302.9
+data/model_ready/smarttea_master_block_daily.csv.gz,fc_rain_day2_mm,float,mm,real,Rain forecast for day +2 as issued that morning,0.1,0 – 179.7
+data/model_ready/smarttea_master_block_daily.csv.gz,fc_rain_day3_mm,float,mm,real,Rain forecast for day +3 as issued that morning,0.2,0 – 146.2
+data/model_ready/smarttea_master_block_daily.csv.gz,fc_source,text,,meta,"Same as forecast_source, for the forecast issued that day",0.0,"real (Open-Meteo previous runs), simulated from real error distribution"
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_product_code,text,,simulated,Fertilizer product applied that day (empty if none),99.1,"NPK_BAL, NPK_HN, UREA"
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_kg_per_ha,float,kg/ha,simulated,Fertilizer mixture applied that day (0 if none),0.0,0 – 420
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_n_kg_per_ha,float,kg N/ha,simulated,N applied that day,99.1,28.4 – 113.4
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_p_kg_per_ha,float,kg P/ha,simulated,P applied that day,99.1,0 – 32.6
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_k_kg_per_ha,float,kg K/ha,simulated,K applied that day,99.1,0 – 73.3
+data/model_ready/smarttea_master_block_daily.csv.gz,fert_runoff_loss_est_pct,float,%,simulated,Runoff loss of that day's fertilizer application,99.1,0 – 92.3
+data/model_ready/smarttea_master_block_daily.csv.gz,irrigation_mm,float,mm,simulated,Irrigation depth applied,0.0,0 – 25
+data/model_ready/smarttea_master_block_daily.csv.gz,fungicide_ml_per_ha,float,ml/ha,simulated,Fungicide sprayed that day (0 if none),0.0,0 – 1600
+data/model_ready/smarttea_master_block_daily.csv.gz,dolomite_kg_per_ha,float,kg/ha,simulated,Dolomite applied that day (0 if none),0.0,0 – 1358
+data/model_ready/smarttea_master_block_daily.csv.gz,round_days,float,days,simulated,Length of the plucking round (days since previous pluck),90.1,6 – 14
+data/model_ready/smarttea_master_block_daily.csv.gz,plucking_standard,text,,simulated,"Plucking standard: fine, medium or coarse",90.1,"coarse, fine, medium"
+data/model_ready/smarttea_master_block_daily.csv.gz,green_leaf_kg_per_ha,float,kg/ha,simulated,Green leaf harvested in the round (leakage for the per-day target; never a feature),90.1,15.7 – 544.6
+data/model_ready/smarttea_master_block_daily.csv.gz,green_leaf_kg,float,kg,simulated,Green leaf harvested from the whole block,90.1,95 – 11175.9
+data/model_ready/smarttea_master_block_daily.csv.gz,days_since_pruning,float,days,simulated,Days since the block was last pruned,90.1,71 – 1854
+data/model_ready/smarttea_master_block_daily.csv.gz,green_leaf_kg_per_ha_per_day,float,kg/ha/day,simulated,Yield rate = green_leaf_kg_per_ha / round_days (yield model TARGET),90.1,1.43 – 54.01
+data/model_ready/smarttea_master_block_daily.csv.gz,plucked,int,0/1,simulated,1 if the block was plucked that day,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,row_id,text,,meta,Row key of the model-ready table,0.0,"Y00000, Y00001, Y00002, Y00003, Y00004, Y00005 … (9053 values)"
+data/model_ready/yield_model_ready.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/model_ready/yield_model_ready.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/model_ready/yield_model_ready.csv,pluck_date,text,YYYY-MM-DD,meta,Date the plucking round ended (leaf harvested),0.0,"2021-01-08, 2021-01-09, 2021-01-10, 2021-01-11, 2021-01-12, 2021-01-13 … (1811 values)"
+data/model_ready/yield_model_ready.csv,year,int,,meta,Calendar year,0.0,2021 – 2025
+data/model_ready/yield_model_ready.csv,split,text,,meta,"Fixed time split: train 2021-2023, val 2024, test 2025",0.0,"test, train, val"
+data/model_ready/yield_model_ready.csv,cv_fold,int,0-4,meta,Block-grouped CV fold (unseen blocks); 2 blocks per estate per fold,0.0,0 – 4
+data/model_ready/yield_model_ready.csv,green_leaf_kg_per_ha_per_day,float,kg/ha/day,simulated,Yield rate = green_leaf_kg_per_ha / round_days (yield model TARGET),0.0,1.43 – 54.01
+data/model_ready/yield_model_ready.csv,round_days,int,days,simulated,Length of the plucking round (days since previous pluck),0.0,6 – 14
+data/model_ready/yield_model_ready.csv,month,int,1-12,meta,Calendar month,0.0,1 – 12
+data/model_ready/yield_model_ready.csv,days_since_pruning,int,days,simulated,Days since the block was last pruned,0.0,71 – 1854
+data/model_ready/yield_model_ready.csv,soil_moisture_mean,float,% vol,simulated,Mean soil moisture over the round,0.0,23.275 – 45.488
+data/model_ready/yield_model_ready.csv,soil_moisture_min,float,% vol,simulated,Minimum soil moisture over the round,0.0,21.5 – 44
+data/model_ready/yield_model_ready.csv,soil_ph_mean,float,pH,simulated,Mean soil pH over the round,0.0,4.419 – 5.554
+data/model_ready/yield_model_ready.csv,soil_n_ppm_mean,float,ppm,simulated,Mean available N over the round,0.0,2.783 – 86.436
+data/model_ready/yield_model_ready.csv,soil_p_ppm_mean,float,ppm,simulated,Mean available P over the round,0.0,7.66 – 35.957
+data/model_ready/yield_model_ready.csv,soil_k_ppm_mean,float,ppm,simulated,Mean K over the round,0.0,19.6 – 184.627
+data/model_ready/yield_model_ready.csv,soil_temp_mean,float,°C,simulated,Mean soil temperature over the round,0.0,10.75 – 26.725
+data/model_ready/yield_model_ready.csv,light_lux_mean,float,lux,simulated,Mean light over the round,0.0,15645.5 – 74144.2
+data/model_ready/yield_model_ready.csv,sunshine_hours_mean,float,h/day,simulated,Mean sunshine over the round,0.0,0.564 – 11.6
+data/model_ready/yield_model_ready.csv,rain_sum_mm,float,mm,derived,Rain over the round,0.0,0 – 774.3
+data/model_ready/yield_model_ready.csv,rain_days,int,days,derived,Days with ≥ 1 mm rain (mean over the zone's estates),0.0,0 – 14
+data/model_ready/yield_model_ready.csv,rain_30d_mm,float,mm,derived,Rain in the 30 days before the pluck,0.0,2.8 – 1032.3
+data/model_ready/yield_model_ready.csv,temp_mean_c,float,°C,derived,Mean air temperature,0.0,13.61 – 28.533
+data/model_ready/yield_model_ready.csv,temp_max_c,float,°C,derived,Daily maximum air temperature (monthly table: mean of daily maxima),0.0,17.9 – 35.5
+data/model_ready/yield_model_ready.csv,humidity_mean,float,%,derived,Mean humidity over the round,0.0,58.222 – 98.4
+data/model_ready/yield_model_ready.csv,solar_rad_mean,float,MJ/m²/day,derived,Mean radiation over the round,0.0,6.992 – 27.217
+data/model_ready/yield_model_ready.csv,et0_sum_mm,float,mm,derived,Reference ET over the round,0.0,8.58 – 71.28
+data/model_ready/yield_model_ready.csv,n_applied_60d_kg_ha,float,kg N/ha,simulated,Fertilizer N applied in the 60 days before the pluck (decision),0.0,0 – 156.9
+data/model_ready/yield_model_ready.csv,n_applied_90d_kg_ha,float,kg N/ha,simulated,Fertilizer N applied in the 90 days before the pluck (decision),0.0,0 – 200
+data/model_ready/yield_model_ready.csv,n_absorbed_est_90d_kg_ha,float,kg N/ha,simulated,N applied in 90 days × (1 − runoff loss); live: use the runoff model's prediction,0.0,0 – 152.072
+data/model_ready/yield_model_ready.csv,days_since_last_fertilizer,int,days,simulated,Days since the last fertilizer application (365 if none),0.0,1 – 365
+data/model_ready/yield_model_ready.csv,irrigation_mm_in_round,float,mm,simulated,Irrigation applied during the round (decision),0.0,0 – 61.9
+data/model_ready/yield_model_ready.csv,fungicide_sprays_14d,int,count,simulated,Fungicide sprays in the 14 days before the pluck (decision),0.0,0 – 2
+data/model_ready/yield_model_ready.csv,dolomite_last_365d,int,0/1,simulated,Dolomite applied in the previous 365 days (decision),0.0,0 – 1
+data/model_ready/yield_model_ready.csv,area_ha,float,ha,simulated,Block area,0.0,3.3 – 24.7
+data/model_ready/yield_model_ready.csv,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/model_ready/yield_model_ready.csv,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/model_ready/yield_model_ready.csv,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/model_ready/yield_model_ready.csv,wilting_point_pct,float,% vol,derived,Permanent wilting point (Saxton & Rawls 2006),0.0,22.2 – 27.6
+data/model_ready/yield_model_ready.csv,bush_age_yrs,int,years,simulated,Age of the tea bushes,0.0,2 – 61
+data/model_ready/yield_model_ready.csv,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/model_ready/yield_model_ready.csv,pruning_cycle_yrs,int,years,simulated,Years between prunings,0.0,2 – 5
+data/model_ready/yield_model_ready.csv,irrigation_available,int,0/1,simulated,Block has irrigation infrastructure,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,sg_ph_h2o,float,pH,real,"SoilGrids pH in water, 0-15 cm depth-weighted",0.0,4.9 – 5.5
+data/model_ready/yield_model_ready.csv,sg_total_n_g_kg,float,g/kg,real,"SoilGrids total nitrogen, 0-15 cm (not plant-available N)",0.0,3.22 – 5.61
+data/model_ready/yield_model_ready.csv,sg_soc_g_kg,float,g/kg,real,"SoilGrids soil organic carbon, 0-15 cm",0.0,41.2 – 97.1
+data/model_ready/yield_model_ready.csv,sg_clay_pct,float,%,real,"SoilGrids clay, 0-15 cm",0.0,31.6 – 43.5
+data/model_ready/yield_model_ready.csv,sg_sand_pct,float,%,real,"SoilGrids sand, 0-15 cm",0.0,28.7 – 37.6
+data/model_ready/yield_model_ready.csv,sg_silt_pct,float,%,real,"SoilGrids silt, 0-15 cm",0.0,22.3 – 36.6
+data/model_ready/yield_model_ready.csv,sg_bulk_density_kg_dm3,float,kg/dm³,real,"SoilGrids bulk density, 0-15 cm",0.0,0.82 – 1.09
+data/model_ready/yield_model_ready.csv,sg_cec_cmol_kg,float,cmol(c)/kg,real,"SoilGrids cation exchange capacity, 0-15 cm",0.0,16.1 – 28.7
+data/model_ready/yield_model_ready.csv,weather_grid_elevation_m,int,m,real,Elevation of the estate's weather grid cell,0.0,27 – 1868
+data/model_ready/yield_model_ready.csv,temp_offset_c,float,°C,derived,Block temperature correction for elevation vs weather grid (−0.65 °C per 100 m),0.0,-3.35 – 1.53
+data/model_ready/yield_model_ready.csv,plucking_standard__coarse,int,0/1,simulated,One-hot: plucking_standard = coarse,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,plucking_standard__fine,int,0/1,simulated,One-hot: plucking_standard = fine,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,plucking_standard__medium,int,0/1,simulated,One-hot: plucking_standard = medium,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,agro_zone__low,int,0/1,simulated,One-hot: agro_zone = low,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,agro_zone__mid,int,0/1,simulated,One-hot: agro_zone = mid,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,agro_zone__up,int,0/1,simulated,One-hot: agro_zone = up,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,soil_type__Clay (SoilGrids),int,0/1,derived,One-hot: soil_type = Clay (SoilGrids),0.0,0 – 1
+data/model_ready/yield_model_ready.csv,soil_type__Clay loam (SoilGrids),int,0/1,derived,One-hot: soil_type = Clay loam (SoilGrids),0.0,0 – 1
+data/model_ready/yield_model_ready.csv,cultivar__Seedling,int,0/1,simulated,One-hot: cultivar = Seedling,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,cultivar__VP_clone_A,int,0/1,simulated,One-hot: cultivar = VP_clone_A,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,cultivar__VP_clone_B,int,0/1,simulated,One-hot: cultivar = VP_clone_B,0.0,0 – 1
+data/model_ready/yield_model_ready.csv,cultivar__VP_clone_C,int,0/1,simulated,One-hot: cultivar = VP_clone_C,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,row_id,text,,meta,Row key of the model-ready table,0.0,"R0000, R0001, R0002, R0003, R0004, R0005 … (850 values)"
+data/model_ready/runoff_model_ready.csv,intervention_id,text,,meta,Unique field-action key,0.0,"INT000006, INT000011, INT000015, INT000028, INT000035, INT000040 … (850 values)"
+data/model_ready/runoff_model_ready.csv,block_id,text,,meta,"Tea block key, e.g. E03-B07 = estate E03, block 7",0.0,"E01-B01, E01-B02, E01-B03, E01-B04, E01-B05, E01-B06 … (50 values)"
+data/model_ready/runoff_model_ready.csv,estate_id,text,,meta,Estate / location key E01-E05,0.0,"E01, E02, E03, E04, E05"
+data/model_ready/runoff_model_ready.csv,execution_datetime,text,YYYY-MM-DD HH:MM,meta,Start time of the field action,0.0,"2021-02-01 11:00:00, 2021-02-01 15:00:00, 2021-02-02 15:00:00, 2021-02-03 08:00:00, 2021-02-03 14:00:00, 2021-02-04 13:00:00 … (811 values)"
+data/model_ready/runoff_model_ready.csv,year,int,,meta,Calendar year,0.0,2021 – 2025
+data/model_ready/runoff_model_ready.csv,forecast_source,text,,meta,"real (Open-Meteo previous runs, from 2024-01-20) or simulated from the real error distribution",0.0,"real (Open-Meteo previous runs), simulated from real error distribution"
+data/model_ready/runoff_model_ready.csv,split,text,,meta,"Fixed time split: train 2021-2023, val 2024, test 2025",0.0,"test, train, val"
+data/model_ready/runoff_model_ready.csv,cv_fold,int,0-4,meta,Block-grouped CV fold (unseen blocks); 2 blocks per estate per fold,0.0,0 – 4
+data/model_ready/runoff_model_ready.csv,runoff_loss_est_pct,float,%,simulated,Share of applied fertilizer lost to runoff/volatilisation (runoff model TARGET),0.0,0 – 92.3
+data/model_ready/runoff_model_ready.csv,month,int,1-12,meta,Calendar month,0.0,2 – 12
+data/model_ready/runoff_model_ready.csv,hour,int,0-23,simulated,Hour of day the field action started,0.0,6 – 15
+data/model_ready/runoff_model_ready.csv,elevation_m,int,m,simulated,Block elevation,0.0,119 – 2087
+data/model_ready/runoff_model_ready.csv,slope_pct,float,%,simulated,Block slope,0.0,8.4 – 44.9
+data/model_ready/runoff_model_ready.csv,field_capacity_pct,float,% vol,derived,"Field capacity (Saxton & Rawls 2006, from SoilGrids texture)",0.0,37.9 – 40.2
+data/model_ready/runoff_model_ready.csv,shade_tree_cover_pct,int,%,simulated,Shade-tree canopy cover,0.0,0 – 40
+data/model_ready/runoff_model_ready.csv,amount_per_ha,float,see unit,simulated,Amount applied per hectare,0.0,82.8 – 420
+data/model_ready/runoff_model_ready.csv,n_kg_per_ha,float,kg N/ha,simulated,Nitrogen content of the application,0.0,28.4 – 113.4
+data/model_ready/runoff_model_ready.csv,soil_moisture_at_exec,float,% vol,simulated,Soil moisture reading when the action started,0.0,23.1 – 47.8
+data/model_ready/runoff_model_ready.csv,temp_at_exec_c,float,°C,derived,Air temperature at execution,0.0,12.3 – 27.8
+data/model_ready/runoff_model_ready.csv,humidity_at_exec_pct,float,%,derived,Humidity at execution,0.0,51.5 – 99.3
+data/model_ready/runoff_model_ready.csv,rain_prev_3d_mm,float,mm,derived,Rain in the 3 days before the action,0.0,0 – 295.2
+data/model_ready/runoff_model_ready.csv,hindsight__rain_next_12h_mm,float,mm,real,Rain that actually fell in the 12 h after the action (hindsight) - NOT for live use,0.0,0 – 75.4
+data/model_ready/runoff_model_ready.csv,hindsight__rain_next_24h_mm,float,mm,real,Rain that actually fell in the 24 h after the action (hindsight) - NOT for live use,0.0,0 – 177.3
+data/model_ready/runoff_model_ready.csv,hindsight__rain_next_48h_mm,float,mm,real,Rain that actually fell in the 48 h after the action (hindsight) - NOT for live use,0.0,0 – 283.5
+data/model_ready/runoff_model_ready.csv,hindsight__rain_next_72h_mm,float,mm,real,Rain that actually fell in the 72 h after the action (hindsight) - NOT for live use,0.0,0 – 295.2
+data/model_ready/runoff_model_ready.csv,fc_rain_next_12h_mm,float,mm,real,"Rain forecast for the 12 h after the action, as known when it started (live-realistic)",0.0,0 – 82.4
+data/model_ready/runoff_model_ready.csv,fc_rain_next_24h_mm,float,mm,real,"Rain forecast for the 24 h after the action, as known when it started (live-realistic)",0.0,0 – 136.5
+data/model_ready/runoff_model_ready.csv,fc_rain_next_48h_mm,float,mm,real,"Rain forecast for the 48 h after the action, as known when it started (live-realistic)",0.0,0 – 178.1
+data/model_ready/runoff_model_ready.csv,fc_rain_next_72h_mm,float,mm,real,"Rain forecast for the 72 h after the action, as known when it started (live-realistic)",0.0,0 – 180.4
+data/model_ready/runoff_model_ready.csv,agro_zone__low,int,0/1,simulated,One-hot: agro_zone = low,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,agro_zone__mid,int,0/1,simulated,One-hot: agro_zone = mid,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,agro_zone__up,int,0/1,simulated,One-hot: agro_zone = up,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,soil_type__Clay (SoilGrids),int,0/1,derived,One-hot: soil_type = Clay (SoilGrids),0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,soil_type__Clay loam (SoilGrids),int,0/1,derived,One-hot: soil_type = Clay loam (SoilGrids),0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,product_code__NPK_BAL,int,0/1,simulated,One-hot: product_code = NPK_BAL,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,product_code__NPK_HN,int,0/1,simulated,One-hot: product_code = NPK_HN,0.0,0 – 1
+data/model_ready/runoff_model_ready.csv,product_code__UREA,int,0/1,simulated,One-hot: product_code = UREA,0.0,0 – 1

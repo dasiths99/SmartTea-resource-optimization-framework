@@ -661,7 +661,7 @@ def main():
     ap.add_argument("--blocks-per-estate", type=int, default=10)
     ap.add_argument("--start", default=START)
     ap.add_argument("--end", default=END)
-    ap.add_argument("--real-data", default=None, help="folder of SmartTea_LK_C04_real_data -> hybrid mode (real weather, rain timing, soil, forecasts)")
+    ap.add_argument("--real-data", default=None, help="real data pack folder (data/interim/real) -> hybrid mode (real weather, rain timing, soil, forecasts)")
     ap.add_argument("--root-zone-mm", type=float, default=None, help="effective root-zone depth (default 400)")
     ap.add_argument("--wp-factor", type=float, default=None, help="hybrid: multiplier on Saxton-Rawls wilting point (default 1.0)")
     ap.add_argument("--missing-rate", type=float, default=0.015, help="share of sensor values set missing")

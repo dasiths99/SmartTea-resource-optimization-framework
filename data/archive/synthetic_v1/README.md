@@ -1,12 +1,14 @@
-# SmartTea-LK Component 04 — Synthetic Training Datasets
+# SmartTea-LK Component 04 — Synthetic Training Datasets (v1, ARCHIVED)
 
-**Status:** SYNTHETIC data produced by a process model (`generate_smarttea_data.py`). It is not field data.
+> **Archived.** Superseded by the hybrid dataset in `data/processed/hybrid/`. Kept only for the v1-vs-hybrid comparison. The generator here is `generate_smarttea_data_v1.py`; row counts below are v1 counts.
+
+**Status:** SYNTHETIC data produced by a process model (`generate_smarttea_data_v1.py`). It is not field data.
 Agronomic parameters are approximate defaults. Calibrate them against Tea Research Institute (TRI) guidance or real estate records before drawing agronomic conclusions.
 
 - **Scope:** 5 estates × 10 blocks = **50 blocks**, **2021-01-01 → 2025-12-31** (1,826 days)
 - **Zones:** Up-country (E01, E02), Mid-country (E03), Low-country (E04, E05)
 - **Link key:** `block_id` (e.g. `E03-B07`); weather links by `estate_id` + `date`
-- **Reproducible:** `python generate_smarttea_data.py --out ./data --seed 42`
+- **Reproducible:** `python data/archive/synthetic_v1/generate_smarttea_data_v1.py --out data/archive/synthetic_v1_regen --seed 42`
 - **More data:** `--blocks-per-estate 16` (80 blocks) or `--start 2019-01-01`
 
 ## Files

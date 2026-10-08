@@ -1,8 +1,11 @@
-﻿# Data generation & models
+# Data pipeline and models (pypdfium2: Forbes & Walker PDFs; xlsxwriter/openpyxl: Excel dataset)
 numpy
 pandas
 scikit-learn
 xgboost
+pypdfium2
+xlsxwriter
+openpyxl
 # Optimizer, tuning, explainability
 pymoo
 optuna

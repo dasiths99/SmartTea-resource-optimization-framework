@@ -1,0 +1,17 @@
+                                       test        model    R2   MAE
+              Yield: time split (test 2025)        Ridge 0.644  3.29
+              Yield: time split (test 2025) RandomForest 0.897  1.76
+              Yield: time split (test 2025)      XGBoost 0.944  1.31
+              Yield: unseen blocks (5-fold)      XGBoost 0.823   NaN
+      Runoff: actual rain after (hindsight)        Ridge 0.739  6.39
+      Runoff: actual rain after (hindsight) RandomForest 0.927  4.26
+      Runoff: actual rain after (hindsight)      XGBoost 0.937  4.05
+Runoff: forecast rain only (live-realistic)        Ridge 0.475 11.03
+Runoff: forecast rain only (live-realistic) RandomForest 0.614  9.25
+Runoff: forecast rain only (live-realistic)      XGBoost 0.633  8.87
+
+Simulated vs national monthly production (per day):
+  high   monthly corr 0.59 | excl. 2022 0.59 | seasonal-shape corr 0.73
+  low    monthly corr 0.60 | excl. 2022 0.64 | seasonal-shape corr 0.68
+  medium monthly corr -0.06 | excl. 2022 -0.04 | seasonal-shape corr -0.01
+Simulated soil moisture vs ERA5-Land (corr): {'E01': 0.91, 'E02': 0.88, 'E03': 0.89, 'E04': 0.86, 'E05': 0.85}

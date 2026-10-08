@@ -1,0 +1,657 @@
+{
+  "version": "1.0",
+  "source": "data/processed/hybrid",
+  "seed": 42,
+  "splits": {
+    "split": {
+      "train": [
+        2021,
+        2022,
+        2023
+      ],
+      "val": [
+        2024
+      ],
+      "test": [
+        2025
+      ]
+    },
+    "cv_fold": "5 block-grouped folds; all rows of a block share a fold; 2 blocks per estate per fold (= unseen blocks on known estates)",
+    "estate_id": "leave-one-estate-out (= unseen location and climate; much harder)",
+    "block_folds": {
+      "E01-B01": 2,
+      "E01-B02": 3,
+      "E01-B03": 0,
+      "E01-B04": 4,
+      "E01-B05": 1,
+      "E01-B06": 0,
+      "E01-B07": 1,
+      "E01-B08": 3,
+      "E01-B09": 4,
+      "E01-B10": 2,
+      "E02-B01": 3,
+      "E02-B02": 4,
+      "E02-B03": 2,
+      "E02-B04": 2,
+      "E02-B05": 0,
+      "E02-B06": 4,
+      "E02-B07": 3,
+      "E02-B08": 1,
+      "E02-B09": 1,
+      "E02-B10": 0,
+      "E03-B01": 0,
+      "E03-B02": 4,
+      "E03-B03": 0,
+      "E03-B04": 1,
+      "E03-B05": 3,
+      "E03-B06": 2,
+      "E03-B07": 3,
+      "E03-B08": 4,
+      "E03-B09": 2,
+      "E03-B10": 1,
+      "E04-B01": 3,
+      "E04-B02": 1,
+      "E04-B03": 2,
+      "E04-B04": 4,
+      "E04-B05": 2,
+      "E04-B06": 0,
+      "E04-B07": 0,
+      "E04-B08": 3,
+      "E04-B09": 1,
+      "E04-B10": 4,
+      "E05-B01": 3,
+      "E05-B02": 4,
+      "E05-B03": 1,
+      "E05-B04": 0,
+      "E05-B05": 0,
+      "E05-B06": 3,
+      "E05-B07": 2,
+      "E05-B08": 4,
+      "E05-B09": 1,
+      "E05-B10": 2
+    }
+  },
+  "rules": [
+    "Never use random row splits (leakage between days and rounds of the same block).",
+    "Report the time split (test 2025), the block-grouped CV (unseen blocks) and leave-one-estate-out.",
+    "Use full one-hot encoding (as stored); drop_first encoding lowered unseen-block R2 from ~0.82 to ~0.66.",
+    "Runoff: train the deployed model on feature_sets.live; use 'hindsight' only as an upper bound.",
+    "Optimizer bounds = intersection of 07_operational_constraints.csv and training_ranges: the historical data contains doses up to 420 kg/ha and 12 block-years over the annual N ceiling, which the optimizer must not recommend."
+  ],
+  "yield": {
+    "target": "green_leaf_kg_per_ha_per_day",
+    "target_unit": "kg green leaf / ha / day",
+    "grain": "one plucking round of one block",
+    "meta_columns": [
+      "row_id",
+      "block_id",
+      "estate_id",
+      "pluck_date",
+      "year",
+      "split",
+      "cv_fold"
+    ],
+    "features": [
+      "round_days",
+      "month",
+      "days_since_pruning",
+      "soil_moisture_mean",
+      "soil_moisture_min",
+      "soil_ph_mean",
+      "soil_n_ppm_mean",
+      "soil_p_ppm_mean",
+      "soil_k_ppm_mean",
+      "soil_temp_mean",
+      "light_lux_mean",
+      "sunshine_hours_mean",
+      "rain_sum_mm",
+      "rain_days",
+      "rain_30d_mm",
+      "temp_mean_c",
+      "temp_max_c",
+      "humidity_mean",
+      "solar_rad_mean",
+      "et0_sum_mm",
+      "n_applied_60d_kg_ha",
+      "n_applied_90d_kg_ha",
+      "n_absorbed_est_90d_kg_ha",
+      "days_since_last_fertilizer",
+      "irrigation_mm_in_round",
+      "fungicide_sprays_14d",
+      "dolomite_last_365d",
+      "area_ha",
+      "elevation_m",
+      "slope_pct",
+      "field_capacity_pct",
+      "wilting_point_pct",
+      "bush_age_yrs",
+      "shade_tree_cover_pct",
+      "pruning_cycle_yrs",
+      "irrigation_available",
+      "sg_ph_h2o",
+      "sg_total_n_g_kg",
+      "sg_soc_g_kg",
+      "sg_clay_pct",
+      "sg_sand_pct",
+      "sg_silt_pct",
+      "sg_bulk_density_kg_dm3",
+      "sg_cec_cmol_kg",
+      "weather_grid_elevation_m",
+      "temp_offset_c",
+      "plucking_standard__coarse",
+      "plucking_standard__fine",
+      "plucking_standard__medium",
+      "agro_zone__low",
+      "agro_zone__mid",
+      "agro_zone__up",
+      "soil_type__Clay (SoilGrids)",
+      "soil_type__Clay loam (SoilGrids)",
+      "cultivar__Seedling",
+      "cultivar__VP_clone_A",
+      "cultivar__VP_clone_B",
+      "cultivar__VP_clone_C"
+    ],
+    "feature_sets": {
+      "all": [
+        "round_days",
+        "month",
+        "days_since_pruning",
+        "soil_moisture_mean",
+        "soil_moisture_min",
+        "soil_ph_mean",
+        "soil_n_ppm_mean",
+        "soil_p_ppm_mean",
+        "soil_k_ppm_mean",
+        "soil_temp_mean",
+        "light_lux_mean",
+        "sunshine_hours_mean",
+        "rain_sum_mm",
+        "rain_days",
+        "rain_30d_mm",
+        "temp_mean_c",
+        "temp_max_c",
+        "humidity_mean",
+        "solar_rad_mean",
+        "et0_sum_mm",
+        "n_applied_60d_kg_ha",
+        "n_applied_90d_kg_ha",
+        "n_absorbed_est_90d_kg_ha",
+        "days_since_last_fertilizer",
+        "irrigation_mm_in_round",
+        "fungicide_sprays_14d",
+        "dolomite_last_365d",
+        "area_ha",
+        "elevation_m",
+        "slope_pct",
+        "field_capacity_pct",
+        "wilting_point_pct",
+        "bush_age_yrs",
+        "shade_tree_cover_pct",
+        "pruning_cycle_yrs",
+        "irrigation_available",
+        "sg_ph_h2o",
+        "sg_total_n_g_kg",
+        "sg_soc_g_kg",
+        "sg_clay_pct",
+        "sg_sand_pct",
+        "sg_silt_pct",
+        "sg_bulk_density_kg_dm3",
+        "sg_cec_cmol_kg",
+        "weather_grid_elevation_m",
+        "temp_offset_c",
+        "plucking_standard__coarse",
+        "plucking_standard__fine",
+        "plucking_standard__medium",
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up",
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)",
+        "cultivar__Seedling",
+        "cultivar__VP_clone_A",
+        "cultivar__VP_clone_B",
+        "cultivar__VP_clone_C"
+      ]
+    },
+    "categorical_one_hot": {
+      "plucking_standard": [
+        "plucking_standard__coarse",
+        "plucking_standard__fine",
+        "plucking_standard__medium"
+      ],
+      "agro_zone": [
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up"
+      ],
+      "soil_type": [
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)"
+      ],
+      "cultivar": [
+        "cultivar__Seedling",
+        "cultivar__VP_clone_A",
+        "cultivar__VP_clone_B",
+        "cultivar__VP_clone_C"
+      ]
+    },
+    "decision_variables": [
+      "n_applied_60d_kg_ha",
+      "n_applied_90d_kg_ha",
+      "n_absorbed_est_90d_kg_ha",
+      "days_since_last_fertilizer",
+      "irrigation_mm_in_round",
+      "fungicide_sprays_14d",
+      "dolomite_last_365d"
+    ],
+    "live_note": "n_absorbed_est_90d_kg_ha is computed from the true (simulated) runoff loss; in the live system compute it from applied N and the runoff model's prediction.",
+    "dropped": {
+      "green_leaf_kg_per_ha": "leakage (target x round_days)",
+      "aspect": "no causal effect; block identifier",
+      "block_id/estate_id": "identifiers (kept in meta)"
+    },
+    "monotone_constraints": {},
+    "training_ranges": {
+      "round_days": [
+        6.0,
+        14.0
+      ],
+      "month": [
+        1.0,
+        12.0
+      ],
+      "days_since_pruning": [
+        71.0,
+        1854.0
+      ],
+      "soil_moisture_mean": [
+        23.275,
+        45.488
+      ],
+      "soil_moisture_min": [
+        21.5,
+        44.0
+      ],
+      "soil_ph_mean": [
+        4.419,
+        5.554
+      ],
+      "soil_n_ppm_mean": [
+        2.783,
+        86.436
+      ],
+      "soil_p_ppm_mean": [
+        7.66,
+        35.957
+      ],
+      "soil_k_ppm_mean": [
+        19.6,
+        184.627
+      ],
+      "soil_temp_mean": [
+        10.75,
+        26.725
+      ],
+      "light_lux_mean": [
+        15645.5,
+        74144.222
+      ],
+      "sunshine_hours_mean": [
+        0.564,
+        11.6
+      ],
+      "rain_sum_mm": [
+        0.0,
+        774.3
+      ],
+      "rain_days": [
+        0.0,
+        14.0
+      ],
+      "rain_30d_mm": [
+        2.8,
+        1032.3
+      ],
+      "temp_mean_c": [
+        13.61,
+        28.533
+      ],
+      "temp_max_c": [
+        17.9,
+        35.5
+      ],
+      "humidity_mean": [
+        58.222,
+        98.4
+      ],
+      "solar_rad_mean": [
+        6.992,
+        27.217
+      ],
+      "et0_sum_mm": [
+        8.58,
+        71.28
+      ],
+      "n_applied_60d_kg_ha": [
+        0.0,
+        156.9
+      ],
+      "n_applied_90d_kg_ha": [
+        0.0,
+        200.0
+      ],
+      "n_absorbed_est_90d_kg_ha": [
+        0.0,
+        152.072
+      ],
+      "days_since_last_fertilizer": [
+        1.0,
+        365.0
+      ],
+      "irrigation_mm_in_round": [
+        0.0,
+        61.9
+      ],
+      "fungicide_sprays_14d": [
+        0.0,
+        2.0
+      ],
+      "dolomite_last_365d": [
+        0.0,
+        1.0
+      ],
+      "area_ha": [
+        3.3,
+        24.7
+      ],
+      "elevation_m": [
+        119.0,
+        2087.0
+      ],
+      "slope_pct": [
+        8.4,
+        44.9
+      ],
+      "field_capacity_pct": [
+        37.9,
+        40.2
+      ],
+      "wilting_point_pct": [
+        22.2,
+        27.6
+      ],
+      "bush_age_yrs": [
+        2.0,
+        61.0
+      ],
+      "shade_tree_cover_pct": [
+        0.0,
+        40.0
+      ],
+      "pruning_cycle_yrs": [
+        2.0,
+        5.0
+      ],
+      "irrigation_available": [
+        0.0,
+        1.0
+      ],
+      "sg_ph_h2o": [
+        4.9,
+        5.5
+      ],
+      "sg_total_n_g_kg": [
+        3.22,
+        5.61
+      ],
+      "sg_soc_g_kg": [
+        41.2,
+        97.1
+      ],
+      "sg_clay_pct": [
+        31.6,
+        43.5
+      ],
+      "sg_sand_pct": [
+        28.7,
+        37.6
+      ],
+      "sg_silt_pct": [
+        22.3,
+        36.6
+      ],
+      "sg_bulk_density_kg_dm3": [
+        0.82,
+        1.09
+      ],
+      "sg_cec_cmol_kg": [
+        16.1,
+        28.7
+      ],
+      "weather_grid_elevation_m": [
+        27.0,
+        1868.0
+      ],
+      "temp_offset_c": [
+        -3.35,
+        1.53
+      ]
+    }
+  },
+  "runoff": {
+    "target": "runoff_loss_est_pct",
+    "target_unit": "% of applied fertilizer lost",
+    "grain": "one fertilizer application",
+    "alternative_target": "absorption_efficiency_pct = 100 - runoff_loss_est_pct (not stored)",
+    "meta_columns": [
+      "row_id",
+      "intervention_id",
+      "block_id",
+      "estate_id",
+      "execution_datetime",
+      "year",
+      "forecast_source",
+      "split",
+      "cv_fold"
+    ],
+    "features": [
+      "month",
+      "hour",
+      "elevation_m",
+      "slope_pct",
+      "field_capacity_pct",
+      "shade_tree_cover_pct",
+      "amount_per_ha",
+      "n_kg_per_ha",
+      "soil_moisture_at_exec",
+      "temp_at_exec_c",
+      "humidity_at_exec_pct",
+      "rain_prev_3d_mm",
+      "hindsight__rain_next_12h_mm",
+      "hindsight__rain_next_24h_mm",
+      "hindsight__rain_next_48h_mm",
+      "hindsight__rain_next_72h_mm",
+      "fc_rain_next_12h_mm",
+      "fc_rain_next_24h_mm",
+      "fc_rain_next_48h_mm",
+      "fc_rain_next_72h_mm",
+      "agro_zone__low",
+      "agro_zone__mid",
+      "agro_zone__up",
+      "soil_type__Clay (SoilGrids)",
+      "soil_type__Clay loam (SoilGrids)",
+      "product_code__NPK_BAL",
+      "product_code__NPK_HN",
+      "product_code__UREA"
+    ],
+    "feature_sets": {
+      "live": [
+        "month",
+        "hour",
+        "elevation_m",
+        "slope_pct",
+        "field_capacity_pct",
+        "shade_tree_cover_pct",
+        "amount_per_ha",
+        "n_kg_per_ha",
+        "soil_moisture_at_exec",
+        "temp_at_exec_c",
+        "humidity_at_exec_pct",
+        "rain_prev_3d_mm",
+        "fc_rain_next_12h_mm",
+        "fc_rain_next_24h_mm",
+        "fc_rain_next_48h_mm",
+        "fc_rain_next_72h_mm",
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up",
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)",
+        "product_code__NPK_BAL",
+        "product_code__NPK_HN",
+        "product_code__UREA"
+      ],
+      "hindsight": [
+        "month",
+        "hour",
+        "elevation_m",
+        "slope_pct",
+        "field_capacity_pct",
+        "shade_tree_cover_pct",
+        "amount_per_ha",
+        "n_kg_per_ha",
+        "soil_moisture_at_exec",
+        "temp_at_exec_c",
+        "humidity_at_exec_pct",
+        "rain_prev_3d_mm",
+        "hindsight__rain_next_12h_mm",
+        "hindsight__rain_next_24h_mm",
+        "hindsight__rain_next_48h_mm",
+        "hindsight__rain_next_72h_mm",
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up",
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)",
+        "product_code__NPK_BAL",
+        "product_code__NPK_HN",
+        "product_code__UREA"
+      ]
+    },
+    "categorical_one_hot": {
+      "agro_zone": [
+        "agro_zone__low",
+        "agro_zone__mid",
+        "agro_zone__up"
+      ],
+      "soil_type": [
+        "soil_type__Clay (SoilGrids)",
+        "soil_type__Clay loam (SoilGrids)"
+      ],
+      "product_code": [
+        "product_code__NPK_BAL",
+        "product_code__NPK_HN",
+        "product_code__UREA"
+      ]
+    },
+    "decision_variables": [
+      "amount_per_ha",
+      "n_kg_per_ha",
+      "hour",
+      "month",
+      "product_code"
+    ],
+    "monotone_constraints": {
+      "fc_rain_next_12h_mm": 1,
+      "fc_rain_next_24h_mm": 1,
+      "fc_rain_next_48h_mm": 1,
+      "fc_rain_next_72h_mm": 1,
+      "hindsight__rain_next_12h_mm": 1,
+      "hindsight__rain_next_24h_mm": 1,
+      "hindsight__rain_next_48h_mm": 1,
+      "hindsight__rain_next_72h_mm": 1
+    },
+    "training_ranges": {
+      "month": [
+        2.0,
+        12.0
+      ],
+      "hour": [
+        6.0,
+        15.0
+      ],
+      "elevation_m": [
+        119.0,
+        2087.0
+      ],
+      "slope_pct": [
+        8.4,
+        44.9
+      ],
+      "field_capacity_pct": [
+        37.9,
+        40.2
+      ],
+      "shade_tree_cover_pct": [
+        0.0,
+        40.0
+      ],
+      "amount_per_ha": [
+        82.8,
+        420.0
+      ],
+      "n_kg_per_ha": [
+        28.4,
+        113.4
+      ],
+      "soil_moisture_at_exec": [
+        23.1,
+        47.8
+      ],
+      "temp_at_exec_c": [
+        12.3,
+        27.8
+      ],
+      "humidity_at_exec_pct": [
+        51.5,
+        99.3
+      ],
+      "rain_prev_3d_mm": [
+        0.0,
+        295.2
+      ],
+      "hindsight__rain_next_12h_mm": [
+        0.0,
+        75.4
+      ],
+      "hindsight__rain_next_24h_mm": [
+        0.0,
+        177.3
+      ],
+      "hindsight__rain_next_48h_mm": [
+        0.0,
+        283.5
+      ],
+      "hindsight__rain_next_72h_mm": [
+        0.0,
+        295.2
+      ],
+      "fc_rain_next_12h_mm": [
+        0.0,
+        82.4
+      ],
+      "fc_rain_next_24h_mm": [
+        0.0,
+        136.5
+      ],
+      "fc_rain_next_48h_mm": [
+        0.0,
+        178.1
+      ],
+      "fc_rain_next_72h_mm": [
+        0.0,
+        180.4
+      ]
+    }
+  }
+}

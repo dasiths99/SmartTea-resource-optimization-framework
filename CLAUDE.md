@@ -69,18 +69,16 @@ React (Tailwind) ──► Spring Boot ──► MongoDB   (readings, forecasts,
 SmartTea resource optimization framework/
 ├── CLAUDE.md                         ← this file
 ├── docs/PROJECT_CONTEXT.md           ← full history, rationale, findings
-├── SmartTea_LK_C04_hybrid_data/      ← ★ USE THIS for model training
-│   ├── data/*.csv                    (10 files, see §4)
-│   ├── generate_smarttea_data.py     ← LATEST generator (synthetic + hybrid modes)
-│   ├── validate_hybrid.py            ← model + realism checks
-│   ├── validation_hybrid.txt
-│   └── README_HYBRID.md
-├── SmartTea_LK_C04_real_data/        ← real downloaded data (inputs to hybrid mode)
-│   ├── 00_estate_locations.csv … 08_monthly_weather_vs_production_by_elevation.csv
-│   ├── raw/forbes_pdfs/ (47 monthly production PDFs), scripts/ (parse_forbes.py, process_real.py)
-│   └── README_REAL_DATA.md
-├── SmartTea_LK_C04_datasets/         ← OLD fully-synthetic v1 (kept for comparison)
-│   ├── data/*.csv, generate_smarttea_data.py (older version), README_DATA_DICTIONARY.md
+├── data/                             ← ALL data; read data/README.md first
+│   ├── raw/                          ← original downloads + MANIFEST.csv (source, URL, licence, sha256). Never edit
+│   ├── interim/real/                 ← real data pack 00–08 (frozen reference)
+│   ├── processed/hybrid/             ← hybrid tables 01–08 + ml_*_training.csv + validation reports
+│   ├── model_ready/                  ← ★ USE THIS for model training (feed-ready tables, splits, feature_spec.json)
+│   ├── archive/synthetic_v1/         ← old fully-synthetic v1 (comparison only)
+│   ├── release/                      ← SmartTea_LK_C04_Dataset.xlsx: whole dataset in one file (git-ignored, rebuild)
+│   ├── README.md, DATA_DICTIONARY.md, data_dictionary.csv
+├── src/data/                         ← pipeline: build_real, generate_hybrid, validate_hybrid,
+│                                       build_model_ready, make_data_dictionary, compare_tables, load
 ├── src/                              ← Python ML service
 │   ├── models/                       ← Tier 1: yield + runoff surrogates (roadmap step 2)
 │   ├── optimizer/                    ← Tier 2: NSGA-II (step 3)
@@ -92,9 +90,9 @@ SmartTea resource optimization framework/
 ├── tests/                            ← Python tests
 ├── artifacts/                        ← saved models, run outputs (git-ignored)
 ├── requirements.txt, .gitignore, .venv/ (git-ignored)
-└── smarttea_*.csv / *.json (loose)   ← raw browser downloads, already processed → safe to delete
+└── docs/                             ← PROJECT_CONTEXT.md, research report PDF
 ```
-The nested duplicate data folders from unzipping were flattened on 2026-10-08.
+Data was reorganised into the raw → interim → processed → model_ready layout on 2026-10-08. Every stage rebuilds from the one before it (see data/README.md).
 
 ## 4. Datasets (hybrid = real environment + simulated management)
 Region: 5 estate locations × 10 blocks = **50 blocks**, daily, **2021-01-01 → 2025-12-31**.
@@ -111,7 +109,7 @@ The estate names are fictional; the locations are real.
 
 **Link keys:** `block_id` (e.g. `E03-B07`), `estate_id` + `date`.
 
-| File (hybrid/data) | Rows | Notes |
+| File (data/processed/hybrid) | Rows | Notes |
 |---|---|---|
 | 01_block_master.csv | 50 | Static block features + real SoilGrids `sg_*` soil, field capacity/wilting point (Saxton-Rawls), `temp_offset_c` |
 | 02_weather_daily.csv | 9,130 | **Real** ERA5 (Open-Meteo); sunshine derived from real radiation; `era5_soil_moisture_7_28cm_pct` |
@@ -131,24 +129,37 @@ The estate names are fictional; the locations are real.
 - ISRIC SoilGrids 250 m
 - Forbes & Walker national monthly tea production by elevation (2021–2025)
 
-**Regenerate:**
+**Model-ready data (`data/model_ready/`, use this for training):**
+- `yield_model_ready.csv` (9,053 rows, 58 features) and `runoff_model_ready.csv` (850 rows, 24 live features). All features are numeric, with full one-hot encoding, no missing values and leakage columns removed. Hindsight rain columns are prefixed `hindsight__`.
+- Fixed evaluation columns: `split` (train 2021–23, val 2024, test 2025), `cv_fold` (unseen blocks, 2 per estate per fold), and `estate_id` (leave-one-estate-out).
+- `feature_spec.json` gives the feature sets (runoff: `live` / `hindsight`), decision variables, monotone constraints and training ranges. Use the training ranges as the NSGA-II bounds.
+- `smarttea_master_block_daily.csv.gz`: every source joined, one row per block per day (91,300 rows).
+- Load with `from src.data.load import load_task; X, y, meta = load_task("runoff", "live")`.
+
+**Regenerate (from the project root; always write to a new folder):**
 ```bash
-cd SmartTea_LK_C04_hybrid_data
-python generate_smarttea_data.py --out ./data --real-data "../SmartTea_LK_C04_real_data"
-python generate_smarttea_data.py --out ./data_synthetic          # fully synthetic mode
-python validate_hybrid.py data "../SmartTea_LK_C04_real_data"
+python -m src.data.build_real                    # raw -> data/interim/real_rebuilt (verifies checksums)
+python src/data/generate_hybrid.py --out data/processed/hybrid_regen --real-data data/interim/real
+python -m src.data.compare_tables data/processed/hybrid data/processed/hybrid_regen
+python -m src.data.build_model_ready             # -> data/model_ready
+python -m src.data.make_data_dictionary
+python -m src.data.build_workbook               # whole dataset in one Excel file -> data/release/
+python -m src.data.check_data --workbook        # audit every layer (must end "35/35 checks passed")
+python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 ```
 - **Options:** `--seed 42`, `--blocks-per-estate 10`, `--root-zone-mm 400`, `--wp-factor 1.0`, `--missing-rate 0.015`.
 - **Runtime:** about 1 min.
-- **Requirements:** `numpy pandas scikit-learn xgboost` (+ `pymoo fastapi uvicorn requests optuna shap` for the ML service).
+- **Requirements:** `requirements.txt` (pypdfium2 is needed only by `build_real`).
+- **Reproducibility (2026-10-08):** the hybrid regeneration reproduces all 10 files exactly. `build_real` reproduces files 00–06. Files 07/08 differ by Forbes & Walker revisions (see `data/interim/real/README.md`).
 
-## 5. Key results so far (validation_hybrid.txt)
+## 5. Key results so far (data/processed/hybrid/validation_report_2026-10-08.txt)
 | Test | Result |
 |---|---|
-| Yield, XGBoost, test year 2025 | R² 0.94 (RF 0.89, Ridge 0.64) |
-| Yield, XGBoost, **unseen blocks** (GroupKFold by block) | **R² 0.66**. Report this as well as the time split |
+| Yield, XGBoost, test year 2025 | R² 0.94 (RF 0.90, Ridge 0.64) |
+| Yield, XGBoost, **unseen blocks** (block-grouped CV) | **R² 0.82**. First reported as 0.66; that run used drop-first one-hot encoding, which cost ~0.15 R² |
+| Yield, XGBoost, **unseen estate** (leave-one-estate-out) | **R² 0.12** (Kandy −1.2). New locations are not predictable. Report this |
 | Runoff, actual rain after (hindsight) | R² 0.94 |
-| Runoff, **forecast rain only** (how it runs live) | **R² 0.62** ← key thesis finding: forecast error limits the Action Window |
+| Runoff, **forecast rain only** (how it runs live) | **R² 0.63** ← key thesis finding: forecast error limits the Action Window |
 | Simulated soil moisture vs ERA5-Land | r 0.85–0.91 |
 | Seasonal shape vs national production | high 0.73, low 0.68, **medium ≈ 0** (known gap) |
 
@@ -167,10 +178,11 @@ python validate_hybrid.py data "../SmartTea_LK_C04_real_data"
   - Nitrogen is **total N** (g/kg), not available N. Available N is approximated as 1.2%.
   - pH is pH in water.
   - 10 blocks fall on masked pixels and use the estate mean (flagged).
-- **Use time-based or block-grouped splits, never random ones,** because random splits leak information.
+- **Use time-based or block-grouped splits, never random ones,** because random splits leak information. Use the fixed `split` / `cv_fold` columns in `data/model_ready/`.
+- **Use full one-hot encoding** (as stored in `data/model_ready/`); drop-first encoding cost ~0.15 R² on unseen blocks.
 
 ## 7. Development roadmap (next steps)
-1. **Repo hygiene:** `git init`, `.gitignore` (large CSVs/raw PDFs optional), Python venv, `requirements.txt`, tidy the folder paths.
+1. ~~**Repo hygiene**~~ ✔ done 2026-10-08: git, venv, folder layout, data pipeline (raw → model_ready), data dictionary, manifest.
 2. **Model training notebook/scripts** (`src/models/`):
    - XGBoost yield and runoff models, with Ridge/RF/LightGBM/MLP baselines.
    - TimeSeriesSplit + Optuna (50–100 trials).

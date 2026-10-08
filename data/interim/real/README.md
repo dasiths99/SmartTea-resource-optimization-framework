@@ -74,9 +74,12 @@ Forecasts under-predict rain, and skill drops after day 1. That is directly rele
   - 2021–2022 production was strongly affected by Sri Lanka's chemical-fertilizer import ban and the economic crisis. That is a real fertilizer effect, but it is not weather-driven, so be careful when using 2022.
 - Forbes & Walker figures are taken from their public monthly reports (latest revised figure kept). Cite Forbes & Walker Tea Brokers as the source.
 
-## Also included
-- `raw/forbes_pdfs/`: the 47 original Forbes & Walker monthly PDFs used for file 07.
-- `scripts/`: the parsing and processing scripts used to build these files.
+## Provenance and rebuilding
+- Raw downloads (including the 47 Forbes & Walker PDFs) are in `data/raw/`, with checksums in `data/raw/MANIFEST.csv`.
+- `python -m src.data.build_real` rebuilds this pack from `data/raw/` into `data/interim/real_rebuilt/` (it never overwrites this folder).
+- Rebuild check (2026-10-08): files 00–05 identical; 06/06b same values in a different row order (12 estate-mean cells differ by 0.001);
+  07/08 differ because this frozen file mixes original and revised Forbes & Walker figures, while the script keeps the newest
+  revision consistently (116 of 300 values, median 1 %). The hybrid generator does not read 07/08, so training data is unaffected.
 
 ## Sources
 - Open-Meteo Historical Weather API: https://open-meteo.com/en/docs/historical-weather-api (ERA5/ERA5-Land: Copernicus Climate Change Service; data CC BY 4.0)

@@ -33,20 +33,21 @@ Same structure as the synthetic pack, plus:
 | ml_runoff_training | 850 |
 | Daily forecasts | 9,130 |
 
-## Validation (see validation_hybrid.txt)
+## Validation (see validation_report_2026-10-08.txt; the first run is kept as validation_report_original.txt)
 
 | Test | Synthetic (old) | Hybrid (new) |
 |---|---|---|
 | Yield model, XGBoost, test year 2025 | R² 0.93 | R² 0.94 |
-| Yield model, XGBoost, **unseen blocks** | R² 0.80 | **R² 0.66** (real soil and weather make blocks more different) |
+| Yield model, XGBoost, **unseen blocks** (known estates) | R² 0.80 | **R² 0.82** (first reported as 0.66: that run used drop-first one-hot encoding, which cost ~0.15) |
+| Yield model, XGBoost, **unseen estate** (leave-one-estate-out) | — | **R² 0.12** (Kandy −1.2): new locations are not predictable |
 | Runoff model, XGBoost, with actual rain after (hindsight) | R² 0.93 | R² 0.94 |
-| Runoff model, XGBoost, with **forecast rain only** (how it runs live) | not possible | **R² 0.62** |
+| Runoff model, XGBoost, with **forecast rain only** (how it runs live) | not possible | **R² 0.63** |
 | Simulated soil moisture vs ERA5-Land | — | r = 0.85–0.91 |
 | Seasonal shape vs national production: high grown | — | r = 0.73 |
 | Seasonal shape vs national production: low grown | — | r = 0.68 |
 | Seasonal shape vs national production: medium grown | — | r ≈ 0 ⚠️ |
 
-**Key finding:** with real forecasts, runoff prediction drops from R² 0.94 to 0.62. Forecast error is the main limit on the Action-Window scheduler, and this result is worth reporting in the thesis.
+**Key finding:** with real forecasts, runoff prediction drops from R² 0.94 to 0.63. Forecast error is the main limit on the Action-Window scheduler, and this result is worth reporting in the thesis.
 
 **Known gap:** mid-country (one Kandy location) does not match the national medium-grown seasonal pattern. The simulated blocks dip in Feb–Mar (Kandy's dry months), while national medium-grown output peaks Mar–May. Possible reasons:
 - one location cannot represent all medium-grown districts;
@@ -55,11 +56,14 @@ Same structure as the synthetic pack, plus:
 Changing root depth (600–1000 mm) and wilting point (×0.65–0.85) did not fix it. Treat mid-country results with caution.
 
 ## Regenerate
+Run from the project root. Write to a new folder; never overwrite this one.
 ```
-python generate_smarttea_data.py --out ./data_hybrid --real-data "<path>/SmartTea_LK_C04_real_data"
-python generate_smarttea_data.py --out ./data                      # fully synthetic mode (as before)
-python validate_hybrid.py data_hybrid "<path>/SmartTea_LK_C04_real_data"
+python src/data/generate_hybrid.py --out data/processed/hybrid_regen --real-data data/interim/real
+python src/data/generate_hybrid.py --out data/processed/synthetic_regen          # fully synthetic mode
+python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
+python -m src.data.compare_tables data/processed/hybrid data/processed/hybrid_regen   # proves identical output
 ```
+Regeneration check (2026-10-08): all 10 files identical to this folder.
 Options: `--seed`, `--blocks-per-estate` (soil is real for the 10 blocks per estate in the real pack; more blocks use the estate mean), `--root-zone-mm`, `--wp-factor`.
 
 ## Still simulated, so state this in the thesis
