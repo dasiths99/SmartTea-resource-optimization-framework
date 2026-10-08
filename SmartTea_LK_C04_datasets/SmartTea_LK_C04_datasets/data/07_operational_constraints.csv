@@ -1,0 +1,26 @@
+constraint_name,applies_to,value,unit,description
+max_fertilizer_kg_per_ha_per_app,all,400.0,kg/ha,Max mixture per single application
+min_fertilizer_kg_per_ha_per_app,all,100.0,kg/ha,Below this an application is not worth a field visit
+max_annual_n_kg_per_ha,up,330.0,kg N/ha/yr,Annual N ceiling
+max_annual_n_kg_per_ha,mid,300.0,kg N/ha/yr,Annual N ceiling
+max_annual_n_kg_per_ha,low,300.0,kg N/ha/yr,Annual N ceiling
+min_days_between_fertilizer,all,45.0,days,Minimum gap between applications
+min_absorption_time_hrs,fertilizer,12.0,hours,Rain-free period needed after fertilizer
+min_rainfree_time_hrs,fungicide,4.0,hours,Rain-free period needed after spraying
+max_rain_next_12h_mm,fertilizer,5.0,mm,Do not apply if more forecast in next 12 h
+max_rain_probability,fertilizer,0.3,fraction,Max forecast rain probability in window
+max_wind_for_spray_ms,fungicide,4.0,m/s,Spray drift limit
+soil_moisture_min_for_fertilizer,fertilizer,20.0,%,Too dry: poor dissolution / volatilisation
+soil_moisture_max_for_fertilizer,fertilizer,36.0,%,Too wet: runoff risk
+irrigation_trigger_soil_moisture,irrigation,22.0,%,Irrigate below this (irrigated blocks only)
+max_irrigation_mm_per_event,irrigation,25.0,mm,Per event limit
+available_water_capacity_l_per_month,estate,3000000.0,L,Default reservoir capacity per estate
+target_soil_ph_min,all,4.5,pH,Lower bound of target pH
+target_soil_ph_max,all,5.5,pH,Upper bound of target pH
+dolomite_trigger_ph,dolomite,4.45,pH,Apply dolomite below this 30-day mean pH
+min_days_between_dolomite,dolomite,730.0,days,Minimum gap between dolomite applications
+pre_harvest_interval_days,fungicide,7.0,days,No plucking within this many days after spray (placeholder - check product label)
+no_fertilizer_after_pruning_days,fertilizer,30.0,days,Wait after pruning
+action_window_forecast_horizon_hrs,scheduler,96.0,hours,Look-ahead for Action Window scheduling
+working_hours_start,scheduler,6.0,hour,Earliest field work hour
+working_hours_end,scheduler,16.0,hour,Latest field work start hour

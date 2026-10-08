@@ -1,0 +1,6 @@
+estate_id,region,agro_zone,query_lat,query_lon,grid_lat,grid_lon,grid_elevation_m
+E01,Nuwara Eliya,up,6.97,80.78,6.924429,80.74199,1868
+E02,Hatton / Dimbula,up,6.89,80.6,6.924429,80.59022,1288
+E03,Kandy,mid,7.25,80.65,7.205624,80.63452,632
+E04,Ratnapura,low,6.68,80.4,6.643234,80.39496,27
+E05,Deniyaya / Matara,low,6.34,80.56,6.29174,80.58577,424
