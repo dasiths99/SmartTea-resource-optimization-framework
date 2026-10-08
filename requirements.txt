@@ -3,10 +3,12 @@ numpy
 pandas
 scikit-learn
 xgboost
+lightgbm
+catboost
 pypdfium2
 xlsxwriter
 openpyxl
-# Optimizer, tuning, explainability
+# Optimizer, tuning, explainability (optional: tabpfn - needs a free licence key from ux.priorlabs.ai)
 pymoo
 optuna
 shap

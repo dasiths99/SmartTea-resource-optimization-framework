@@ -161,6 +161,20 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 | Yield (live) | 0.96 | 0.81 | **0.90** | **0.78 ± 0.08** |
 | Runoff (live, forecast rain, monotone) | 0.83 | 0.72 | **0.65** | **0.51 ± 0.18** |
 
+**Model comparison (live features, same protocol for all 7 models; `python -m src.models.compare_models`, artifacts/reports/model_comparison.csv):**
+
+| Model | Yield val / test / unseen+future | Runoff val / test / unseen+future |
+|---|---|---|
+| CatBoost | **0.83 / 0.91 / 0.80 ± 0.03** ← saved | 0.71 / 0.65 / 0.54 |
+| LightGBM | 0.81 / 0.91 / 0.80 | **0.73 / 0.63 / 0.54 ± 0.16** ← saved (monotone) |
+| XGBoost | 0.81 / 0.90 / 0.78 | 0.72 / 0.65 / 0.51 |
+| HistGradientBoosting | 0.81 / 0.90 / 0.79 | 0.71 / 0.64 / 0.52 |
+| Random Forest | 0.67 / 0.85 / 0.65 | 0.71 / 0.62 / 0.52 |
+| MLP | 0.62 / 0.77 / 0.36 | 0.65 / 0.23 / −0.44 |
+| Ridge | 0.45 / 0.63 / 0.28 | 0.58 / 0.52 / 0.30 |
+
+- The four boosting models are within ~0.02 of each other, which is noise; the winner is picked by val R² only.
+- Saved models: `artifacts/models/yield_catboost.joblib` and `artifacts/models/runoff_lightgbm.joblib`, each with a `.json` file listing features, settings and scores. TabPFN was not run: it needs a free licence key from ux.priorlabs.ai.
 - Do not tune toward a target accuracy. Choose settings on val only, and score test once.
 - Unregularised runoff overfitted badly: train 0.998 vs test 0.59.
 
