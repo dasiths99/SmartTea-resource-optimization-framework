@@ -130,7 +130,7 @@ The estate names are fictional; the locations are real.
 - Forbes & Walker national monthly tea production by elevation (2021–2025)
 
 **Model-ready data (`data/model_ready/`, use this for training):**
-- `yield_model_ready.csv` (9,053 rows, 58 features) and `runoff_model_ready.csv` (850 rows, 24 live features). All features are numeric, with full one-hot encoding, no missing values and leakage columns removed. Hindsight rain columns are prefixed `hindsight__`.
+- `yield_model_ready.csv` (9,053 rows, 58 features) and `runoff_model_ready.csv` (850 rows, 24 live features; previous-day temperature/humidity, same-day values moved to `hindsight__`). All features are numeric, with full one-hot encoding, no missing values and leakage columns removed. Hindsight columns (actual rain after, same-day weather) are prefixed `hindsight__`.
 - Fixed evaluation columns: `split` (train 2021–23, val 2024, test 2025), `cv_fold` (unseen blocks, 2 per estate per fold), and `estate_id` (leave-one-estate-out).
 - `feature_spec.json` gives the feature sets (runoff: `live` / `hindsight`), decision variables, monotone constraints and training ranges. Use the training ranges as the NSGA-II bounds.
 - `smarttea_master_block_daily.csv.gz`: every source joined, one row per block per day (91,300 rows).
@@ -154,27 +154,28 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 
 ## 5. Key results so far
 
-**Headline (realistic): decision-time ("live") features, regularised XGBoost, settings chosen on val 2024 only** (`python -m src.models.overfit_check`, artifacts/reports/overfit_check.csv):
+**Headline (realistic): decision-time ("live") features, best of 7 models chosen on val 2024 only** (`python -m src.models.compare_models`, artifacts/reports/model_comparison.csv). Runoff uses previous-day weather since the humidity-leak fix (2026-10-08):
 
-| Task | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
-|---|---|---|---|---|
-| Yield (live) | 0.96 | 0.81 | **0.90** | **0.78 ± 0.08** |
-| Runoff (live, forecast rain, monotone) | 0.83 | 0.72 | **0.65** | **0.51 ± 0.18** |
+| Task | Model | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
+|---|---|---|---|---|---|
+| Yield (live) | CatBoost | 0.96 | 0.83 | **0.91** (MAE 1.63 kg/ha/day) | **0.80 ± 0.03** |
+| Runoff (live, forecast rain, monotone) | XGBoost | 0.83 | 0.69 | **0.57** (MAE 9.9 pp) | **0.44 ± 0.19** |
 
-**Model comparison (live features, same protocol for all 7 models; `python -m src.models.compare_models`, artifacts/reports/model_comparison.csv):**
+**Model comparison (live features, same protocol for all 7 models):**
 
 | Model | Yield val / test / unseen+future | Runoff val / test / unseen+future |
 |---|---|---|
-| CatBoost | **0.83 / 0.91 / 0.80 ± 0.03** ← saved | 0.71 / 0.65 / 0.54 |
-| LightGBM | 0.81 / 0.91 / 0.80 | **0.73 / 0.63 / 0.54 ± 0.16** ← saved (monotone) |
-| XGBoost | 0.81 / 0.90 / 0.78 | 0.72 / 0.65 / 0.51 |
-| HistGradientBoosting | 0.81 / 0.90 / 0.79 | 0.71 / 0.64 / 0.52 |
-| Random Forest | 0.67 / 0.85 / 0.65 | 0.71 / 0.62 / 0.52 |
-| MLP | 0.62 / 0.77 / 0.36 | 0.65 / 0.23 / −0.44 |
-| Ridge | 0.45 / 0.63 / 0.28 | 0.58 / 0.52 / 0.30 |
+| CatBoost | **0.83 / 0.91 / 0.80 ± 0.03** ← saved | 0.67 / 0.57 / 0.46 |
+| LightGBM | 0.81 / 0.91 / 0.80 | 0.69 / 0.54 / 0.43 |
+| XGBoost | 0.81 / 0.90 / 0.78 | **0.69 / 0.57 / 0.44 ± 0.19** ← saved (monotone) |
+| HistGradientBoosting | 0.81 / 0.90 / 0.79 | 0.69 / 0.55 / 0.45 |
+| Random Forest | 0.67 / 0.85 / 0.65 | 0.68 / 0.55 / 0.45 |
+| MLP | 0.62 / 0.77 / 0.36 | 0.59 / 0.04 / −0.71 |
+| Ridge | 0.45 / 0.63 / 0.28 | 0.57 / 0.43 / 0.20 |
 
+- **Humidity-leak fix:** before it, runoff (with same-day mean humidity/temperature) scored val 0.73 / test 0.63–0.65 / unseen+future 0.51–0.54 (artifacts/reports/model_comparison_before_humidity_fix.csv). The ~0.08 drop is the honest cost of using only what is known at decision time. Same-day values are kept as `hindsight__temp_at_exec_c` / `hindsight__humidity_at_exec_pct`.
 - The four boosting models are within ~0.02 of each other, which is noise; the winner is picked by val R² only.
-- Saved models: `artifacts/models/yield_catboost.joblib` and `artifacts/models/runoff_lightgbm.joblib`, each with a `.json` file listing features, settings and scores. TabPFN was not run: it needs a free licence key from ux.priorlabs.ai.
+- Saved models: `artifacts/models/yield_catboost.joblib` and `artifacts/models/runoff_xgboost.joblib`, each with a `.json` file listing features, settings and scores. TabPFN was not run: it needs a free licence key from ux.priorlabs.ai.
 - Do not tune toward a target accuracy. Choose settings on val only, and score test once.
 - Unregularised runoff overfitted badly: train 0.998 vs test 0.59.
 
@@ -205,11 +206,15 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
   - pH is pH in water.
   - 10 blocks fall on masked pixels and use the estate mean (flagged).
 - **Use time-based or block-grouped splits, never random ones,** because random splits leak information. Use the fixed `split` / `cv_fold` columns in `data/model_ready/`.
+- **SHAP findings (`python -m src.models.explain_shap`, artifacts/reports/shap/):**
+  - **Fungicide looks harmful to yield (Spearman −0.67) because of confounding.** Sprays happen in wet, cloudy blight weather: corr with sunshine −0.62, with rain +0.49. Never let NSGA-II choose fungicide through the yield surrogate; decide it by blight-risk rule + Action Window.
+  - **Humidity leak (fixed 2026-10-08):** `humidity_at_exec_pct` was the application day's daily mean and the top runoff driver (20 %), partly leaking same-day rain (corr 0.40 with actual rain vs 0.23 with forecast). The live set now uses `humidity_prev_day_pct` / `temp_prev_day_c`. After the fix the runoff drivers are soil moisture 21 %, previous-3-day rain 13 %, forecast rain 24 h 12 %, slope 11 %, forecast rain 48 h 10 %; previous-day humidity 5 %. Agronomy direction check 7/8 (only fungicide, see above).
+  - **Sensible effects:** forecast rain and slope raise loss; soil moisture jumps near field capacity (~40 %); soil N, N applied and soil moisture raise yield.
 - **Use full one-hot encoding** (as stored in `data/model_ready/`); drop-first encoding cost ~0.15 R² on unseen blocks.
 
 ## 7. Development roadmap (next steps)
 1. ~~**Repo hygiene**~~ ✔ done 2026-10-08: git, venv, folder layout, data pipeline (raw → model_ready), data dictionary, manifest.
-2. **Model training notebook/scripts** (`src/models/`):
+2. **Model training notebook/scripts** (`src/models/`, `notebooks/01_model_training.ipynb`). Done 2026-10-08 except Optuna; the notebook re-trains and saves both models in ~1.5 min:
    - XGBoost yield and runoff models, with Ridge/RF/LightGBM/MLP baselines.
    - TimeSeriesSplit + Optuna (50–100 trials).
    - Learning curves and SHAP explanations.

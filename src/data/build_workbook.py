@@ -42,10 +42,10 @@ NOT_INCLUDED = [
     ("archive/synthetic_v1/", "old fully synthetic version, comparison only"),
 ]
 VALIDATION = [  # artifacts/reports/overfit_check.csv (python -m src.models.overfit_check), chosen by val R2 only
-    ("Yield", "LIVE features, regularised XGBoost: test year 2025", "XGBoost (C strong)", 0.903, 1.72),
-    ("Yield", "LIVE features: unseen blocks AND future year", "XGBoost (C strong)", 0.777, None),
-    ("Runoff", "LIVE (forecast rain), regularised + monotone: test 2025", "XGBoost (C strong)", 0.646, 8.77),
-    ("Runoff", "LIVE: unseen blocks AND future year", "XGBoost (C strong)", 0.509, None),
+    ("Yield", "LIVE features, best of 7 models by val 2024: test year 2025", "CatBoost", 0.912, 1.63),
+    ("Yield", "LIVE features: unseen blocks AND future year", "CatBoost", 0.803, None),
+    ("Runoff", "LIVE (forecast rain, previous-day weather), monotone: test 2025", "XGBoost", 0.570, 9.90),
+    ("Runoff", "LIVE: unseen blocks AND future year", "XGBoost", 0.435, None),
     # data/processed/hybrid/validation_report_2026-10-08.txt (hindsight features, default settings) + leave-one-estate-out
     ("Yield", "Time split (test year 2025)", "Ridge", 0.644, 3.29),
     ("Yield", "Time split (test year 2025)", "Random Forest", 0.897, 1.76),

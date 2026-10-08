@@ -158,6 +158,8 @@ DESC = {
     "soil_ph_at_exec": ("pH", "Soil pH reading when the action started"), "temp_at_exec_c": ("°C", "Air temperature at execution"),
     "humidity_at_exec_pct": ("%", "Humidity at execution"), "wind_at_exec_ms": ("m/s", "Wind at execution (sprays only)"),
     "rain_prev_3d_mm": ("mm", "Rain in the 3 days before the action"),
+    "temp_prev_day_c": ("°C", "Previous day's mean air temperature + block elevation offset (live: known at decision time)"),
+    "humidity_prev_day_pct": ("%", "Previous day's mean relative humidity (live: known at decision time)"),
     "runoff_loss_est_pct": ("%", "Share of applied fertilizer lost to runoff/volatilisation (runoff model TARGET)"),
     "absorption_efficiency_pct": ("%", "100 − runoff_loss_est_pct (alternative target; identical information)"),
     "yield_before_kg_ha_day": ("kg/ha/day", "Yield rate in the rounds before the action"),
@@ -238,7 +240,7 @@ ORIGIN = {  # per-column origin overrides inside simulated tables
     **{c: DER for c in DESC if c.startswith(("start_rain", "start_temp", "start_et0", "clim_"))},  # from real ERA5
     "fc_rain_next4d_mm": REAL,
     **{c: DER for c in ["rain_sum_mm", "rain_days", "rain_30d_mm", "temp_mean_c", "temp_max_c", "humidity_mean",
-                         "solar_rad_mean", "et0_sum_mm", "rain_prev_3d_mm", "temp_at_exec_c", "humidity_at_exec_pct",
+                         "solar_rad_mean", "et0_sum_mm", "rain_prev_3d_mm", "temp_at_exec_c", "humidity_at_exec_pct", "temp_prev_day_c", "humidity_prev_day_pct",
                          "wind_at_exec_ms"]},  # weather features computed from real ERA5
     "forecast_source": META, "fc_source": META,
     **{c: META for c in ["row_id", "split", "cv_fold", "block_id", "estate_id", "intervention_id", "date", "year", "pluck_date",

@@ -47,16 +47,20 @@ X, y, meta = load_task("runoff", feature_set="live")     # or load_task("yield")
 train, test = meta.split != "test", meta.split == "test"
 ```
 
-### Realistic results (decision-time features, regularised XGBoost, `python -m src.models.overfit_check`)
+### Realistic results (decision-time features, best of 7 models, `python -m src.models.compare_models`)
 
-Settings chosen on the 2024 validation year only; 2025 scored once. Full table: `artifacts/reports/overfit_check.csv`.
+Settings chosen on the 2024 validation year only; 2025 scored once. Full table: `artifacts/reports/model_comparison.csv`.
 
-| Task (live features) | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
-|---|---|---|---|---|
-| Yield | 0.963 | 0.813 | **0.903** | **0.777 ± 0.08** |
-| Runoff (forecast rain, monotone) | 0.825 | 0.724 | **0.646** | **0.509 ± 0.18** |
+| Task | Model | Train | Val 2024 | Test 2025 | Unseen blocks + future year |
+|---|---|---|---|---|---|
+| Yield | CatBoost | 0.962 | 0.834 | **0.912** | **0.803 ± 0.03** |
+| Runoff (forecast rain, previous-day weather, monotone) | XGBoost | 0.831 | 0.692 | **0.570** | **0.435 ± 0.19** |
 
-Regularisation cut the runoff train–validation gap from 0.21 to 0.10 (unregularised, no early stopping: train 0.998 vs test 0.59).
+Runoff live features use the previous day's humidity and temperature (`humidity_prev_day_pct`, `temp_prev_day_c`).
+The application day's daily means are hindsight (`hindsight__humidity_at_exec_pct`, `hindsight__temp_at_exec_c`)
+because they partly reflect that day's rain. With them, runoff scored test 0.63–0.65 and unseen+future 0.51–0.54
+(`artifacts/reports/model_comparison_before_humidity_fix.csv`); the lower numbers above are the honest ones.
+Regularisation cut the runoff train–validation gap (unregularised, no early stopping: train 0.998 vs test 0.59).
 
 ### Earlier baseline (hindsight features, default settings, 2026-10-08)
 
@@ -64,7 +68,7 @@ Regularisation cut the runoff train–validation gap from 0.21 to 0.10 (unregula
 |---|---|---|---|
 | Yield | R² 0.944 | R² 0.821 ± 0.06 | R² 0.12 (Kandy −1.2) |
 | Runoff, hindsight rain (upper bound) | R² 0.937 | R² 0.943 | — |
-| Runoff, forecast rain (live) | R² 0.633 | R² 0.655 ± 0.06 | — |
+| Runoff, forecast rain (same-day humidity, before the leak fix) | R² 0.633 | R² 0.655 ± 0.06 | — |
 
 Unseen-block yield R² was first reported as 0.66. That run used drop-first one-hot encoding, which consistently cost
 about 0.15 (checked with 3 seeds). The model generalises to new blocks on known estates, **not** to new locations.

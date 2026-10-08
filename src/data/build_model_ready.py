@@ -37,6 +37,7 @@ ROUND_HINDSIGHT = ["soil_moisture_mean", "soil_moisture_min", "soil_ph_mean", "s
                    "et0_sum_mm", "n_absorbed_est_90d_kg_ha"]
 FC_RAIN = ["fc_rain_next_12h_mm", "fc_rain_next_24h_mm", "fc_rain_next_48h_mm", "fc_rain_next_72h_mm"]
 ACT_RAIN = ["rain_next_12h_mm", "rain_next_24h_mm", "rain_next_48h_mm", "rain_next_72h_mm"]
+SAME_DAY = ["temp_at_exec_c", "humidity_at_exec_pct"]  # whole-day means of the application day (partly after it)
 
 
 def split_of(year):
@@ -163,10 +164,20 @@ def build_runoff(h, folds):
     target = "runoff_loss_est_pct"
     x = r.drop(columns=["intervention_id", "block_id", "execution_datetime", "forecast_source", target,
                         "absorption_efficiency_pct"])  # = 100 - runoff_loss_est_pct exactly
-    x = x.rename(columns={c: f"hindsight__{c}" for c in ACT_RAIN})
+    # temp_at_exec_c / humidity_at_exec_pct are whole-day means of the application day, so they include the
+    # hours after application (humid when rain arrives). Live features use the previous day's values instead.
+    w = pd.read_csv(f"{h}/02_weather_daily.csv", parse_dates=["date"])
+    off = pd.read_csv(f"{h}/01_block_master.csv").set_index("block_id").temp_offset_c
+    prev = pd.DataFrame({"estate_id": r.block_id.str[:3],
+                         "date": pd.to_datetime(r.execution_datetime).dt.normalize() - pd.Timedelta(days=1)})
+    prev = prev.merge(w[["estate_id", "date", "humidity_pct", "temp_mean_c"]], on=["estate_id", "date"], how="left")
+    x.insert(x.columns.get_loc("temp_at_exec_c"), "temp_prev_day_c",
+             (prev.temp_mean_c + r.block_id.map(off).to_numpy()).round(1).to_numpy())
+    x.insert(x.columns.get_loc("humidity_at_exec_pct"), "humidity_prev_day_pct", prev.humidity_pct.round(1).to_numpy())
+    x = x.rename(columns={c: f"hindsight__{c}" for c in ACT_RAIN + SAME_DAY})
     raw_ranges = ranges(x, [c for c in x.columns if c not in RUNOFF_CATEGORICAL])
     x = one_hot(x, RUNOFF_CATEGORICAL)
-    hind = [f"hindsight__{c}" for c in ACT_RAIN]
+    hind = [f"hindsight__{c}" for c in ACT_RAIN + SAME_DAY]
     live = [c for c in x.columns if c not in hind]
     df = pd.concat([meta, r[[target]], x], axis=1)
     spec = dict(
@@ -179,7 +190,7 @@ def build_runoff(h, folds):
         },
         categorical_one_hot={c: [k for k in x.columns if k.startswith(c + "__")] for c in RUNOFF_CATEGORICAL},
         decision_variables=RUNOFF_DECISIONS,
-        monotone_constraints={c: 1 for c in FC_RAIN + hind},  # more rain after application never lowers loss
+        monotone_constraints={c: 1 for c in FC_RAIN + [f"hindsight__{c}" for c in ACT_RAIN]},  # more rain never lowers loss
         training_ranges=raw_ranges)
     return df, spec
 

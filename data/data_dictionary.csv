@@ -577,8 +577,10 @@ data/model_ready/runoff_model_ready.csv,shade_tree_cover_pct,int,%,simulated,Sha
 data/model_ready/runoff_model_ready.csv,amount_per_ha,float,see unit,simulated,Amount applied per hectare,0.0,82.8 – 420
 data/model_ready/runoff_model_ready.csv,n_kg_per_ha,float,kg N/ha,simulated,Nitrogen content of the application,0.0,28.4 – 113.4
 data/model_ready/runoff_model_ready.csv,soil_moisture_at_exec,float,% vol,simulated,Soil moisture reading when the action started,0.0,23.1 – 47.8
-data/model_ready/runoff_model_ready.csv,temp_at_exec_c,float,°C,derived,Air temperature at execution,0.0,12.3 – 27.8
-data/model_ready/runoff_model_ready.csv,humidity_at_exec_pct,float,%,derived,Humidity at execution,0.0,51.5 – 99.3
+data/model_ready/runoff_model_ready.csv,temp_prev_day_c,float,°C,derived,Previous day's mean air temperature + block elevation offset (live: known at decision time),0.0,13.2 – 28
+data/model_ready/runoff_model_ready.csv,hindsight__temp_at_exec_c,float,°C,derived,Air temperature at execution - NOT for live use,0.0,12.3 – 27.8
+data/model_ready/runoff_model_ready.csv,humidity_prev_day_pct,float,%,derived,Previous day's mean relative humidity (live: known at decision time),0.0,52.5 – 99.3
+data/model_ready/runoff_model_ready.csv,hindsight__humidity_at_exec_pct,float,%,derived,Humidity at execution - NOT for live use,0.0,51.5 – 99.3
 data/model_ready/runoff_model_ready.csv,rain_prev_3d_mm,float,mm,derived,Rain in the 3 days before the action,0.0,0 – 295.2
 data/model_ready/runoff_model_ready.csv,hindsight__rain_next_12h_mm,float,mm,real,Rain that actually fell in the 12 h after the action (hindsight) - NOT for live use,0.0,0 – 75.4
 data/model_ready/runoff_model_ready.csv,hindsight__rain_next_24h_mm,float,mm,real,Rain that actually fell in the 24 h after the action (hindsight) - NOT for live use,0.0,0 – 177.3

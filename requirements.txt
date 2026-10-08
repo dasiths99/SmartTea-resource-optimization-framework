@@ -12,6 +12,11 @@ openpyxl
 pymoo
 optuna
 shap
+matplotlib
+# Notebooks (notebooks/01_model_training.ipynb)
+ipykernel
+nbformat
+nbclient
 # ML service (internal API called by Spring Boot)
 fastapi
 uvicorn

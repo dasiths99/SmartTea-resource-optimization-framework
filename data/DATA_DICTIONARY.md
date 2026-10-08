@@ -639,7 +639,7 @@ Feed-ready yield table: meta + target + numeric features. Grain: one row per **b
 
 ## `data/model_ready/runoff_model_ready.csv`
 
-Feed-ready runoff table: meta + target + numeric features. Grain: one row per **fertilizer application**. Rows: **850**, columns: 38. Default origin: **derived**.
+Feed-ready runoff table: meta + target + numeric features. Grain: one row per **fertilizer application**. Rows: **850**, columns: 40. Default origin: **derived**.
 
 | Column | Type | Unit | Origin | Description | Missing % | Range / levels |
 |---|---|---|---|---|---|---|
@@ -662,8 +662,10 @@ Feed-ready runoff table: meta + target + numeric features. Grain: one row per **
 | `amount_per_ha` | float | see unit | simulated | Amount applied per hectare | 0.0 | 82.8 – 420 |
 | `n_kg_per_ha` | float | kg N/ha | simulated | Nitrogen content of the application | 0.0 | 28.4 – 113.4 |
 | `soil_moisture_at_exec` | float | % vol | simulated | Soil moisture reading when the action started | 0.0 | 23.1 – 47.8 |
-| `temp_at_exec_c` | float | °C | derived | Air temperature at execution | 0.0 | 12.3 – 27.8 |
-| `humidity_at_exec_pct` | float | % | derived | Humidity at execution | 0.0 | 51.5 – 99.3 |
+| `temp_prev_day_c` | float | °C | derived | Previous day's mean air temperature + block elevation offset (live: known at decision time) | 0.0 | 13.2 – 28 |
+| `hindsight__temp_at_exec_c` | float | °C | derived | Air temperature at execution - NOT for live use | 0.0 | 12.3 – 27.8 |
+| `humidity_prev_day_pct` | float | % | derived | Previous day's mean relative humidity (live: known at decision time) | 0.0 | 52.5 – 99.3 |
+| `hindsight__humidity_at_exec_pct` | float | % | derived | Humidity at execution - NOT for live use | 0.0 | 51.5 – 99.3 |
 | `rain_prev_3d_mm` | float | mm | derived | Rain in the 3 days before the action | 0.0 | 0 – 295.2 |
 | `hindsight__rain_next_12h_mm` | float | mm | real | Rain that actually fell in the 12 h after the action (hindsight) - NOT for live use | 0.0 | 0 – 75.4 |
 | `hindsight__rain_next_24h_mm` | float | mm | real | Rain that actually fell in the 24 h after the action (hindsight) - NOT for live use | 0.0 | 0 – 177.3 |

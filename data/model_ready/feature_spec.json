@@ -627,8 +627,10 @@
       "amount_per_ha",
       "n_kg_per_ha",
       "soil_moisture_at_exec",
-      "temp_at_exec_c",
-      "humidity_at_exec_pct",
+      "temp_prev_day_c",
+      "hindsight__temp_at_exec_c",
+      "humidity_prev_day_pct",
+      "hindsight__humidity_at_exec_pct",
       "rain_prev_3d_mm",
       "hindsight__rain_next_12h_mm",
       "hindsight__rain_next_24h_mm",
@@ -658,8 +660,8 @@
         "amount_per_ha",
         "n_kg_per_ha",
         "soil_moisture_at_exec",
-        "temp_at_exec_c",
-        "humidity_at_exec_pct",
+        "temp_prev_day_c",
+        "humidity_prev_day_pct",
         "rain_prev_3d_mm",
         "fc_rain_next_12h_mm",
         "fc_rain_next_24h_mm",
@@ -684,8 +686,10 @@
         "amount_per_ha",
         "n_kg_per_ha",
         "soil_moisture_at_exec",
-        "temp_at_exec_c",
-        "humidity_at_exec_pct",
+        "temp_prev_day_c",
+        "hindsight__temp_at_exec_c",
+        "humidity_prev_day_pct",
+        "hindsight__humidity_at_exec_pct",
         "rain_prev_3d_mm",
         "hindsight__rain_next_12h_mm",
         "hindsight__rain_next_24h_mm",
@@ -771,11 +775,19 @@
         23.1,
         47.8
       ],
-      "temp_at_exec_c": [
+      "temp_prev_day_c": [
+        13.2,
+        28.0
+      ],
+      "hindsight__temp_at_exec_c": [
         12.3,
         27.8
       ],
-      "humidity_at_exec_pct": [
+      "humidity_prev_day_pct": [
+        52.5,
+        99.3
+      ],
+      "hindsight__humidity_at_exec_pct": [
         51.5,
         99.3
       ],
