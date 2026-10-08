@@ -1,0 +1,14 @@
+# Data generation & models
+numpy
+pandas
+scikit-learn
+xgboost
+# Optimizer, tuning, explainability
+pymoo
+optuna
+shap
+# Backend / live system
+fastapi
+uvicorn
+apscheduler
+requests
