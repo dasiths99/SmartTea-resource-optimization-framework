@@ -45,11 +45,24 @@ Inputs ──► Tier 1: Prediction ──► Tier 2: NSGA-II optimizer ──�
 - **Action types:** apply / delay fertilizer, irrigate / skip, dolomite (pH), fungicide, no action.
 - **Live update:** re-run when a new reading arrives, and every hour on a scheduler as the forecast changes.
 
-### Planned tech stack
-- **Backend:** Python, FastAPI. **Database:** SQLite to start, PostgreSQL later.
-- **ML and optimization:** XGBoost, scikit-learn, pymoo (NSGA-II). Optuna for tuning.
-- **Scheduling:** APScheduler for the hourly forecast refresh and re-recommendation.
-- **Frontend:** React or Streamlit dashboard.
+### Tech stack (fixed by the SmartTea-LK project)
+| Layer | Technology |
+|---|---|
+| Frontend | React.js with Tailwind CSS |
+| Backend | Java + Spring Boot |
+| Database | MongoDB |
+| ML service | Python + FastAPI (internal; XGBoost, scikit-learn, pymoo NSGA-II, Optuna, SHAP) |
+
+The ML stays in Python because Java has no practical equivalent of XGBoost training, pymoo or SHAP. How the parts connect:
+```
+React (Tailwind) ──► Spring Boot ──► MongoDB   (readings, forecasts, recommendations, history)
+                        │  ▲
+                        ▼  │ HTTP/JSON
+                  Python ML service (FastAPI): Tier 1 models + Tier 2 NSGA-II + Tier 3 Action Window
+```
+- **Spring Boot** is the public API. It owns MongoDB, receives IoT/manual readings, fetches the Open-Meteo forecast, and runs the hourly re-recommendation job with `@Scheduled`.
+- **Python ML service** is stateless. Spring Boot sends it the block, its latest reading and the forecast; it returns the recommendation JSON. It never touches MongoDB.
+- **React** talks only to Spring Boot, never to the ML service.
 
 ## 3. Folder layout
 ```
@@ -68,14 +81,15 @@ SmartTea resource optimization framework/
 │   └── README_REAL_DATA.md
 ├── SmartTea_LK_C04_datasets/         ← OLD fully-synthetic v1 (kept for comparison)
 │   ├── data/*.csv, generate_smarttea_data.py (older version), README_DATA_DICTIONARY.md
-├── src/
+├── src/                              ← Python ML service
 │   ├── models/                       ← Tier 1: yield + runoff surrogates (roadmap step 2)
 │   ├── optimizer/                    ← Tier 2: NSGA-II (step 3)
 │   ├── scheduler/                    ← Tier 3: Action Window (step 4)
-│   └── api/                          ← FastAPI backend (step 5)
+│   └── api/                          ← FastAPI ML service endpoints, internal (step 5)
+├── backend/                          ← Java Spring Boot + MongoDB (step 5)
+├── frontend/                         ← React + Tailwind dashboard (step 6)
 ├── notebooks/                        ← exploration / training notebooks
-├── dashboard/                        ← step 6
-├── tests/
+├── tests/                            ← Python tests
 ├── artifacts/                        ← saved models, run outputs (git-ignored)
 ├── requirements.txt, .gitignore, .venv/ (git-ignored)
 └── smarttea_*.csv / *.json (loose)   ← raw browser downloads, already processed → safe to delete
@@ -126,7 +140,7 @@ python validate_hybrid.py data "../SmartTea_LK_C04_real_data"
 ```
 - **Options:** `--seed 42`, `--blocks-per-estate 10`, `--root-zone-mm 400`, `--wp-factor 1.0`, `--missing-rate 0.015`.
 - **Runtime:** about 1 min.
-- **Requirements:** `numpy pandas scikit-learn xgboost` (+ `pymoo fastapi uvicorn apscheduler requests optuna` for the system).
+- **Requirements:** `numpy pandas scikit-learn xgboost` (+ `pymoo fastapi uvicorn requests optuna shap` for the ML service).
 
 ## 5. Key results so far (validation_hybrid.txt)
 | Test | Result |
@@ -168,12 +182,14 @@ python validate_hybrid.py data "../SmartTea_LK_C04_real_data"
    - Read the Open-Meteo forecast (lat/lon in `00_estate_locations.csv`).
    - Score each candidate hour with the runoff model on **forecast** rain.
    - Apply the rules (rain-free ≥12 h, soil-moisture band, wind, working hours 06–16).
-5. **Backend** (`src/api/`, FastAPI):
-   - `POST /api/readings` (IoT-compatible schema)
-   - `GET /api/blocks/{id}/recommendation`
-   - `GET /api/forecast/{estate}`
-   - Hourly APScheduler job; SQLite storage.
-6. **Dashboard:** latest readings, recommendation + reason, forecast, history.
+5. **Backend**:
+   - **ML service** (`src/api/`, FastAPI, internal): e.g. `POST /ml/recommend` takes block + latest reading + forecast, returns the recommendation JSON.
+   - **Spring Boot** (`backend/`, public API, MongoDB):
+     - `POST /api/readings` (IoT-compatible schema)
+     - `GET /api/blocks/{id}/recommendation`
+     - `GET /api/forecast/{estate}`
+     - Hourly `@Scheduled` job: refresh the Open-Meteo forecast, call the ML service, store the recommendation.
+6. **Dashboard** (`frontend/`, React + Tailwind): latest readings, recommendation + reason, forecast, history.
 7. **Thesis evaluation:**
    - Compare the scheduler against the fixed calendar on the hybrid data (resource saved, runoff avoided, yield).
    - Measure the impact of forecast error.

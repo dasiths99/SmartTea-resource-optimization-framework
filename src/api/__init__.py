@@ -1,1 +1,1 @@
-﻿"""FastAPI backend: readings, recommendations, forecast."""
+﻿"""Internal FastAPI ML service, called by the Spring Boot backend."""
