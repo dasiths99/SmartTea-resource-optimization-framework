@@ -17,6 +17,8 @@ matplotlib
 ipykernel
 nbformat
 nbclient
+# Tests
+pytest
 # ML service (internal API called by Spring Boot)
 fastapi
 uvicorn

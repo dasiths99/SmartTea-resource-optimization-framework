@@ -179,6 +179,22 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 - Do not tune toward a target accuracy. Choose settings on val only, and score test once.
 - Unregularised runoff overfitted badly: train 0.998 vs test 0.59.
 
+**Tier 2 optimizer (NSGA-II), closed-loop test on 2025, all 50 blocks** (`python -m src.optimizer.evaluate`, artifacts/reports/optimizer/):
+- **How a plan is scored:** the runoff model gives the N lost under the decision-time forecast (and picks the product). The soil-N response model (`src/optimizer/soil_n.py`, fitted on 2021–23: +0.27 ppm per kg effective N, fading with τ = 45 days; true generator value 0.35) carries the effect into later rounds. The yield model scores every round in a 90-day horizon.
+- **Pick rule:** maximise (horizon yield gain − `min_ae` × N). `min_ae` is the kg of green leaf each kg of N must add. Default **3.5**, the setting that keeps N near current practice.
+- **NSGA-II check:** 40 × 40 reaches 100 % of the exhaustive-grid optimum, with the same dose in 95–100 % of plans (`--check-solver`, solver_check.csv).
+
+| Per ha per year, 2025 | Historical practice | Optimizer (min_ae 3.5) |
+|---|---|---|
+| N applied | 198 kg | 182 kg (**−8 %**) |
+| N lost to runoff (predicted/est.) | 59 kg | 36 kg (**−40 %**) |
+| Applications | 3.3 | 3.0 |
+| Predicted green leaf | 7,519 kg | 7,776 kg (**+3.4 %**) |
+| Rule breaks (dose, 45-day gap, annual ceiling) | 0 | 0 |
+
+- **Where the N goes:** low-soil-N blocks (12 ppm when it applies vs 22 ppm when it declines), on dry forecast days (2.6 mm in the next 24 h on average). Nuwara Eliya, with the highest soil N, gets −61 % N; Kandy gets +54 %.
+- **Threshold sweep** (`--sweep`, min_ae_sweep_2025.csv/.png): min_ae 2 → N +51 %, yield +6.3 %; 3 → +19 %, +5.2 %; **3.5 → −7 %, +3.4 %**; 4 → −26 %, +2.4 %; 4.5 → −49 %, +0.3 %; 8 (no N) → −100 %, −5.1 %.
+
 **Earlier baseline (hindsight features, default settings; data/processed/hybrid/validation_report_2026-10-08.txt):**
 | Test | Result |
 |---|---|
@@ -211,6 +227,13 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
   - **Humidity leak (fixed 2026-10-08):** `humidity_at_exec_pct` was the application day's daily mean and the top runoff driver (20 %), partly leaking same-day rain (corr 0.40 with actual rain vs 0.23 with forecast). The live set now uses `humidity_prev_day_pct` / `temp_prev_day_c`. After the fix the runoff drivers are soil moisture 21 %, previous-3-day rain 13 %, forecast rain 24 h 12 %, slope 11 %, forecast rain 48 h 10 %; previous-day humidity 5 %. Agronomy direction check 7/8 (only fungicide, see above).
   - **Sensible effects:** forecast rain and slope raise loss; soil moisture jumps near field capacity (~40 %); soil N, N applied and soil moisture raise yield.
 - **Use full one-hot encoding** (as stored in `data/model_ready/`); drop-first encoding cost ~0.15 R² on unseen blocks.
+- **Optimizer limits (Tier 2):**
+  - **Yields are model predictions.** The 2025 test makes soil N counterfactual, but other conditions stay as observed.
+  - **A one-year test understates the harm of big N cuts.** Soil N runs down over years; even zero N shows only −5 % yield in one year. Do not pick a high `min_ae` to "save" N without a multi-year check.
+  - **`min_ae` is a preference, not a fact.** Check it against TRI guidance on N response.
+  - **Rounds after the current one use the current round's conditions as a proxy,** so only differences between plans are meaningful.
+  - **Irrigation is not valued by the per-round yield model** (~0.3 kg leaf per mm), and the trigger allowed it at only 11 round starts. The "water saved" result is not real. Irrigation belongs in the daily Tier 3 scheduler, using the soil-moisture trigger.
+  - **The first optimizer version judged each round alone** and used +65 % N for +2.5 % yield. This is why it now uses the soil-N response and the 90-day horizon.
 
 ## 7. Development roadmap (next steps)
 1. ~~**Repo hygiene**~~ ✔ done 2026-10-08: git, venv, folder layout, data pipeline (raw → model_ready), data dictionary, manifest.
@@ -220,7 +243,15 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
    - Learning curves and SHAP explanations.
    - Monotonic constraints where the science is clear (more rain after application must never reduce predicted runoff).
    - Save the models with joblib.
-3. **Optimizer** (`src/optimizer/`): pymoo NSGA-II using the surrogate models, with bounds from the constraints table and the training range, and a rule to choose from the Pareto front.
+3. ~~**Optimizer**~~ ✔ done 2026-10-09 (`src/optimizer/`):
+   - `limits.py`: constraints ∩ training ranges.
+   - `context.py`: block state at decision time.
+   - `soil_n.py`: soil-N response model.
+   - `optimize.py`: NSGA-II, 90-day horizon, efficiency pick rule, product choice by runoff.
+   - `evaluate.py`: 2025 closed loop, sweep, solver check.
+   - `tests/test_optimizer.py`: 9 rule tests.
+   - Run: `python -m src.optimizer.soil_n`, `python -m src.optimizer.optimize --block E03-B07 --date 2025-06-01`, `python -m src.optimizer.evaluate [--sweep 2,3,3.5,4 | --check-solver]`, `python -m pytest tests -q`.
+   - Open items: irrigation goes to Tier 3; fungicide by a blight-risk rule; dolomite by the pH rule; a multi-year check of N cuts.
 4. **Action-Window scheduler** (`src/scheduler/`):
    - Read the Open-Meteo forecast (lat/lon in `00_estate_locations.csv`).
    - Score each candidate hour with the runoff model on **forecast** rain.
