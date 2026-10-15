@@ -160,6 +160,10 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 |---|---|---|---|---|---|
 | Yield (live) | CatBoost | 0.96 | 0.83 | **0.91** (MAE 1.63 kg/ha/day) | **0.80 ± 0.03** |
 | Runoff (live, forecast rain, monotone) | XGBoost | 0.83 | 0.69 | **0.57** (MAE 9.9 pp) | **0.44 ± 0.19** |
+| Runoff risk high/low (same model; cut = 23.9 %, the 2021–23 median) | XGBoost | | | **accuracy 0.81** (guessing 0.54) | **0.79 ± 0.08** |
+
+- Training notebook: `notebooks/01_model_training.ipynb` re-trains and saves both models (~2 min); results identical to `compare_models`.
+- R² is not "accuracy": say "explains 91 % of the variation".
 
 **Model comparison (live features, same protocol for all 7 models):**
 
