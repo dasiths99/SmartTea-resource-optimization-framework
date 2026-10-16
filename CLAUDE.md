@@ -1,6 +1,6 @@
 # CLAUDE.md: SmartTea-LK Component 04 (Resource Optimization Framework)
 
-This file gives Claude Code the full context of this project. The history behind each decision is in `docs/PROJECT_CONTEXT.md`.
+This file gives Claude Code the full context of this project. The full project record is in `docs/SmartTea_LK_C04_Full_Project.md`.
 
 ## 1. What this project is
 - **Project:** SmartTea-LK research initiative (Sri Lankan tea sector), **Component 04: AI-Based Tea Plantation Resource Optimization and Intervention Planning**. Owner: Dasith Sathpura (university research project, CSP 001).
@@ -68,13 +68,12 @@ React (Tailwind) ──► Spring Boot ──► MongoDB   (readings, forecasts,
 ```
 SmartTea resource optimization framework/
 ├── CLAUDE.md                         ← this file
-├── docs/PROJECT_CONTEXT.md           ← full history, rationale, findings
+├── docs/SmartTea_LK_C04_Full_Project.md ← full project record (results, decisions, how to run)
 ├── data/                             ← ALL data; read data/README.md first
 │   ├── raw/                          ← original downloads + MANIFEST.csv (source, URL, licence, sha256). Never edit
 │   ├── interim/real/                 ← real data pack 00–08 (frozen reference)
 │   ├── processed/hybrid/             ← hybrid tables 01–08 + ml_*_training.csv + validation reports
 │   ├── model_ready/                  ← ★ USE THIS for model training (feed-ready tables, splits, feature_spec.json)
-│   ├── archive/synthetic_v1/         ← old fully-synthetic v1 (comparison only)
 │   ├── release/                      ← SmartTea_LK_C04_Dataset.xlsx: whole dataset in one file (git-ignored, rebuild)
 │   ├── README.md, DATA_DICTIONARY.md, data_dictionary.csv
 ├── src/data/                         ← pipeline: build_real, generate_hybrid, validate_hybrid,
@@ -90,7 +89,7 @@ SmartTea resource optimization framework/
 ├── tests/                            ← Python tests
 ├── artifacts/                        ← saved models, run outputs (git-ignored)
 ├── requirements.txt, .gitignore, .venv/ (git-ignored)
-└── docs/                             ← PROJECT_CONTEXT.md, research report PDF
+└── docs/                             ← SmartTea_LK_C04_Full_Project.md, RUN_DEMO.md
 ```
 Data was reorganised into the raw → interim → processed → model_ready layout on 2026-10-08. Every stage rebuilds from the one before it (see data/README.md).
 
@@ -256,6 +255,14 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
    - `tests/test_optimizer.py`: 9 rule tests.
    - Run: `python -m src.optimizer.soil_n`, `python -m src.optimizer.optimize --block E03-B07 --date 2025-06-01`, `python -m src.optimizer.evaluate [--sweep 2,3,3.5,4 | --check-solver]`, `python -m pytest tests -q`.
    - Open items: irrigation goes to Tier 3; fungicide by a blight-risk rule; dolomite by the pH rule; a multi-year check of N cuts.
+**Steps 4–6, basic version ✔ 2026-10-15 (for the 50 % viva; how to run + demo script in `docs/RUN_DEMO.md`; three terminals: `uvicorn src.api.main:app --port 8000`, `cd backend && mvn spring-boot:run`, `cd frontend && npm run dev`):**
+   - `src/api/live.py` builds the optimizer context from live readings + the raw Open-Meteo JSON (assumptions reported per response); `src/api/main.py` = FastAPI `POST /ml/recommend` (optional `what_if` = "dry"/"wet": labelled simulated weather for demos), `/ml/health`; `src/api/explain.py` = plain-language headline, rated factors, yield forecast; `src/api/export_seed.py` writes the backend seed JSON.
+   - `src/scheduler/action_window.py`: rule-based Tier 3: hourly fertilizer scan (runoff model on forecast rain), 4-day best-time table, dolomite pH rule, blister-blight fungicide rule (sunshine from radiation, as in training), irrigation = the dataset's own rule (irrigated blocks, soil moisture below trigger, < 5 mm rain in 2 days, 6–25 mm, capped by the 3 million L reservoir).
+   - `backend/`: Spring Boot 3.3 (Java 17+), package `lk.smarttea.c04`; MongoDB URI from root `.env` (`MONGODB_URI`, git-ignored); seeds 5 estates + 50 blocks; hourly job keeps a block's what-if weather; CORS allows localhost / 127.0.0.1 on any port.
+   - `frontend/`: React 18 + Tailwind 4 + Vite, proxy `/api` → :8080 (`API_TARGET` overrides); tabs Demo scenarios (loads a scenario into the reading form), Recommendation, Enter reading (IoT), Weather forecast, History; no login yet.
+   - `tests/test_live_api.py`: live-pipeline tests (22 tests in `tests/` in total).
+   - **Mark as done** (collection `actions_done`, `POST /api/blocks/{id}/actions-done`): the backend sends the log to the ML service (`action_history`), which enforces dolomite 730 days, sprays 7 days + a "do not pluck before" reminder (pre-harvest interval 7 days), irrigation 3 days, and counts a marked fertilizer toward the 45-day rule. The IoT reading format is unchanged.
+   - Known gaps: no uncertainty shown on predictions; the gaps rely on the user pressing Mark as done; no Java or React tests.
 4. **Action-Window scheduler** (`src/scheduler/`):
    - Read the Open-Meteo forecast (lat/lon in `00_estate_locations.csv`).
    - Score each candidate hour with the runoff model on **forecast** rain.

@@ -246,13 +246,13 @@ def recommend(ctx, sur, lim, settings=SETTINGS, water_l=None, keep_front=False):
                    forecast_rain_next_24h_mm=round(float(ctx.runoff_row.fc_rain_next_24h_mm), 1),
                    agronomic_efficiency_kg_leaf_per_kg_n=round(pick["gain"] / nn, 1))
         reason.append(f"{nn:.0f} kg N/ha adds about {pick['gain']:.0f} kg green leaf/ha over {h.days} days "
-                      f"({pick['gain'] / nn:.0f} kg per kg N; threshold {settings['min_ae']:.0f})")
+                      f"({pick['gain'] / nn:.0f} kg per kg N; threshold {settings['min_ae']:g})")
     if pick["irr"] > 0:
         action.append("Irrigate")
         reason.append(f"{pick['irr']:.0f} mm irrigation")
     if not action:
         action = ["No action"]
-        reason.append(f"no allowed plan adds at least {settings['min_ae']:.0f} kg green leaf per kg N"
+        reason.append(f"no allowed plan adds at least {settings['min_ae']:g} kg green leaf per kg N"
                       if (b["n_hi"] or b["irr_hi"]) else "fertilizer and irrigation not allowed now")
     out.update(action=" + ".join(action), n_kg_per_ha=round(float(rp["n"][0]), 1), irrigation_mm=round(pick["irr"], 1),
                predicted_yield_kg_ha_day=round(float(y[0]), 2),
@@ -261,6 +261,15 @@ def recommend(ctx, sur, lim, settings=SETTINGS, water_l=None, keep_front=False):
                horizon_gain_pct=round(100 * (y.mean() - y0.mean()) / y0.mean(), 1),
                n_eff_kg_ha=round(float(rp["n"][0] * (1 - rp["loss"][0] / 100)), 1),
                reason="; ".join(reason + b["notes"]))
+    # for explaining the decision: predicted yield of every round in the horizon, and the best leaf-per-kg-N any
+    # allowed dose reaches (below min_ae = why fertilizer was not chosen)
+    out["horizon_rounds"] = [dict(day=int((j + 1) * ctx.round_days), no_action=round(float(a), 2),
+                                  with_plan=round(float(p), 2)) for j, (a, p) in enumerate(zip(y0, y))]
+    withn = front[front.n > 0] if len(front) else front
+    if len(withn):
+        ae = withn.gain / withn.n
+        out["best_ae_kg_leaf_per_kg_n"] = round(float(ae.max()), 1)
+        out["best_ae_n_kg_ha"] = round(float(withn.n.loc[ae.idxmax()]), 1)
     if keep_front:
         out["pareto"] = front.round(2).to_dict("records")
     return out

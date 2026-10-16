@@ -1,0 +1,42 @@
+[
+ {
+  "estate_id": "E01",
+  "region": "Nuwara Eliya",
+  "agro_zone": "up",
+  "latitude": 6.97,
+  "longitude": 80.78,
+  "estate_name": "Estate A (Up-country)"
+ },
+ {
+  "estate_id": "E02",
+  "region": "Hatton / Dimbula",
+  "agro_zone": "up",
+  "latitude": 6.89,
+  "longitude": 80.6,
+  "estate_name": "Estate B (Up-country)"
+ },
+ {
+  "estate_id": "E03",
+  "region": "Kandy",
+  "agro_zone": "mid",
+  "latitude": 7.25,
+  "longitude": 80.65,
+  "estate_name": "Estate C (Mid-country)"
+ },
+ {
+  "estate_id": "E04",
+  "region": "Ratnapura",
+  "agro_zone": "low",
+  "latitude": 6.68,
+  "longitude": 80.4,
+  "estate_name": "Estate D (Low-country)"
+ },
+ {
+  "estate_id": "E05",
+  "region": "Deniyaya / Matara",
+  "agro_zone": "low",
+  "latitude": 6.34,
+  "longitude": 80.56,
+  "estate_name": "Estate E (Low-country)"
+ }
+]

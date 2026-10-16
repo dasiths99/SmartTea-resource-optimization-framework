@@ -19,7 +19,6 @@ never edited           (5 estates)            simulated management              
 | `interim/real/` | Real data pack, files 00–08: hourly/daily weather, forecast vs actual, NASA POWER, block soil, national production. See its README. | Frozen reference version. Rebuilds go to `interim/real_rebuilt/`. |
 | `processed/hybrid/` | Hybrid dataset, tables 01–08 + `ml_*_training.csv`: real weather, forecasts and soil; simulated management, crop response, runoff and sensor noise. | Generator output. Regenerate into a new folder. |
 | `model_ready/` | **Feed-ready data** (below). | Built from `processed/hybrid/`. |
-| `archive/synthetic_v1/` | First, fully synthetic dataset. | Comparison only. |
 | `release/` | **`SmartTea_LK_C04_Dataset.xlsx`**: the whole dataset in one Excel file (README, data dictionary, validation, 17 data sheets) for panels and readers. | Built with `python -m src.data.build_workbook`. Not in git (33 MB copy of the CSVs). |
 
 ## Model-ready data (`model_ready/`)

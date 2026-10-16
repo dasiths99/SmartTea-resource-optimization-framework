@@ -14,7 +14,6 @@ This file collects the whole project in one place:
 
 Related files:
 - `CLAUDE.md`: working instructions for the code assistant.
-- `docs/PROJECT_CONTEXT.md`: the earlier planning history (7–8 Oct 2026).
 - `data/README.md`: data details.
 - `notebooks/01_model_training.ipynb`: model training with all outputs.
 
@@ -190,7 +189,6 @@ data/raw/               original downloads + MANIFEST.csv (never edited)
 data/interim/real/      real data pack 00–08 (frozen reference)
 data/processed/hybrid/  hybrid tables 01–08 + ml_*_training.csv + validation reports
 data/model_ready/       ★ feed-ready tables for training (splits, feature_spec.json)
-data/archive/synthetic_v1/  old fully synthetic version (comparison only)
 data/release/           SmartTea_LK_C04_Dataset.xlsx: everything in one Excel file (20 sheets, ~34 MB; git-ignored, rebuild)
 ```
 Each layer rebuilds from the one before it.
@@ -241,7 +239,7 @@ Each layer rebuilds from the one before it.
 
 **Historical management.** A fixed fertilizer calendar, irrigation by soil-moisture trigger, a dolomite pH rule and a fungicide blight rule.
 
-Full description: `docs/PROJECT_CONTEXT.md` §6.
+Full description: the header of `src/data/generate_hybrid.py`.
 
 ---
 
@@ -461,7 +459,7 @@ All in `artifacts/reports/optimizer/`:
 - Choose `min_ae` on 2024.
 - A multi-year N check.
 - Optional: Optuna tuning, ensemble, weather-correction model.
-- Update the older PDF research report (`docs/SmartTea_LK_C04_Research_Report.pdf`), which still shows old numbers.
+- Write the research report from the numbers in this file (the earlier PDF report was removed: its numbers were out of date).
 
 ---
 
@@ -505,9 +503,7 @@ python -m pytest tests -q                           # 9 optimizer rule tests
 ```
 CLAUDE.md                          instructions for the code assistant
 README.md                          project overview + quick start
-docs/PROJECT_CONTEXT.md            planning history (7–8 Oct 2026)
 docs/SmartTea_LK_C04_Full_Project.md   ← this file
-docs/SmartTea_LK_C04_Research_Report.pdf   earlier report (numbers out of date)
 data/                              raw → interim → processed → model_ready (+ release, archive), README, dictionary
 src/data/                          build_real, generate_hybrid, validate_hybrid, build_model_ready,
                                    make_data_dictionary, build_workbook, check_data, compare_tables, load
@@ -543,7 +539,7 @@ artifacts/                         saved models + reports (git-ignored; rebuild 
 ---
 
 ## 11. Development log (chat sessions)
-Earlier planning (7–8 Oct 2026, Cowork) is summarised in `docs/PROJECT_CONTEXT.md`. Below are the Claude Code sessions in VS Code.
+Earlier planning (7–8 Oct 2026, Cowork) is not recorded here (the planning notes were removed). Below are the Claude Code sessions in VS Code.
 
 ### 8 Oct 2026: setup, data, reports
 | # | Request | Outcome |
@@ -551,7 +547,7 @@ Earlier planning (7–8 Oct 2026, Cowork) is summarised in `docs/PROJECT_CONTEXT
 | 1 | Read CLAUDE.md; set up git, venv and the roadmap folders | Git repo, Python venv, folder layout (src/, backend/, frontend/, notebooks/, tests/, artifacts/) |
 | 2 | Are all datasets OK? | Datasets checked; issues documented |
 | 3 | Use React + Tailwind / Java Spring Boot / MongoDB | Tech stack adopted; ML stays a Python FastAPI internal service; CLAUDE.md updated |
-| 4 | Create a full PDF document for the research | `docs/SmartTea_LK_C04_Research_Report.pdf` (now outdated) |
+| 4 | Create a full PDF document for the research | a PDF report (outdated; since removed) |
 | 5 | Which ML models give the best accuracy? | Advice: gradient boosting (XGBoost/LightGBM/CatBoost) with Ridge/RF/MLP baselines; honest splits |
 | 6 | Organise datasets professionally; one model-feed-ready dataset | raw → interim → processed → model_ready layout; manifest with checksums; build scripts; data dictionary; `model_ready/` tables + `feature_spec.json` + `load_task` |
 | 7 | Which dataset to show the panel? | Recommended the model-ready tables + workbook + provenance |
