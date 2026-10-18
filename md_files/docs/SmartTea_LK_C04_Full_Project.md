@@ -14,7 +14,7 @@ This file collects the whole project in one place:
 
 Related files:
 - `CLAUDE.md`: working instructions for the code assistant.
-- `data/README.md`: data details.
+- `md_files/data/README.md`: data details.
 - `notebooks/01_model_training.ipynb`: model training with all outputs.
 
 ---
@@ -224,7 +224,7 @@ Each layer rebuilds from the one before it.
 - `python -m src.data.check_data --workbook`: **35 / 35 checks passed**, with 1 documented warning (historical practice sometimes breaks the rules, which is realistic).
 - **Hybrid regeneration** (seed 42) reproduces all 10 files exactly.
 - **`build_real`** reproduces files 00–06. Files 07/08 differ slightly because Forbes & Walker revised some figures; documented.
-- **Data dictionary:** `data/DATA_DICTIONARY.md` and `data_dictionary.csv`, generated from the files. Every column has a unit, a description and an origin.
+- **Data dictionary:** `md_files/data/DATA_DICTIONARY.md` and `data/data_dictionary.csv`, generated from the files. Every column has a unit, a description and an origin.
 
 ### 3.8 How the simulated part works (short)
 **Soil water.** A daily bucket model with a 400 mm root zone, slope-dependent infiltration and FAO ET₀.
@@ -503,7 +503,7 @@ python -m pytest tests -q                           # 9 optimizer rule tests
 ```
 CLAUDE.md                          instructions for the code assistant
 README.md                          project overview + quick start
-docs/SmartTea_LK_C04_Full_Project.md   ← this file
+md_files/                          all Markdown docs (this file: md_files/docs/SmartTea_LK_C04_Full_Project.md)
 data/                              raw → interim → processed → model_ready (+ release, archive), README, dictionary
 src/data/                          build_real, generate_hybrid, validate_hybrid, build_model_ready,
                                    make_data_dictionary, build_workbook, check_data, compare_tables, load

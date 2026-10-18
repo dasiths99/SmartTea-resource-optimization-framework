@@ -21,7 +21,7 @@ def check(name, ok, detail=""):
 
 
 def warn(name, detail):
-    """Known, documented characteristic of the data (not an error). See data/README.md 'Known characteristics'."""
+    """Known, documented characteristic of the data (not an error). See md_files/data/README.md 'Known characteristics'."""
     warnings.append(name)
     print(f"WARN  {name}  ({detail})")
 

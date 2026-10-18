@@ -1,4 +1,4 @@
-"""Write data/DATA_DICTIONARY.md and data/data_dictionary.csv from the actual data files.
+"""Write md_files/data/DATA_DICTIONARY.md and data/data_dictionary.csv from the actual data files.
 
 Every column of every table in data/interim/real, data/processed/hybrid and data/model_ready is listed with
 type, unit, origin, description, missing % and observed range (or levels). Descriptions live in DESC below;
@@ -13,6 +13,7 @@ import re
 import pandas as pd
 
 D = "data"
+MD_DIR = "md_files/data"   # Markdown docs live in md_files/
 REAL, SIM, DER, META = "real", "simulated", "derived", "meta"
 
 # column -> (unit, description). Origin is set per table (TABLES) with per-column overrides (ORIGIN).
@@ -320,7 +321,8 @@ def main():
             md.append(f"| `{c}` | {typ} | {unit} | {org} | {desc} | {miss} | {rng} |")
         md.append("")
     pd.DataFrame(rows).to_csv(os.path.join(D, "data_dictionary.csv"), index=False)
-    with open(os.path.join(D, "DATA_DICTIONARY.md"), "w", encoding="utf-8") as f:
+    os.makedirs(MD_DIR, exist_ok=True)
+    with open(os.path.join(MD_DIR, "DATA_DICTIONARY.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(md))
     print(f"documented {len(rows)} columns in {len(TABLES)} tables")
 

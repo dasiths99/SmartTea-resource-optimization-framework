@@ -1,6 +1,6 @@
 # CLAUDE.md: SmartTea-LK Component 04 (Resource Optimization Framework)
 
-This file gives Claude Code the full context of this project. The full project record is in `docs/SmartTea_LK_C04_Full_Project.md`.
+This file gives Claude Code the full context of this project. The full project record is in `md_files/docs/SmartTea_LK_C04_Full_Project.md`. All project Markdown files live in `md_files/` (same sub-paths as before, e.g. `md_files/data/README.md`).
 
 ## 1. What this project is
 - **Project:** SmartTea-LK research initiative (Sri Lankan tea sector), **Component 04: AI-Based Tea Plantation Resource Optimization and Intervention Planning**. Owner: Dasith Sathpura (university research project, CSP 001).
@@ -68,8 +68,9 @@ React (Tailwind) ──► Spring Boot ──► MongoDB   (readings, forecasts,
 ```
 SmartTea resource optimization framework/
 ├── CLAUDE.md                         ← this file
-├── docs/SmartTea_LK_C04_Full_Project.md ← full project record (results, decisions, how to run)
-├── data/                             ← ALL data; read data/README.md first
+├── md_files/                         ← ALL project Markdown docs (CLAUDE.md, README.md, data READMEs, DATA_DICTIONARY.md,
+│                                       docs/SmartTea_LK_C04_Full_Project.md = full project record)
+├── data/                             ← ALL data; read md_files/data/README.md first
 │   ├── raw/                          ← original downloads + MANIFEST.csv (source, URL, licence, sha256). Never edit
 │   ├── interim/real/                 ← real data pack 00–08 (frozen reference)
 │   ├── processed/hybrid/             ← hybrid tables 01–08 + ml_*_training.csv + validation reports
@@ -91,7 +92,7 @@ SmartTea resource optimization framework/
 ├── requirements.txt, .gitignore, .venv/ (git-ignored)
 └── docs/                             ← SmartTea_LK_C04_Full_Project.md, RUN_DEMO.md
 ```
-Data was reorganised into the raw → interim → processed → model_ready layout on 2026-10-08. Every stage rebuilds from the one before it (see data/README.md).
+Data was reorganised into the raw → interim → processed → model_ready layout on 2026-10-08. Every stage rebuilds from the one before it (see md_files/data/README.md).
 
 ## 4. Datasets (hybrid = real environment + simulated management)
 Region: 5 estate locations × 10 blocks = **50 blocks**, daily, **2021-01-01 → 2025-12-31**.
@@ -149,7 +150,7 @@ python src/data/validate_hybrid.py data/processed/hybrid data/interim/real
 - **Options:** `--seed 42`, `--blocks-per-estate 10`, `--root-zone-mm 400`, `--wp-factor 1.0`, `--missing-rate 0.015`.
 - **Runtime:** about 1 min.
 - **Requirements:** `requirements.txt` (pypdfium2 is needed only by `build_real`).
-- **Reproducibility (2026-10-08):** the hybrid regeneration reproduces all 10 files exactly. `build_real` reproduces files 00–06. Files 07/08 differ by Forbes & Walker revisions (see `data/interim/real/README.md`).
+- **Reproducibility (2026-10-08):** the hybrid regeneration reproduces all 10 files exactly. `build_real` reproduces files 00–06. Files 07/08 differ by Forbes & Walker revisions (see `md_files/data/interim/real/README.md`).
 
 ## 5. Key results so far
 
