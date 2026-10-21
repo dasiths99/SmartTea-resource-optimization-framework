@@ -32,6 +32,10 @@ export const api = {
     return call(`/blocks/${blockId}/recommendation?${q}`, { method: 'POST' })
   },
   history: (blockId) => call(`/blocks/${blockId}/recommendations?limit=20`),
+  deleteRecommendation: (id) => call(`/recommendations/${id}`, { method: 'DELETE' }),
+  clearRecommendations: (blockId) => call(`/blocks/${blockId}/recommendations`, { method: 'DELETE' }),
+  deleteReading: (id) => call(`/readings/${id}`, { method: 'DELETE' }),
+  clearReadings: (blockId) => call(`/blocks/${blockId}/readings`, { method: 'DELETE' }),
   forecast: (estateId) => call(`/forecast/${estateId}`),
   demoScenarios: () => call('/demo/scenarios'),
 }

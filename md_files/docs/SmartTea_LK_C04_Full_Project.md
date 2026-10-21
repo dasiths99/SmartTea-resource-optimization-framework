@@ -449,7 +449,7 @@ All in `artifacts/reports/optimizer/`:
 | 2 | Tier 1 models: comparison, regularisation, monotone runoff, SHAP, learning curves, notebook | ✔ 2026-10-09 (Optuna optional, not done) |
 | 3 | Tier 2 optimizer: NSGA-II, soil-N response, 2025 closed loop, sweep, tests | ✔ 2026-10-09 |
 | 4 | Tier 3 Action-Window scheduler: hourly forecast, rain-free ≥ 12 h, soil-moisture band, wind, 06–16 h, daily irrigation | **next** |
-| 5 | Backend: FastAPI ML service (`POST /ml/recommend`) + Spring Boot (`POST /api/readings`, `GET /api/blocks/{id}/recommendation`, `GET /api/forecast/{estate}`, hourly job) + MongoDB | to do (install JDK 21, Maven, MongoDB first) |
+| 5 | Backend: FastAPI ML service (`POST /ml/recommend`) + Spring Boot (`POST /api/readings`, `GET /api/blocks/{id}/recommendation`, `GET /api/forecast/{estate}`, hourly job) + MongoDB | to do (install JDK 25, Maven, MongoDB first) |
 | 6 | Dashboard: React + Tailwind (readings, recommendation + reason, forecast, history) | to do |
 | 7 | Thesis evaluation: scheduler vs fixed calendar, forecast-error impact, sensitivity analysis | to do |
 

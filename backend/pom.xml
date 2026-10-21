@@ -17,7 +17,7 @@
     <description>Public API: readings, forecast, recommendations (MongoDB); calls the Python ML service</description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
     </properties>
 
     <dependencies>

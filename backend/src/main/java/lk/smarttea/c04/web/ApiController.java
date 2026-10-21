@@ -190,6 +190,46 @@ public class ApiController {
         return recommendations.findByBlockIdOrderByCreatedAtDesc(id, PageRequest.of(0, limit));
     }
 
+    /** History tab: delete one past recommendation. */
+    @DeleteMapping("/recommendations/{recId}")
+    public Map<String, Object> deleteRecommendation(@PathVariable String recId) {
+        if (!recommendations.existsById(recId)) {
+            throw new NotFoundException("unknown recommendation " + recId);
+        }
+        recommendations.deleteById(recId);
+        return Map.of("id", recId, "removed", true);
+    }
+
+    /** History tab: delete all recommendations of a block (readings and marked actions stay). */
+    @DeleteMapping("/blocks/{id}/recommendations")
+    public Map<String, Object> clearRecommendations(@PathVariable String id) {
+        if (!blocks.existsById(id)) {
+            throw new NotFoundException("unknown block " + id);
+        }
+        recommendations.deleteByBlockId(id);
+        return Map.of("block_id", id, "cleared", "recommendations");
+    }
+
+    /** History tab: delete one sensor reading (e.g. a typing mistake). Recommendations already made stay. */
+    @DeleteMapping("/readings/{readingId}")
+    public Map<String, Object> deleteReading(@PathVariable String readingId) {
+        if (!readings.existsById(readingId)) {
+            throw new NotFoundException("unknown reading " + readingId);
+        }
+        readings.deleteById(readingId);
+        return Map.of("id", readingId, "removed", true);
+    }
+
+    /** History tab: delete all sensor readings of a block. */
+    @DeleteMapping("/blocks/{id}/readings")
+    public Map<String, Object> clearReadings(@PathVariable String id) {
+        if (!blocks.existsById(id)) {
+            throw new NotFoundException("unknown block " + id);
+        }
+        readings.deleteByBlockId(id);
+        return Map.of("block_id", id, "cleared", "readings");
+    }
+
     @GetMapping("/forecast/{estateId}")
     public ForecastSnapshot forecast(@PathVariable String estateId, @RequestParam(defaultValue = "false") boolean refresh) {
         return forecasts.get(estateId, refresh);

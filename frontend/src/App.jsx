@@ -3,7 +3,6 @@ import { api } from './api'
 import StatusBar from './components/StatusBar'
 import BlockInfo from './components/BlockInfo'
 import RecommendationCard from './components/RecommendationCard'
-import PipelineView from './components/PipelineView'
 import ForecastChart from './components/ForecastChart'
 import ReadingForm from './components/ReadingForm'
 import History from './components/History'
@@ -117,6 +116,28 @@ export default function App() {
     }
   }
 
+  // History tab: delete one item (id) or the whole list (id = null) of recommendations or readings
+  async function deleteHistory(kind, id) {
+    const what = kind === 'recommendation' ? 'recommendation' : 'sensor reading'
+    const ask = id ? `Delete this ${what}?` : `Delete ALL ${what}s of block ${blockId}?`
+    if (!window.confirm(`${ask} This cannot be undone.`)) return
+    setBusy(true)
+    setError('')
+    try {
+      if (kind === 'recommendation') {
+        await (id ? api.deleteRecommendation(id) : api.clearRecommendations(blockId))
+      } else {
+        await (id ? api.deleteReading(id) : api.clearReadings(blockId))
+      }
+      loadBlock()
+      loadStatus()
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
   // a demo scenario was loaded: its block is already cleared; open the reading form with the values filled in
   function demoLoad(s) {
     setEstateId(s.block_id.slice(0, 3))
@@ -208,7 +229,6 @@ export default function App() {
               <RecommendationCard rec={rec} busy={busy} onRerun={rerun} onMarkDone={markDone} onEnter={() => setTab('reading')} />
               {rec && <Explanation explanation={rec.result.explanation} />}
               {rec && <BestTimePlanner tier3={rec.result.tier3} actions={rec.result.actions} whatIf={rec.result.what_if} />}
-              {rec && <PipelineView result={rec.result} />}
             </>
           )}
           {tab === 'reading' && block && (
@@ -217,7 +237,9 @@ export default function App() {
           {tab === 'forecast' && (
             <ForecastChart forecast={forecast} scan={rec?.result?.tier3?.fertilizer_scan} region={block?.region} />
           )}
-          {tab === 'history' && <History readings={readings} history={history} done={done} onUndo={undoDone} busy={busy} />}
+          {tab === 'history' && (
+            <History readings={readings} history={history} done={done} onUndo={undoDone} onDelete={deleteHistory} busy={busy} />
+          )}
         </section>
       </main>
     </div>

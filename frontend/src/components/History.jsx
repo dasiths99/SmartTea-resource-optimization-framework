@@ -2,7 +2,21 @@ const fmt = (t) => (t ? new Date(t).toLocaleString() : '—')
 
 const DONE_LABEL = { fertilizer: 'Fertilizer', irrigation: 'Irrigation', dolomite: 'Dolomite', fungicide: 'Fungicide' }
 
-export default function History({ readings, history, done = [], onUndo, busy }) {
+// card title with a "Delete all" button on the right (shown only when the list has rows)
+function Header({ title, count, onClearAll, busy }) {
+  return (
+    <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="text-sm font-semibold uppercase tracking-wide text-stone-500">{title}</div>
+      {count > 0 && (
+        <button className="btn-danger" disabled={busy} onClick={onClearAll}>
+          Delete all ({count})
+        </button>
+      )}
+    </div>
+  )
+}
+
+export default function History({ readings, history, done = [], onUndo, onDelete, busy }) {
   return (
     <div className="space-y-4">
       <div className="card overflow-x-auto">
@@ -43,7 +57,12 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
       </div>
 
       <div className="card overflow-x-auto">
-        <div className="card-title">Recommendations (latest first)</div>
+        <Header
+          title="Recommendations (latest first)"
+          count={history.length}
+          busy={busy}
+          onClearAll={() => onDelete('recommendation', null)}
+        />
         {history.length === 0 ? (
           <p className="text-sm text-stone-500">None yet.</p>
         ) : (
@@ -56,6 +75,7 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
                 <th>Amount</th>
                 <th>Window</th>
                 <th>Yield Δ</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +87,11 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
                   <td>{h.result.amount_kg_per_ha ? `${h.result.amount_kg_per_ha} kg/ha` : '—'}</td>
                   <td className="whitespace-nowrap">{h.result.window || '—'}</td>
                   <td>{h.result.predicted_yield_change_pct} %</td>
+                  <td className="text-right">
+                    <button className="btn-danger" disabled={busy} onClick={() => onDelete('recommendation', h.id)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -75,7 +100,12 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
       </div>
 
       <div className="card overflow-x-auto">
-        <div className="card-title">Sensor readings (latest first)</div>
+        <Header
+          title="Sensor readings (latest first)"
+          count={readings.length}
+          busy={busy}
+          onClearAll={() => onDelete('reading', null)}
+        />
         {readings.length === 0 ? (
           <p className="text-sm text-stone-500">None yet.</p>
         ) : (
@@ -92,6 +122,7 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
                 <th>Lux</th>
                 <th>Sun h</th>
                 <th>Last fertilizer</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -110,6 +141,11 @@ export default function History({ readings, history, done = [], onUndo, busy }) 
                     {r.last_fertilizer
                       ? `${r.last_fertilizer.product_code} ${r.last_fertilizer.amount_kg_per_ha} kg/ha, ${r.last_fertilizer.date}`
                       : '—'}
+                  </td>
+                  <td className="text-right">
+                    <button className="btn-danger" disabled={busy} onClick={() => onDelete('reading', r.id)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
