@@ -40,6 +40,11 @@ node_modules/
 frontend/dist/
 frontend/build/
 
+# Archives / backups of the project (GitHub rejects files over 100 MB)
+*.rar
+*.zip
+*.7z
+
 # Editors / OS
 .vscode/
 .idea/
